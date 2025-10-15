@@ -3,6 +3,7 @@ import "@/index.css"
 import {NavigationProvider, Router} from "@/navigation"
 import {useUserStore} from "./stores/user"
 import ReactDOM from "react-dom/client"
+import { BrowserRouter } from "react-router-dom"
 
 import {subscribeToDMNotifications, subscribeToNotifications} from "./utils/notifications"
 import {migrateUserState, migratePublicChats} from "./utils/migration"
@@ -98,14 +99,17 @@ const initializeApp = () => {
 // Initialize app
 initializeApp()
 
-const root = ReactDOM.createRoot(document.getElementById("root")!)
+
+const root = ReactDOM.createRoot(document.getElementById("root")!);
 
 root.render(
-  <NavigationProvider>
-    <Layout>
-      <Router />
-    </Layout>
-  </NavigationProvider>
+  <BrowserRouter>
+    <NavigationProvider>
+      <Layout>
+        <Router />
+      </Layout>
+    </NavigationProvider>
+  </BrowserRouter>
 )
 
 // Store subscriptions

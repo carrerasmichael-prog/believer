@@ -1,7 +1,7 @@
 import { lazy } from "react";
 import { RouteDefinition } from "./types";
 
-// Import pages
+// Base pages
 import NostrLinkHandler from "@/pages/NostrLinkHandler";
 import Notifications from "@/pages/notifications/Notifications";
 import WalletPage from "@/pages/wallet/WalletPage";
@@ -10,11 +10,10 @@ import SearchPage from "@/pages/search";
 import HomePage from "@/pages/home";
 import NewNote from "@/pages/new";
 
-// ✅ NEW IMPORTS for Believer.go rooms
-import TownSquare from "@/components/townsquare";
+// Believer.go imports
 import DynamicRoom from "@/components/dynamicroom";
 
-// Lazy load components
+// Lazy load main pages
 const ChatsPage = lazy(() => import("@/pages/chats"));
 const SettingsPage = lazy(() => import("@/pages/settings"));
 const SubscriptionPage = lazy(() => import("@/pages/subscription"));
@@ -23,12 +22,15 @@ const MapPage = lazy(() => import("@/pages/map"));
 const MarketPage = lazy(() => import("@/pages/market"));
 const UserSearchPage = lazy(() => import("@/pages/user-search"));
 
-export const routes: RouteDefinition[] = [
-  // ✅ Believer.go Routes
-  { path: "/", component: TownSquare, alwaysKeep: true }, // static main page
-  { path: "/room/:roomid", component: DynamicRoom },      // dynamic room loader
+// ✅ TownSquare should be lazy-loaded and external to the client
+const TownSquare = lazy(() => import("@/pages/landing/TownSquare"));
 
-  // Existing routes below (unchanged)
+export const routes: RouteDefinition[] = [
+  // 🏙️ Believer.go Routes
+  { path: "/", component: TownSquare, alwaysKeep: true }, // landing page
+  { path: "/room/:roomid", component: DynamicRoom },      // dynamic client view
+
+  // 💬 Client routes
   { path: "/new", component: NewNote },
   { path: "/notifications", component: Notifications },
   { path: "/wallet", component: WalletPage },
@@ -49,4 +51,5 @@ export const routes: RouteDefinition[] = [
   { path: "/:link/*", component: NostrLinkHandler },
   { path: "/:link", component: NostrLinkHandler },
 ];
+
 
