@@ -35,6 +35,7 @@ function AppearanceSettings() {
                   <option value="dark">Dark</option>
                   <option value="iris">Iris</option>
                   <option value="system">System</option>
+                  <option value="believer">Believer</option> {/* NEW THEME */}
                 </select>
               </div>
             </SettingsGroupItem>

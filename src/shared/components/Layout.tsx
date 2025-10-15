@@ -278,6 +278,9 @@ const Layout = ({children}: {children: ReactNode}) => {
           </div>
         )}
         <div className="flex-1 flex flex-col overflow-hidden min-w-0">
+          <h1 style={{ textAlign: "center", color: "Orange", marginTop: "1em" }}>
+            ✨ Welcome to Believer.go Lobby ✨
+          </h1>
           {children}
           {activeProviderType !== "disabled" && (
             <iframe
@@ -310,7 +313,7 @@ const Layout = ({children}: {children: ReactNode}) => {
         )}
       </ErrorBoundary>
       <Footer />
-      <Helmet titleTemplate={`%s / ${CONFIG.appName}`} defaultTitle={CONFIG.appName}>
+      <Helmet>
         <title>{CONFIG.appName}</title>
       </Helmet>
     </div>

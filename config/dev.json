@@ -1,19 +1,19 @@
 {
-  "appName": "iris",
-  "appNameCapitalized": "Iris",
-  "hostname": "iris.to",
-  "nip05Domain": "iris.to",
-  "icon": "/img/icon128.png",
-  "navLogo": "/img/icon128.png",
+  "appName": "Believer.go",
+  "appNameCapitalized": "Believer.go",
+  "hostname": "Believergo.com",
+  "nip05Domain": "Believergo.com",
+  "icon": "/img/eyespace.gif",
+  "navLogo": "/eyespace.gif",
   "defaultTheme": "iris",
-  "aboutText": "Iris - Connecting People",
-  "repository": "https://github.com/irislib/iris-client",
+  "aboutText": "Believer.go - Connecting People",
+  "repository": "https://github.com/carrerasmichael-prog/believer",
   "features": {
     "analytics": false,
     "showSubscriptionSettings": true
   },
   "defaultSettings": {
-    "notificationServer": "https://notifications.iris.to",
+    "notificationServer": "https://notifications.believergo.com",
     "irisApiUrl": ""
   }
 }
