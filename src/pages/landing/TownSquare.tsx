@@ -1,25 +1,17 @@
+// src/pages/landing/TownSquare.tsx
 import React from "react";
-import { playSound } from "@/utils/playSound";
 import { useNavigate } from "react-router-dom";
-import { rooms } from "@/rooms/roomlist";
+import { playSound } from "@/utils/playSound";
+import { townSquareSlices, TownSquareSlice } from "@/constants/townSquareSlices";
 
 const TownSquare: React.FC = () => {
   const navigate = useNavigate();
 
-  const handleClick = (sliceId: string) => {
-    const soundSlices = [
-      "church-bell",
-      "atheism-flag",
-      "buddha",
-      "muhammad",
-      "brahma",
-      "star-of-david",
-    ];
-
-    if (soundSlices.includes(sliceId)) {
-      playSound(`/sounds/${sliceId}.mp3`);
-    } else {
-      navigate(`/room/${sliceId}`);
+  const handleClick = (slice: TownSquareSlice) => {
+    if (slice.isSound) {
+      playSound(slice.src);
+    } else if (slice.isRoom) {
+      navigate(`/room/${slice.id}`);
     }
   };
 
@@ -32,39 +24,53 @@ const TownSquare: React.FC = () => {
         className="w-full h-auto select-none"
       />
 
-      {/* Room slices */}
-      {Object.keys(rooms).map((roomId) => (
-        <img
-          key={roomId}
-          src={`/images/slices/rooms/${roomId}-slice.png`}
-          alt={`${rooms[roomId].name} room door`}
-          className="absolute cursor-pointer"
-          style={{ top: rooms[roomId].top, left: rooms[roomId].left, width: rooms[roomId].width }}
-          onClick={() => handleClick(roomId)}
-        />
-      ))}
-
-      {/* Sound slices (not linked to rooms) */}
-      {[
-        { id: "church-bell", top: "100px", left: "200px", width: "50px" },
-        { id: "atheism-flag", top: "150px", left: "400px", width: "50px" },
-        { id: "buddha", top: "200px", left: "300px", width: "50px" },
-        { id: "muhammad", top: "250px", left: "500px", width: "50px" },
-        { id: "brahma", top: "300px", left: "600px", width: "50px" },
-        { id: "star-of-david", top: "350px", left: "700px", width: "50px" },
-      ].map((slice) => (
-        <img
-          key={slice.id}
-          src={`/images/slices/sounds/${slice.id}-slice.png`} // placeholder image
-          alt={slice.id}
-          className="absolute cursor-pointer"
-          style={{ top: slice.top, left: slice.left, width: slice.width }}
-          onClick={() => handleClick(slice.id)}
-        />
-      ))}
+      {/* Render slices */}
+      {townSquareSlices.map(slice => {
+        if (slice.isSound) {
+          // Invisible clickable area over sound elements
+          return (
+            <div
+              key={slice.id}
+              onClick={() => handleClick(slice)}
+              className="absolute cursor-pointer"
+              style={{
+                top: `${slice.top}px`,
+                left: `${slice.left}px`,
+                width: "50px", // adjust size as needed for click area
+                height: "50px",
+              }}
+            />
+          );
+        } else if (slice.isRoom) {
+          return (
+            <img
+              key={slice.id}
+              src={slice.src}
+              alt={slice.id}
+              className="absolute cursor-pointer"
+              style={{
+                top: `${slice.top}px`,
+                left: `${slice.left}px`,
+                width: `${slice.width}px`,
+                height: `${slice.height}px`,
+              }}
+              onClick={() => handleClick(slice)}
+            />
+          );
+        }
+        return null;
+      })}
     </div>
   );
 };
 
 export default TownSquare;
+
+
+
+
+
+
+
+
 
