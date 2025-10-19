@@ -1,0 +1,29 @@
+{
+  "appName": "Nestr",
+  "appNameCapitalized": "Nestr",
+  "hostname": "Believergo.com",
+  "nip05Domain": "Believergo.com",
+  "icon": "/img/eyespace.gif",
+  "navLogo": "/img/eyspace.gif",
+  "defaultTheme": "dark",
+  "navItems": [
+    "home",
+    "search",
+    "notifications",
+    "organizations",
+    "repositories",
+    "settings",
+    "about"
+  ],
+  "aboutText": "Believer.go aims to facilitate open interfaith discussions in a decentralized, censorship-resistant way.",
+  "repository": "https://github.com/carrerasmichael-prog/believer",
+  "features": {
+    "git": true,
+    "cashu": false,
+    "analytics": false
+  },
+  "defaultSettings": {
+    "youtubePrivacyMode": false,
+    "notificationServer": "https://believergo.com"
+  }
+}

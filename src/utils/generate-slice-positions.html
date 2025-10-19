@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Generate Slice Positions</title>
+</head>
+<body>
+  <h1>Generate Slice Positions</h1>
+  <button onclick="generateJSON()">Export JSON</button>
+  <script>
+    // Slice data from townSquareSlices.ts
+    const townSquareSlices = [
+      { id: "muhammad", top: 165, left: 257, width: 67, height: 59, isSound: true, src: "/sound/muhammad.mp3" },
+      { id: "church-bell", top: 401, left: 1248, width: 66, height: 63, isSound: true, src: "/sound/church-bell.mp3" },
+      { id: "brahma", top: 441, left: 957, width: 65, height: 64, isSound: true, src: "/sound/brahma.mp3" },
+      { id: "buddha", top: 441, left: 428, width: 53, height: 55, isSound: true, src: "/sound/buddha.mp3" },
+      { id: "star-of-david", top: 714, left: 1248, width: 102, height: 95, isSound: true, src: "/sound/star-of-david.mp3" },
+      { id: "mosque", top: 856, left: 110, width: 118, height: 134, isRoom: true, src: "/room/mosque" },
+      { id: "temple", top: 856, left: 298, width: 151, height: 128, isRoom: true, src: "/room/temple" },
+      { id: "synagogue", top: 856, left: 401, width: 159, height: 147, isRoom: true, src: "/room/synagogue" },
+      { id: "church", top: 856, left: 622, width: 242, height: 136, isRoom: true, src: "/room/church" },
+      { id: "mathris", top: 856, left: 957, width: 173, height: 113, isRoom: true, src: "/room/mathris" },
+      { id: "atheist-flag", top: 902, left: 1110, width: 40, height: 42, isSound: true, src: "/sound/atheist-flag.mp3" },
+      { id: "news", top: 902, left: 1155, width: 164, height: 241, isRoom: true, src: "/rooms/news" },
+      { id: "atheism", top: 1159, left: 105, width: 90, height: 83, isRoom: true, src: "/room/atheism" },
+      { id: "lobby", top: 1159, left: 142, width: 192, height: 185, isRoom: true, src: "/room/lobby" },
+      { id: "market", top: 1159, left: 294, width: 250, height: 153, isRoom: true, src: "/room/market" }
+    ];
+
+    const BASE_WIDTH = 1920;
+    const BASE_HEIGHT = 1080;
+
+    function generateJSON() {
+      const percentSlices = townSquareSlices.map(slice => ({
+        id: slice.id,
+        topPercent: (slice.top / BASE_HEIGHT * 100).toFixed(2) + '%',
+        leftPercent: (slice.left / BASE_WIDTH * 100).toFixed(2) + '%',
+        widthPercent: (slice.width / BASE_WIDTH * 100).toFixed(2) + '%',
+        heightPercent: (slice.height / BASE_HEIGHT * 100).toFixed(2) + '%',
+        isSound: slice.isSound || false,
+        isRoom: slice.isRoom || false,
+        src: slice.src
+      }));
+
+      const jsonString = JSON.stringify(percentSlices, null, 2);
+      const blob = new Blob([jsonString], { type: 'application/json' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'slice-positions.json';
+      a.click();
+      URL.revokeObjectURL(url);
+    }
+  </script>
+</body>
+</html>

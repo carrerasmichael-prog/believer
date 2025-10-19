@@ -1,0 +1,207 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html {
+  font-size: 15px;
+}
+
+html,
+body {
+  overflow: hidden;
+}
+
+html {
+  height: 100%;
+}
+
+/* Common page container styles */
+.page-container {
+  @apply flex flex-1 overflow-y-auto overflow-x-hidden scrollbar-hide;
+}
+
+.btn,
+.input {
+  @apply rounded-full;
+}
+
+/* Default theme */
+.btn-primary {
+  @apply text-base-content;
+  border-width: 0px;
+  background: linear-gradient(to top, rgba(60, 33, 200, 1), rgba(122, 41, 288, 1));
+  transition: background-image 0.3s ease;
+}
+
+.btn-primary:hover {
+  background: linear-gradient(to top, rgba(60, 33, 200, 0.8), rgba(122, 41, 288, 0.8));
+}
+
+/* Dark theme */
+[data-theme="dark"] .btn-primary {
+  background: linear-gradient(to top, rgba(60, 33, 200, 1), rgba(122, 41, 288, 1));
+}
+
+[data-theme="dark"] .btn-primary:hover {
+  background: linear-gradient(to top, rgba(60, 33, 200, 0.8), rgba(122, 41, 288, 0.8));
+}
+
+/* Light theme */
+[data-theme="light"] .btn.btn-primary {
+  background: #0f1419 !important;
+  color: #ffffff !important;
+  border: none;
+}
+
+[data-theme="light"] .btn.btn-primary:hover {
+  background: #15202b !important;
+  color: #ffffff !important;
+}
+
+[data-theme="light"] .btn.btn-neutral {
+  background: #f7f9fa !important;
+  color: #536471 !important;
+  border: 1px solid #e1e8ed !important;
+}
+
+[data-theme="light"] .btn.btn-neutral:hover {
+  background: #e1e8ed !important;
+  color: #0f1419 !important;
+}
+
+/* Iris theme */
+[data-theme="iris"] .btn.btn-primary {
+  background: #f8f8f8 !important;
+  color: #1a1a1a !important;
+  border: 1px solid #333333;
+}
+
+[data-theme="iris"] .btn.btn-primary:hover {
+  background: #e8e8e8 !important;
+  color: #1a1a1a !important;
+}
+
+iframe {
+  @apply max-w-full;
+}
+
+/* Webkit scrollbar (Chrome, Safari, Edge) */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #34216c;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: #702ace;
+  border-radius: 4px;
+}
+
+/* Firefox scrollbar */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: #702ace #34216c; /* Thumb and track color */
+}
+
+/* src/shared/styles/scrollbar.css */
+.scrollbar-hide {
+  -ms-overflow-style: none; /* Internet Explorer 10+ */
+  scrollbar-width: none; /* Firefox */
+}
+
+.scrollbar-hide::-webkit-scrollbar {
+  display: none; /* Safari and Chrome */
+}
+
+/* Disable hover and focus effects on touch devices */
+@media (hover: none) and (pointer: coarse) {
+  [class*="hover:bg-"]:hover {
+    background-color: inherit !important;
+  }
+
+  /* Disable focus styles that can persist after touch */
+  *:focus {
+    outline: none !important;
+    background-color: inherit !important;
+  }
+}
+
+/* modals */
+
+.modal-box {
+  max-width: fit-content !important;
+}
+
+@media (max-width: 768px) {
+  .modal {
+    align-items: stretch;
+  }
+
+  .modal-box {
+    max-width: 100% !important;
+    width: 100% !important;
+    height: 100% !important;
+    max-height: 100% !important;
+    margin: 0 !important;
+    border-radius: 0 !important;
+    background-color: oklch(var(--b2)) !important;
+  }
+}
+
+/* QR Modal text shadows - using solid black with opacity for better visibility */
+.qr-modal-shadow {
+  text-shadow:
+    0 2px 8px rgba(0, 0, 0, 0.8),
+    0 1px 3px rgba(0, 0, 0, 0.9);
+}
+
+.qr-modal-shadow-sm {
+  text-shadow:
+    0 1px 3px rgba(0, 0, 0, 0.8),
+    0 2px 6px rgba(0, 0, 0, 0.6);
+}
+
+.qr-modal-shadow-btn {
+  filter: drop-shadow(0 2px 6px rgba(0, 0, 0, 0.7));
+}
+
+/* For dark themes, use lighter shadow for contrast */
+[data-theme="dark"] .qr-modal-shadow {
+  text-shadow:
+    0 2px 8px rgba(0, 0, 0, 0.9),
+    0 1px 3px rgba(0, 0, 0, 1);
+}
+
+[data-theme="dark"] .qr-modal-shadow-sm {
+  text-shadow:
+    0 1px 3px rgba(0, 0, 0, 0.9),
+    0 2px 6px rgba(0, 0, 0, 0.7);
+}
+
+[data-theme="dark"] .qr-modal-shadow-btn {
+  filter: drop-shadow(0 2px 6px rgba(0, 0, 0, 0.8));
+}
+
+/* Upload progress animation */
+@keyframes shake {
+  0%,
+  100% {
+    transform: translateX(-50%) translateX(0);
+  }
+  10%,
+  30%,
+  50%,
+  70%,
+  90% {
+    transform: translateX(-50%) translateX(-2px);
+  }
+  20%,
+  40%,
+  60%,
+  80% {
+    transform: translateX(-50%) translateX(2px);
+  }
+}
