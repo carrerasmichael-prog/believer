@@ -1,8 +1,8 @@
-// src/pages/landing/TownSquare.tsx
 import React, { useRef, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { playSound } from "@/utils/playSound";
 import { townSquareSlices, TownSquareSlice } from "@/constants/townSquareSlices";
+import HomeFeed from "@/pages/home/feed/components/HomeFeed";
 
 const BASE_WIDTH = 1920;
 const BASE_HEIGHT = 1080;
@@ -36,29 +36,6 @@ const TownSquare: React.FC = () => {
     setScale(uniformScale || 1);
   };
 
-  const preloadAudio = () => {
-    townSquareSlices
-      .filter((slice) => slice.isSound)
-      .forEach((slice) => new Audio(slice.src));
-    alert("Sounds enabled!");
-  };
-
-  const exportSlicesToJSON = () => {
-    const json = slices.map((slice) => ({
-      id: slice.id,
-      topPercent: ((slice.top / BASE_HEIGHT) * 100).toFixed(2) + "%",
-      leftPercent: ((slice.left / BASE_WIDTH) * 100).toFixed(2) + "%",
-      widthPercent: ((slice.width / BASE_WIDTH) * 100).toFixed(2) + "%",
-      heightPercent: ((slice.height / BASE_HEIGHT) * 100).toFixed(2) + "%",
-      isSound: slice.isSound,
-      isRoom: slice.isRoom,
-      src: slice.src,
-    }));
-    console.log("Exported JSON:", JSON.stringify(json, null, 2));
-    navigator.clipboard.writeText(JSON.stringify(json, null, 2));
-    alert("JSON copied to clipboard!");
-  };
-
   useEffect(() => {
     const img = containerRef.current?.querySelector("img.town-square");
     if (!img) {
@@ -80,7 +57,7 @@ const TownSquare: React.FC = () => {
 
   const handleClick = (slice: TownSquareSlice) => {
     if (!DEBUG_MODE) {
-      if (slice.isSound) playSound(slice.src);
+      if (slice.isSound) playSound(slice.src); // Audio enabled by default
       else if (slice.isRoom) navigate(slice.src);
     }
   };
@@ -152,42 +129,23 @@ const TownSquare: React.FC = () => {
           display: "block",
         }}
       />
-      <button
-        onClick={preloadAudio}
-        style={{
-          position: "absolute",
-          top: "1vh",
-          left: "5vw",
-          zIndex: 10,
-          padding: "8px 16px",
-          fontSize: "14px",
-        }}
-      >
-        Enable Sounds
-      </button>
-      <select
-        onChange={(e) => navigate(e.target.value)}
-        style={{
-          position: "absolute",
-          top: "1vh",
-          left: "15vw",
-          zIndex: 10,
-          padding: "8px",
-          fontSize: "14px",
-        }}
-      >
-        <option value="">Select a Room</option>
-        {slices
-          .filter((slice) => slice.isRoom)
-          .map((slice) => (
-            <option key={slice.id} value={slice.src}>
-              {slice.id.charAt(0).toUpperCase() + slice.id.slice(1)}
-            </option>
-          ))}
-      </select>
       {DEBUG_MODE && (
         <button
-          onClick={exportSlicesToJSON}
+          onClick={() => {
+            const json = slices.map((slice) => ({
+              id: slice.id,
+              topPercent: ((slice.top / BASE_HEIGHT) * 100).toFixed(2) + "%",
+              leftPercent: ((slice.left / BASE_WIDTH) * 100).toFixed(2) + "%",
+              widthPercent: ((slice.width / BASE_WIDTH) * 100).toFixed(2) + "%",
+              heightPercent: ((slice.height / BASE_HEIGHT) * 100).toFixed(2) + "%",
+              isSound: slice.isSound,
+              isRoom: slice.isRoom,
+              src: slice.src,
+            }));
+            console.log("Exported JSON:", JSON.stringify(json, null, 2));
+            navigator.clipboard.writeText(JSON.stringify(json, null, 2));
+            alert("JSON copied to clipboard!");
+          }}
           style={{
             position: "absolute",
             top: "1vh",
@@ -210,7 +168,7 @@ const TownSquare: React.FC = () => {
           <div
             key={slice.id}
             onClick={() => handleClick(slice)}
-            title={slice.id}
+            title={slice.id} // Keep tooltips
             onMouseDown={handleMouseDown(slice.id)}
             style={{
               position: "absolute",
@@ -224,27 +182,27 @@ const TownSquare: React.FC = () => {
               display: "flex",
               alignItems: "center",
               justifyContent: "center",
-              color: slice.isSound ? "white" : "transparent",
+              color: "transparent", // No text on sound slices
               textAlign: "center",
               fontSize: `${scaledWidth * 0.3}px`,
-              boxShadow: "0 0 0px rgba(255, 255, 0, 0.0)",
               borderRadius: "6px",
               transition: "transform 0.15s, box-shadow 0.15s",
               zIndex: 5,
             }}
             onMouseEnter={(e) => {
               e.currentTarget.style.transform = "scale(1.05)";
-              e.currentTarget.style.boxShadow = "0 0 25px rgba(255, 255, 0, 1)";
+              e.currentTarget.style.boxShadow = "0 0 25px rgba(255, 255, 0, 1)"; // Unchanged glow
             }}
             onMouseLeave={(e) => {
               e.currentTarget.style.transform = "scale(1)";
-              e.currentTarget.style.boxShadow = "0 0 0px rgba(255, 255, 0, 0)";
+              e.currentTarget.style.boxShadow = "0 0 0px rgba(255, 255, 0, 0)"; // Unchanged glow
             }}
-          >
-            {slice.isSound && slice.id}
-          </div>
+          />
         );
       })}
+      <div className="mt-8">
+        <HomeFeed />
+      </div>
     </div>
   );
 };
