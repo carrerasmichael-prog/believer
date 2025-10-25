@@ -279,7 +279,7 @@ const Layout = ({children}: {children: ReactNode}) => {
         )}
         <div className="flex-1 flex flex-col overflow-hidden min-w-0">
           <h1 style={{ textAlign: "center", color: "Orange", marginTop: "1em" }}>
-            ✨ Welcome to Believer.go Lobby ✨
+            ✨ Believer.go ✨
           </h1>
           {children}
           {activeProviderType !== "disabled" && (

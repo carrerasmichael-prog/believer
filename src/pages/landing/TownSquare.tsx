@@ -16,6 +16,8 @@ const TownSquare: React.FC = () => {
   const [draggingSlice, setDraggingSlice] = useState<string | null>(null);
   const [slices, setSlices] = useState<TownSquareSlice[]>(townSquareSlices);
 
+  const capitalize = (str: string) => str.charAt(0).toUpperCase() + str.slice(1);
+
   const updateScale = () => {
     if (!containerRef.current) {
       console.log("No container ref found");
@@ -37,7 +39,7 @@ const TownSquare: React.FC = () => {
   };
 
   useEffect(() => {
-    const img = containerRef.current?.querySelector("img.town-square");
+    const img = containerRef.current?.querySelector("img.town-square") as HTMLImageElement | null;
     if (!img) {
       console.log("Image not found on initial load");
       return;
@@ -57,7 +59,7 @@ const TownSquare: React.FC = () => {
 
   const handleClick = (slice: TownSquareSlice) => {
     if (!DEBUG_MODE) {
-      if (slice.isSound) playSound(slice.src); // Audio enabled by default
+      if (slice.isSound) playSound(slice.src);
       else if (slice.isRoom) navigate(slice.src);
     }
   };
@@ -100,12 +102,11 @@ const TownSquare: React.FC = () => {
     if (!DEBUG_MODE) return;
     window.addEventListener("mousemove", handleMouseMove);
     window.addEventListener("mouseup", handleMouseUp);
-
     return () => {
       window.removeEventListener("mousemove", handleMouseMove);
       window.removeEventListener("mouseup", handleMouseUp);
     };
-  }, [draggingSlice, scale, slices]);
+  }, [draggingSlice, scale]);
 
   return (
     <div
@@ -168,7 +169,7 @@ const TownSquare: React.FC = () => {
           <div
             key={slice.id}
             onClick={() => handleClick(slice)}
-            title={slice.id} // Keep tooltips
+            title={capitalize(slice.id)}
             onMouseDown={handleMouseDown(slice.id)}
             style={{
               position: "absolute",
@@ -182,7 +183,7 @@ const TownSquare: React.FC = () => {
               display: "flex",
               alignItems: "center",
               justifyContent: "center",
-              color: "transparent", // No text on sound slices
+              color: "transparent",
               textAlign: "center",
               fontSize: `${scaledWidth * 0.3}px`,
               borderRadius: "6px",
@@ -191,11 +192,11 @@ const TownSquare: React.FC = () => {
             }}
             onMouseEnter={(e) => {
               e.currentTarget.style.transform = "scale(1.05)";
-              e.currentTarget.style.boxShadow = "0 0 25px rgba(255, 255, 0, 1)"; // Unchanged glow
+              e.currentTarget.style.boxShadow = "0 0 25px rgba(255, 255, 0, 1)";
             }}
             onMouseLeave={(e) => {
               e.currentTarget.style.transform = "scale(1)";
-              e.currentTarget.style.boxShadow = "0 0 0px rgba(255, 255, 0, 0)"; // Unchanged glow
+              e.currentTarget.style.boxShadow = "0 0 0px rgba(255, 255, 0, 0)";
             }}
           />
         );
