@@ -205,3 +205,9 @@ iframe {
     transform: translateX(-50%) translateX(2px);
   }
 }
+
+/* === LANDING FULLSCREEN — NO SCROLL === */
+.landing-fullscreen {
+  height: 100vh;
+  overflow: hidden;
+}

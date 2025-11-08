@@ -52,23 +52,22 @@ const Layout = ({children}: {children: ReactNode}) => {
   const isLargeScreen = useIsLargeScreen()
   const isTwoColumnLayout = useIsTwoColumnLayout()
 
-  // Track middle column content - default to HomeFeed, and remember last search route
-  const [middleColumnContent, setMiddleColumnContent] = useState<"home" | "search">(
-    "home"
-  )
+  // Detect room and landing
+  const isInRoom = location.pathname.startsWith('/room/')
+  const isLanding = location.pathname === '/'
+
+  // Track middle column content
+  const [middleColumnContent, setMiddleColumnContent] = useState<"home" | "search">("home")
   const [lastSearchRoute, setLastSearchRoute] = useState("/u")
 
-  // Feed header logic for two-column layout
+  // Feed logic
   const myPubKey = usePublicKey()
   const follows = useFollows(myPubKey, true)
   const {activeFeed, getAllFeedConfigs, loadFeedConfig} = useFeedStore()
   const enabledFeedIds = useEnabledFeedIds()
   const feedConfigs = useFeedConfigs()
 
-  const allFeeds = useMemo(() => {
-    return getAllFeedConfigs()
-  }, [feedConfigs, enabledFeedIds, getAllFeedConfigs])
-
+  const allFeeds = useMemo(() => getAllFeedConfigs(), [feedConfigs, enabledFeedIds, getAllFeedConfigs])
   const feeds = useMemo(() => {
     const feedsMap = new Map(allFeeds.map((feed) => [feed.id, feed]))
     return enabledFeedIds
@@ -81,10 +80,7 @@ const Layout = ({children}: {children: ReactNode}) => {
     [activeFeed, feeds]
   )
 
-  const activeFeedConfig = useMemo(
-    () => loadFeedConfig(activeFeed),
-    [loadFeedConfig, activeFeed, feedConfigs]
-  )
+  const activeFeedConfig = useMemo(() => loadFeedConfig(activeFeed), [loadFeedConfig, activeFeed, feedConfigs])
 
   const feedName =
     follows.length <= 1
@@ -93,82 +89,50 @@ const Layout = ({children}: {children: ReactNode}) => {
 
   const getMiddleColumnTitle = () => {
     if (middleColumnContent === "home") return feedName
-
-    // Use the last search route for the title when showing search content
     if (lastSearchRoute.startsWith("/map")) return "Map"
     if (lastSearchRoute.startsWith("/relay")) return "Relay"
     if (lastSearchRoute.startsWith("/u")) return "People"
     if (lastSearchRoute.startsWith("/search")) return "Search"
     if (lastSearchRoute.startsWith("/m")) return "Market"
-
     return "Search"
   }
 
   const middleColumnTitle = getMiddleColumnTitle()
 
+  // HIDE MIDDLE COLUMN ON LANDING AND IN ROOMS
   const shouldShowMainFeed =
     isTwoColumnLayout &&
+    location.pathname !== '/' &&           // ← HIDE ON LANDING
     !location.pathname.startsWith("/settings") &&
-    !location.pathname.startsWith("/chats")
+    !location.pathname.startsWith("/chats") &&
+    !isInRoom
 
-  socialGraphLoaded.then() // just make sure we start loading social the graph
+  socialGraphLoaded.then()
 
-  // Initialize wallet providers on app startup
-  useEffect(() => {
-    initializeProviders()
-  }, [initializeProviders])
+  useEffect(() => { initializeProviders() }, [initializeProviders])
 
-  // Handle nav item clicks for middle column content
   useEffect(() => {
     if (navItemClicked.signal === 0 || !shouldShowMainFeed) return
 
     if (navItemClicked.path === "/") {
       setMiddleColumnContent("home")
-      if (middleColumnRef.current) {
-        middleColumnRef.current.scrollTo({top: 0, behavior: "instant"})
-      }
-    } else if (
-      navItemClicked.path === "/u" ||
-      navItemClicked.path === "/search" ||
-      navItemClicked.path === "/m" ||
-      navItemClicked.path === "/map" ||
-      navItemClicked.path === "/relay"
-    ) {
-      // Set the appropriate search route based on the clicked path
-      if (navItemClicked.path === "/map") {
-        setLastSearchRoute("/map")
-      } else if (navItemClicked.path === "/relay") {
-        setLastSearchRoute("/relay")
-      } else if (navItemClicked.path === "/u") {
-        setLastSearchRoute("/u")
-      } else if (navItemClicked.path === "/search") {
-        setLastSearchRoute("/search")
-      } else if (navItemClicked.path === "/m") {
-        setLastSearchRoute("/m")
-      }
-
+      middleColumnRef.current?.scrollTo({top: 0, behavior: "instant"})
+    } else if (["/u", "/search", "/m", "/map", "/relay"].includes(navItemClicked.path)) {
+      setLastSearchRoute(navItemClicked.path)
       setMiddleColumnContent("search")
-      if (middleColumnRef.current) {
-        middleColumnRef.current.scrollTo({top: 0, behavior: "instant"})
-      }
+      middleColumnRef.current?.scrollTo({top: 0, behavior: "instant"})
     }
   }, [navItemClicked, shouldShowMainFeed])
 
-  // Set middle column content based on current route when in two-column layout
-  // Only change on root route changes, not when navigating within a search section
   useEffect(() => {
     if (!shouldShowMainFeed) return
-
     const routeInfo = getCurrentRouteInfo(location.pathname)
-
     if (routeInfo.type === "home") {
       setMiddleColumnContent("home")
     } else if (routeInfo.baseRoute) {
-      // This is a search route, update both content and last route
       setLastSearchRoute(routeInfo.baseRoute)
       setMiddleColumnContent("search")
     }
-    // If not a recognized route, keep the current middle column content
   }, [location.pathname, shouldShowMainFeed])
 
   useEffect(() => {
@@ -176,9 +140,6 @@ const Layout = ({children}: {children: ReactNode}) => {
       navigate("/notifications")
     }
   }, [navigate, goToNotifications])
-
-  // Handle nav item clicks - no longer needed for scroll since each component manages its own
-  // Keep this for potential future use with navItemClicked signal
 
   useEffect(() => {
     const handleServiceWorkerMessage = (event: MessageEvent<ServiceWorkerMessage>) => {
@@ -202,22 +163,13 @@ const Layout = ({children}: {children: ReactNode}) => {
   }, [navigate])
 
   useEffect(() => {
-    // clear potential push notifications when the app is opened
     clearNotifications()
-
     const handleVisibilityChange = async () => {
-      if (document.visibilityState === "visible") {
-        await clearNotifications()
-      }
+      if (document.visibilityState === "visible") await clearNotifications()
     }
-
-    const handleFocus = async () => {
-      await clearNotifications()
-    }
-
+    const handleFocus = async () => { await clearNotifications() }
     document.addEventListener("visibilitychange", handleVisibilityChange)
     window.addEventListener("focus", handleFocus)
-
     return () => {
       document.removeEventListener("visibilitychange", handleVisibilityChange)
       window.removeEventListener("focus", handleFocus)
@@ -225,33 +177,26 @@ const Layout = ({children}: {children: ReactNode}) => {
   }, [])
 
   return (
-    <div
-      className={`relative flex flex-col w-full h-screen overflow-hidden ${appearance.limitedMaxWidth ? "max-w-screen-2xl mx-auto" : ""}`}
-    >
-      <div
-        className="flex relative flex-1 overflow-hidden min-w-0 w-full"
-        id="main-content"
-      >
+    <div className={`relative flex flex-col w-full h-screen overflow-hidden ${appearance.limitedMaxWidth ? "max-w-screen-2xl mx-auto" : ""}`}>
+      <div className="flex relative flex-1 overflow-hidden min-w-0 w-full" id="main-content">
+        
+        {/* SIDEBAR — ALWAYS VISIBLE ON LARGE SCREENS */}
         <NavSideBar />
-        {!appearance.singleColumnLayout && isLargeScreen && (
-          <div
-            className={`flex-1 min-w-0 border-r border-base-300 flex flex-col ${
-              shouldShowMainFeed ? "hidden lg:flex" : "hidden"
-            }`}
-          >
+
+        {/* MIDDLE COLUMN — HIDDEN ON LANDING AND ROOMS */}
+        {!appearance.singleColumnLayout && 
+         isLargeScreen && 
+         !isInRoom && 
+         !isLanding && 
+         shouldShowMainFeed && (
+          <div className="flex-1 min-w-0 border-r border-base-300 flex flex-col hidden lg:flex">
             <Header showBack={false} showNotifications={true}>
               <div className="flex items-center justify-between w-full">
                 <span className="md:px-3 md:py-2">{middleColumnTitle}</span>
                 <button
                   className="p-2 bg-base-100 hover:bg-base-200 rounded-full transition-colors mt-1"
-                  onClick={() =>
-                    updateAppearance({singleColumnLayout: !appearance.singleColumnLayout})
-                  }
-                  title={
-                    appearance.singleColumnLayout
-                      ? "Expand to two columns"
-                      : "Collapse to single column"
-                  }
+                  onClick={() => updateAppearance({singleColumnLayout: !appearance.singleColumnLayout})}
+                  title={appearance.singleColumnLayout ? "Expand to two columns" : "Collapse to single column"}
                 >
                   {appearance.singleColumnLayout ? (
                     <RiArrowLeftSLine className="w-5 h-5" />
@@ -277,10 +222,13 @@ const Layout = ({children}: {children: ReactNode}) => {
             </div>
           </div>
         )}
-        <div className="flex-1 flex flex-col overflow-hidden min-w-0">
-          <h1 style={{textAlign: "center", color: "Orange", marginTop: "1em"}}>
-            ✨ Believer.go ✨
-          </h1>
+
+        {/* RIGHT COLUMN — FULL SCREEN ON LANDING */}
+        <div 
+          className={`flex-1 flex flex-col min-w-0 ${
+            isLanding ? 'landing-fullscreen' : 'overflow-auto'
+          }`}
+        >
           {children}
           {activeProviderType !== "disabled" && (
             <iframe
@@ -295,13 +243,11 @@ const Layout = ({children}: {children: ReactNode}) => {
           )}
         </div>
       </div>
+
       <ErrorBoundary>
         {newPostOpen && (
           <Modal onClose={() => setNewPostOpen(false)} hasBackground={false}>
-            <div
-              className="w-[600px] max-w-[90vw] rounded-2xl bg-base-100"
-              onClick={(e) => e.stopPropagation()}
-            >
+            <div className="w-[600px] max-w-[90vw] rounded-2xl bg-base-100" onClick={(e) => e.stopPropagation()}>
               <NoteCreator handleClose={() => setNewPostOpen(false)} />
             </div>
           </Modal>
@@ -312,6 +258,7 @@ const Layout = ({children}: {children: ReactNode}) => {
           </Modal>
         )}
       </ErrorBoundary>
+
       <Footer />
       <Helmet>
         <title>{CONFIG.appName}</title>
