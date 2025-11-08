@@ -1,21 +1,55 @@
-import { roomconfig as lobbyConfig } from './lobby/roomconfig';
-import { roomconfig as atheismConfig } from './atheism/roomconfig';
-import { roomconfig as churchConfig } from './church/roomconfig';
-import { roomconfig as mathrisConfig } from './mathris/roomconfig';
-import { roomconfig as mosqueConfig } from './mosque/roomconfig';
-import { roomconfig as synagogueConfig } from './synagogue/roomconfig';
-import { roomconfig as templeConfig } from './temple/roomconfig';
-import { roomconfig as newsConfig } from './news/roomconfig';
-import { roomconfig as marketConfig } from './market/roomconfig';
+export interface RoomConfig {
+  id: string;
+  name: string;
+  description: string;
+  tags: string[];
+  relayurl: string;
+}
 
-export const rooms = {
-  lobby: lobbyConfig,
-  atheism: atheismConfig,
-  church: churchConfig,
-  mathris: mathrisConfig,
-  mosque: mosqueConfig,
-  synagogue: synagogueConfig,
-  temple: templeConfig,
-  news: newsConfig,
-  market: marketConfig
+interface Rooms {
+  [key: string]: RoomConfig;
+  lobby: RoomConfig;
+  atheism: RoomConfig;
+  church: RoomConfig;
+  market: RoomConfig;
+  mathris: RoomConfig;
+  mosque: RoomConfig;
+  news: RoomConfig;
+  synagogue: RoomConfig;
+  temple: RoomConfig;
+}
+
+export const rooms: Rooms = {
+  lobby: { id: 'lobby', name: 'Lobby', description: 'Main hub', tags: [], relayurl: 'wss://relay.damus.io' },
+  atheism: { id: 'atheism', name: 'Atheism', description: 'Atheist discussions', tags: ['atheism'], relayurl: 'wss://relay.damus.io' },
+  church: {
+    id: 'church',
+    name: 'Church',
+    description: 'Christians room',
+    tags: [
+      'christianity',
+      'catholicism',
+      'catholic',
+      'anglican',
+      'lutheran',
+      'methodist',
+      'baptist',
+      'presbyterian',
+      'mormon',
+      'pentecostal',
+      'adventist',
+      'advent',
+      'orthodox',
+      'christian',
+      'church',
+      'bible',
+    ],
+    relayurl: 'wss://public-relay.nostr.info',
+  },
+  market: { id: 'market', name: 'Market', description: 'Market discussions', tags: ['market'], relayurl: 'wss://relay.damus.io' },
+  mathris: { id: 'mathris', name: 'Mathris', description: 'Mathris discussions', tags: ['mathris'], relayurl: 'wss://relay.damus.io' },
+  mosque: { id: 'mosque', name: 'Mosque', description: 'Mosque discussions', tags: ['islam'], relayurl: 'wss://relay.damus.io' },
+  news: { id: 'news', name: 'News', description: 'News discussions', tags: ['news'], relayurl: 'wss://relay.damus.io' },
+  synagogue: { id: 'synagogue', name: 'Synagogue', description: 'Synagogue discussions', tags: ['judaism'], relayurl: 'wss://relay.damus.io' },
+  temple: { id: 'temple', name: 'Temple', description: 'Temple discussions', tags: ['temple'], relayurl: 'wss://relay.damus.io' },
 };

@@ -1,15 +1,16 @@
-import React from "react";
+import { RoomConfig } from '../rooms/roomlist';
 
 interface RoomTemplateProps {
-  title: string;
+  config: RoomConfig;
   children?: React.ReactNode;
 }
 
-const RoomTemplate: React.FC<RoomTemplateProps> = ({ title, children }) => {
+const RoomTemplate = ({ config, children }: RoomTemplateProps) => {
   return (
-    <div className="p-6">
-      <h1 className="text-2xl font-bold mb-4">{title}</h1>
-      <div>{children}</div>
+    <div className="room-template">
+      <h1>{config.name}</h1>
+      <p>{config.description}</p>
+      {children}
     </div>
   );
 };

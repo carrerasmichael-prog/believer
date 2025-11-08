@@ -1,20 +1,20 @@
-import { ReactNode, MouseEventHandler, useState } from "react";
-import Icon from "@/shared/components/Icons/Icon";
-import classNames from "classnames";
-import NavLink from "./NavLink";
-import Dropdown from "@/shared/components/ui/Dropdown";
-import { rooms } from "@/rooms/roomlist";
+import {ReactNode, MouseEventHandler, useState} from "react"
+import Icon from "@/shared/components/Icons/Icon"
+import classNames from "classnames"
+import NavLink from "./NavLink"
+import Dropdown from "@/shared/components/ui/Dropdown"
+import {rooms} from "@/rooms/roomlist"
 
 interface NavItemProps {
-  to: string;
-  icon?: string;
-  activeIcon?: string;
-  inactiveIcon?: string;
-  label: string;
-  onClick?: MouseEventHandler<HTMLAnchorElement>;
-  children?: ReactNode;
-  className?: string;
-  badge?: ReactNode;
+  to: string
+  icon?: string
+  activeIcon?: string
+  inactiveIcon?: string
+  label: string
+  onClick?: MouseEventHandler<HTMLAnchorElement>
+  children?: ReactNode
+  className?: string
+  badge?: ReactNode
 }
 
 export const NavItem = ({
@@ -28,16 +28,17 @@ export const NavItem = ({
   className,
   badge,
 }: NavItemProps) => {
-  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false)
 
   const handleClick: MouseEventHandler<HTMLAnchorElement> = (e) => {
-    if (label === "Destiny") { // Updated to match new label
-      e.preventDefault();
-      setIsDropdownOpen(!isDropdownOpen);
+    if (label === "Destiny") {
+      // Updated to match new label
+      e.preventDefault()
+      setIsDropdownOpen(!isDropdownOpen)
     } else {
-      onClick?.(e);
+      onClick?.(e)
     }
-  };
+  }
 
   return (
     <li className="relative">
@@ -45,14 +46,14 @@ export const NavItem = ({
         title={label}
         to={to}
         onClick={handleClick}
-        className={({ isActive }) =>
+        className={({isActive}) =>
           classNames(className, {
             "bg-base-100": isActive,
             "rounded-full md:aspect-square xl:aspect-auto flex md:justify-center xl:justify-start items-center": true,
           })
         }
       >
-        {({ isActive }) => (
+        {({isActive}) => (
           <>
             <Icon
               className="w-6 h-6"
@@ -98,5 +99,5 @@ export const NavItem = ({
         </Dropdown>
       )}
     </li>
-  );
-};
+  )
+}

@@ -1,17 +1,17 @@
-import { MouseEventHandler } from "react";
+import {MouseEventHandler} from "react"
 
 export interface NavItemConfig {
-  to: string;
-  label: string;
-  icon?: string;
-  activeIcon?: string;
-  inactiveIcon?: string;
-  requireLogin?: boolean;
-  onClick?: MouseEventHandler<HTMLAnchorElement>;
+  to: string
+  label: string
+  icon?: string
+  activeIcon?: string
+  inactiveIcon?: string
+  requireLogin?: boolean
+  onClick?: MouseEventHandler<HTMLAnchorElement>
 }
 
 export const navItemsConfig = (): Record<string, NavItemConfig> => ({
-  home: { to: "/", icon: "home", label: "Destiny" }, // Changed label to "Destiny"
+  home: {to: "/", icon: "home", label: "Destiny"}, // Changed label to "Destiny"
   search: {
     to: "/u",
     icon: "search",
@@ -35,12 +35,12 @@ export const navItemsConfig = (): Record<string, NavItemConfig> => ({
     label: "Wallet",
     requireLogin: true,
   },
-  settings: { to: "/settings", icon: "settings", label: "Settings", requireLogin: true },
+  settings: {to: "/settings", icon: "settings", label: "Settings", requireLogin: true},
   subscription: {
     to: "/subscribe",
     icon: "star",
     label: "Subscription",
     requireLogin: true,
   },
-  about: { to: "/about", icon: "info", label: "About" },
-});
+  about: {to: "/about", icon: "info", label: "About"},
+})

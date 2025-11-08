@@ -278,7 +278,7 @@ const Layout = ({children}: {children: ReactNode}) => {
           </div>
         )}
         <div className="flex-1 flex flex-col overflow-hidden min-w-0">
-          <h1 style={{ textAlign: "center", color: "Orange", marginTop: "1em" }}>
+          <h1 style={{textAlign: "center", color: "Orange", marginTop: "1em"}}>
             ✨ Believer.go ✨
           </h1>
           {children}

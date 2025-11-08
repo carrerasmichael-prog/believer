@@ -156,7 +156,9 @@ const ChatSettings = () => {
                     <div className="flex items-start justify-between">
                       <div className="flex-1">
                         <div className="flex items-center gap-2">
-                          <span className="font-medium font-mono text-sm">{device.id}</span>
+                          <span className="font-medium font-mono text-sm">
+                            {device.id}
+                          </span>
                           {device.isCurrent && (
                             <span className="badge badge-primary badge-sm">Current</span>
                           )}

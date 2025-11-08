@@ -1,81 +1,83 @@
-import React, { useRef, useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { playSound } from "@/utils/playSound";
-import { townSquareSlices, TownSquareSlice } from "@/constants/townSquareSlices";
-import HomeFeed from "@/pages/home/feed/components/HomeFeed";
+import React, {useRef, useEffect, useState} from "react"
+import {useNavigate} from "react-router-dom"
+import {playSound} from "@/utils/playSound"
+import {townSquareSlices, TownSquareSlice} from "@/constants/townSquareSlices"
+import HomeFeed from "@/pages/home/feed/components/HomeFeed"
 
-const BASE_WIDTH = 1920;
-const BASE_HEIGHT = 1080;
+const BASE_WIDTH = 1920
+const BASE_HEIGHT = 1080
 
-const DEBUG_MODE = false;
+const DEBUG_MODE = false
 
 const TownSquare: React.FC = () => {
-  const navigate = useNavigate();
-  const containerRef = useRef<HTMLDivElement>(null);
-  const [scale, setScale] = useState(1);
-  const [draggingSlice, setDraggingSlice] = useState<string | null>(null);
-  const [slices, setSlices] = useState<TownSquareSlice[]>(townSquareSlices);
+  const navigate = useNavigate()
+  const containerRef = useRef<HTMLDivElement>(null)
+  const [scale, setScale] = useState(1)
+  const [draggingSlice, setDraggingSlice] = useState<string | null>(null)
+  const [slices, setSlices] = useState<TownSquareSlice[]>(townSquareSlices)
 
-  const capitalize = (str: string) => str.charAt(0).toUpperCase() + str.slice(1);
+  const capitalize = (str: string) => str.charAt(0).toUpperCase() + str.slice(1)
 
   const updateScale = () => {
     if (!containerRef.current) {
-      console.log("No container ref found");
-      setScale(1);
-      return;
+      console.log("No container ref found")
+      setScale(1)
+      return
     }
-    const containerRect = containerRef.current.getBoundingClientRect();
-    console.log("Container size:", containerRect.width, containerRect.height);
-    const img = containerRef.current.querySelector("img.town-square");
+    const containerRect = containerRef.current.getBoundingClientRect()
+    console.log("Container size:", containerRect.width, containerRect.height)
+    const img = containerRef.current.querySelector("img.town-square")
     if (!img) {
-      console.log("No town square image found, using fallback scale: 1");
-      setScale(1);
-      return;
+      console.log("No town square image found, using fallback scale: 1")
+      setScale(1)
+      return
     }
-    const { width: imgWidth, height: imgHeight } = img.getBoundingClientRect();
-    const uniformScale = Math.min(imgWidth / BASE_WIDTH, imgHeight / BASE_HEIGHT);
-    console.log("Image size:", imgWidth, imgHeight, "Scale:", uniformScale);
-    setScale(uniformScale || 1);
-  };
+    const {width: imgWidth, height: imgHeight} = img.getBoundingClientRect()
+    const uniformScale = Math.min(imgWidth / BASE_WIDTH, imgHeight / BASE_HEIGHT)
+    console.log("Image size:", imgWidth, imgHeight, "Scale:", uniformScale)
+    setScale(uniformScale || 1)
+  }
 
   useEffect(() => {
-    const img = containerRef.current?.querySelector("img.town-square") as HTMLImageElement | null;
+    const img = containerRef.current?.querySelector(
+      "img.town-square"
+    ) as HTMLImageElement | null
     if (!img) {
-      console.log("Image not found on initial load");
-      return;
+      console.log("Image not found on initial load")
+      return
     }
 
-    const handleLoad = () => updateScale();
-    img.addEventListener("load", handleLoad);
-    window.addEventListener("resize", updateScale);
+    const handleLoad = () => updateScale()
+    img.addEventListener("load", handleLoad)
+    window.addEventListener("resize", updateScale)
 
-    if (img.complete) handleLoad();
+    if (img.complete) handleLoad()
 
     return () => {
-      img.removeEventListener("load", handleLoad);
-      window.removeEventListener("resize", updateScale);
-    };
-  }, []);
+      img.removeEventListener("load", handleLoad)
+      window.removeEventListener("resize", updateScale)
+    }
+  }, [])
 
   const handleClick = (slice: TownSquareSlice) => {
     if (!DEBUG_MODE) {
-      if (slice.isSound) playSound(slice.src);
-      else if (slice.isRoom) navigate(slice.src);
+      if (slice.isSound) playSound(slice.src)
+      else if (slice.isRoom) navigate(slice.src)
     }
-  };
+  }
 
   const handleMouseDown = (id: string) => (e: React.MouseEvent) => {
-    if (!DEBUG_MODE) return;
-    e.preventDefault();
-    setDraggingSlice(id);
-  };
+    if (!DEBUG_MODE) return
+    e.preventDefault()
+    setDraggingSlice(id)
+  }
 
   const handleMouseMove = (e: MouseEvent) => {
-    if (!DEBUG_MODE || !draggingSlice || !containerRef.current) return;
+    if (!DEBUG_MODE || !draggingSlice || !containerRef.current) return
 
-    const containerRect = containerRef.current.getBoundingClientRect();
-    const newLeft = (e.clientX - containerRect.left) / scale;
-    const newTop = (e.clientY - containerRect.top) / scale;
+    const containerRect = containerRef.current.getBoundingClientRect()
+    const newLeft = (e.clientX - containerRect.left) / scale
+    const newTop = (e.clientY - containerRect.top) / scale
 
     setSlices((prev) =>
       prev.map((s) =>
@@ -87,26 +89,26 @@ const TownSquare: React.FC = () => {
             }
           : s
       )
-    );
-  };
+    )
+  }
 
   const handleMouseUp = () => {
-    if (!DEBUG_MODE) return;
+    if (!DEBUG_MODE) return
     if (draggingSlice) {
-      console.log("Updated slice positions:", slices);
+      console.log("Updated slice positions:", slices)
     }
-    setDraggingSlice(null);
-  };
+    setDraggingSlice(null)
+  }
 
   useEffect(() => {
-    if (!DEBUG_MODE) return;
-    window.addEventListener("mousemove", handleMouseMove);
-    window.addEventListener("mouseup", handleMouseUp);
+    if (!DEBUG_MODE) return
+    window.addEventListener("mousemove", handleMouseMove)
+    window.addEventListener("mouseup", handleMouseUp)
     return () => {
-      window.removeEventListener("mousemove", handleMouseMove);
-      window.removeEventListener("mouseup", handleMouseUp);
-    };
-  }, [draggingSlice, scale]);
+      window.removeEventListener("mousemove", handleMouseMove)
+      window.removeEventListener("mouseup", handleMouseUp)
+    }
+  }, [draggingSlice, scale])
 
   return (
     <div
@@ -142,10 +144,10 @@ const TownSquare: React.FC = () => {
               isSound: slice.isSound,
               isRoom: slice.isRoom,
               src: slice.src,
-            }));
-            console.log("Exported JSON:", JSON.stringify(json, null, 2));
-            navigator.clipboard.writeText(JSON.stringify(json, null, 2));
-            alert("JSON copied to clipboard!");
+            }))
+            console.log("Exported JSON:", JSON.stringify(json, null, 2))
+            navigator.clipboard.writeText(JSON.stringify(json, null, 2))
+            alert("JSON copied to clipboard!")
           }}
           style={{
             position: "absolute",
@@ -160,10 +162,10 @@ const TownSquare: React.FC = () => {
         </button>
       )}
       {slices.map((slice) => {
-        const scaledTop = slice.top * scale;
-        const scaledLeft = slice.left * scale;
-        const scaledWidth = slice.width * scale;
-        const scaledHeight = slice.height * scale;
+        const scaledTop = slice.top * scale
+        const scaledLeft = slice.left * scale
+        const scaledWidth = slice.width * scale
+        const scaledHeight = slice.height * scale
 
         return (
           <div
@@ -191,65 +193,21 @@ const TownSquare: React.FC = () => {
               zIndex: 5,
             }}
             onMouseEnter={(e) => {
-              e.currentTarget.style.transform = "scale(1.05)";
-              e.currentTarget.style.boxShadow = "0 0 25px rgba(255, 255, 0, 1)";
+              e.currentTarget.style.transform = "scale(1.05)"
+              e.currentTarget.style.boxShadow = "0 0 25px rgba(255, 255, 0, 1)"
             }}
             onMouseLeave={(e) => {
-              e.currentTarget.style.transform = "scale(1)";
-              e.currentTarget.style.boxShadow = "0 0 0px rgba(255, 255, 0, 0)";
+              e.currentTarget.style.transform = "scale(1)"
+              e.currentTarget.style.boxShadow = "0 0 0px rgba(255, 255, 0, 0)"
             }}
           />
-        );
+        )
       })}
       <div className="mt-8">
         <HomeFeed />
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default TownSquare;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+export default TownSquare

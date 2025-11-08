@@ -1,7 +1,5 @@
-// src/App.tsx
-import React from "react";
-import { Routes, Route } from "react-router-dom";
-import TownSquare from "./pages/landing/TownSquare";
+import { Routes, Route } from 'react-router-dom';
+import TownSquare from './pages/landing/TownSquare';
 
 // Placeholder room components (update with Nostr feeds later)
 const MosqueRoom = () => <div>Mosque Feed</div>;
@@ -25,7 +23,7 @@ const App = () => (
     <Route path="/room/atheism" element={<AtheismRoom />} />
     <Route path="/room/lobby" element={<LobbyRoom />} />
     <Route path="/room/market" element={<MarketRoom />} />
-    <Route path="/rooms/news" element={<NewsRoom />} />
+    <Route path="/room/news" element={<NewsRoom />} />
   </Routes>
 );
 

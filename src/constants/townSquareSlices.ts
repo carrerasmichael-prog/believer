@@ -1,13 +1,13 @@
 // src/constants/townSquareSlices.ts
 export interface TownSquareSlice {
-  id: string;
-  top: number;
-  left: number;
-  width: number;
-  height: number;
-  isRoom?: boolean;
-  isSound?: boolean;
-  src: string;
+  id: string
+  top: number
+  left: number
+  width: number
+  height: number
+  isRoom?: boolean
+  isSound?: boolean
+  src: string
 }
 
 export const townSquareSlices: TownSquareSlice[] = [
@@ -146,4 +146,4 @@ export const townSquareSlices: TownSquareSlice[] = [
     isRoom: true,
     src: "/room/market",
   },
-];
+]
