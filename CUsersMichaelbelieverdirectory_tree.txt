@@ -1,0 +1,74 @@
+Microsoft Windows [Version 10.0.19045.6456]
+(c) Microsoft Corporation. All rights reserved.
+
+C:\Users\Michael\believer>
+C:\Users\Michael\believer>yarn run v1.22.22
+$ tsc && vite build --mode production
+[36mvite v7.1.10 [32mbuilding for production...[36m[39m
+transforming...
+
+🌼   [35mdaisyUI[39m [2m4.12.24[22m
+├─ [32m✔︎[39m 4 themes added[2m		https://daisyui.com/docs/themes[22m
+╰─ [32m❤︎[39m [0mSupport daisyUI project:[0m	[2mhttps://opencollective.com/daisyui[22m
+
+[32m✓[39m 700 modules transformed.
+rendering chunks...
+computing gzip size...
+[2mdist/[22m[32mregisterSW.js                         [39m[1m[2m    0.15 kB[22m[1m[22m
+[2mdist/[22m[32mdebug.html                            [39m[1m[2m    0.91 kB[22m[1m[22m[2m │ gzip:     0.48 kB[22m
+[2mdist/[22m[32mindex.html                            [39m[1m[2m    2.44 kB[22m[1m[22m[2m │ gzip:     0.77 kB[22m
+[2mdist/[22m[32massets/ostrich-black-C7nn6yEE.png     [39m[1m[2m    5.33 kB[22m[1m[22m
+[2mdist/[22m[32massets/running-ostrich-C7wXPfXR.gif   [39m[1m[2m   52.73 kB[22m[1m[22m
+[2mdist/[22m[32massets/icons-DT3cSZe7.svg             [39m[1m[2m  134.28 kB[22m[1m[22m[2m │ gzip:    44.18 kB[22m
+[2mdist/[22m[32massets/socialGraph-CKDidhMy.bin       [39m[1m[2m1,517.57 kB[22m[1m[22m
+[2mdist/[22m[35massets/main-Dgihpmma.css              [39m[1m[2m   15.04 kB[22m[1m[22m[2m │ gzip:     6.38 kB[22m
+[2mdist/[22m[35massets/DebugSession-DwxtqUdZ.css      [39m[1m[2m  160.15 kB[22m[1m[22m[2m │ gzip:    24.36 kB[22m
+[2mdist/[22m[36massets/index-DDXXa_Mx.js              [39m[1m[2m    0.23 kB[22m[1m[22m[2m │ gzip:     0.20 kB[22m
+[2mdist/[22m[36massets/index-dNDPwuMP.js              [39m[1m[2m    2.13 kB[22m[1m[22m[2m │ gzip:     0.83 kB[22m
+[2mdist/[22m[36massets/index-CcKF-llR.js              [39m[1m[2m    2.14 kB[22m[1m[22m[2m │ gzip:     0.98 kB[22m
+[2mdist/[22m[36massets/DebugSession-yG2bY0Qf.js       [39m[1m[2m    2.24 kB[22m[1m[22m[2m │ gzip:     1.13 kB[22m
+[2mdist/[22m[36massets/index-DQ_DAIic.js              [39m[1m[2m    2.43 kB[22m[1m[22m[2m │ gzip:     1.16 kB[22m
+[2mdist/[22m[36massets/index-CeM1bEWi.js              [39m[1m[2m    3.02 kB[22m[1m[22m[2m │ gzip:     1.29 kB[22m
+[2mdist/[22m[36massets/TownSquare-7BVBO6hk.js         [39m[1m[2m    3.89 kB[22m[1m[22m[2m │ gzip:     1.69 kB[22m
+[2mdist/[22m[36massets/index-BYip0LwT.js              [39m[1m[2m    5.92 kB[22m[1m[22m[2m │ gzip:     2.39 kB[22m
+[2mdist/[22m[36massets/debug-CAU9f7jy.js              [39m[1m[2m   11.88 kB[22m[1m[22m[2m │ gzip:     2.96 kB[22m
+[2mdist/[22m[36massets/animalname-BGl4g59X.js         [39m[1m[2m   18.11 kB[22m[1m[22m[2m │ gzip:     7.24 kB[22m
+[2mdist/[22m[36massets/browser-BiBUsfQl.js            [39m[1m[2m   25.78 kB[22m[1m[22m[2m │ gzip:    10.13 kB[22m
+[2mdist/[22m[36massets/index-CAjpYZew.js              [39m[1m[2m   58.85 kB[22m[1m[22m[2m │ gzip:    16.89 kB[22m
+[2mdist/[22m[36massets/index-FLya4mw_.js              [39m[1m[2m   63.54 kB[22m[1m[22m[2m │ gzip:    16.62 kB[22m
+[2mdist/[22m[36massets/module-BesyosZx.js             [39m[1m[2m   77.17 kB[22m[1m[22m[2m │ gzip:    27.74 kB[22m
+[2mdist/[22m[36massets/QRScanner-DRvbuZIh.js          [39m[1m[2m  131.75 kB[22m[1m[22m[2m │ gzip:    48.00 kB[22m
+[2mdist/[22m[36massets/main-GpBn43Ib.js               [39m[1m[2m  415.27 kB[22m[1m[22m[2m │ gzip:   125.43 kB[22m
+[2mdist/[22m[36massets/GeohashMapContent-CbUnPzgx.js  [39m[1m[2m  421.82 kB[22m[1m[22m[2m │ gzip:   153.77 kB[22m
+[2mdist/[22m[36massets/native-48B9X9Wg.js             [39m[1m[2m  432.75 kB[22m[1m[22m[2m │ gzip:    82.80 kB[22m
+[2mdist/[22m[36massets/hls-DdkpVA0Y.js                [39m[1m[2m  521.09 kB[22m[1m[22m[2m │ gzip:   161.45 kB[22m
+[2mdist/[22m[36massets/vendor-Cr2J_clO.js             [39m[1m[2m  886.29 kB[22m[1m[22m[2m │ gzip:   269.35 kB[22m
+[2mdist/[22m[36massets/profileData-Bl6K0-YF.js        [39m[1m[2m1,883.09 kB[22m[1m[22m[2m │ gzip: 1,048.37 kB[22m
+[32m✓ built in 11.21s[39m
+
+PWA v1.1.0
+Building src/service-worker.ts service worker ("es" format)...
+[36mvite v7.1.10 [32mbuilding for production...[36m[39m
+transforming...
+[32m✓[39m 134 modules transformed.
+rendering chunks...
+computing gzip size...
+[2mdist/[22m[36mservice-worker.mjs  [39m[1m[2m148.88 kB[22m[1m[22m[2m │ gzip: 51.06 kB[22m
+[32m✓ built in 742ms[39m
+
+PWA v1.1.0
+mode      injectManifest
+format:   es
+precache  167 entries (16505.73 KiB)
+files generated
+  dist/service-worker.js
+Done in 22.89s.
+
+C:\Users\Michael\believer>yarn run v1.22.22
+$ vite
+
+  [32m[1mVITE[22m v7.1.10[39m  [2mready in [0m[1m439[22m[2m[0m ms[22m
+
+  [32m➜[39m  [1mLocal[22m:   [36mhttp://localhost:[1m5173[22m/[39m
+[2m  [32m➜[39m  [1mNetwork[22m[2m: use [22m[1m--host[22m[2m to expose[22m
+[2m[32m  ➜[39m[22m[2m  press [22m[1mh + enter[22m[2m to show help[22m

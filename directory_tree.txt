@@ -1,10 +1,12 @@
 Folder PATH listing for volume System
-Volume serial number is 0000005F 7A24:C3EB
+Volume serial number is 000000D0 7A24:C3EB
 C:\USERS\MICHAEL\BELIEVER
 |   .dockerignore
+|   .env
 |   .env.test
 |   .eslintrc
 |   .gitignore
+|   .htaccess
 |   .lighthouserc.js
 |   .nvmrc
 |   .prettierignore
@@ -12,6 +14,7 @@ C:\USERS\MICHAEL\BELIEVER
 |   android-fcm-setup.md
 |   CLAUDE.md
 |   custom.d.ts
+|   C?UsersMichaelbelieverdirectory_tree.txt
 |   debug.html
 |   DEVELOPMENT.md
 |   directory_tree.txt
@@ -52,6 +55,7 @@ C:\USERS\MICHAEL\BELIEVER
 |       default.json
 |       dev.json
 |       nestr.json
+|       production.json
 |       README.md
 |       
 +---dev-dist
@@ -79,32 +83,33 @@ C:\USERS\MICHAEL\BELIEVER
 |   |       assetlinks.json
 |   |       
 |   +---assets
-|   |       animalname-B6gBMnBg.js
-|   |       browser-BMXc6xwy.js
-|   |       debug-auxu41Eg.js
-|   |       DebugSession-BCT-mVGq.js
-|   |       DebugSession-C7tTEofE.css
-|   |       GeohashMapContent-wXAAdMXI.js
-|   |       hls-COLYo1or.js
+|   |       animalname-BGl4g59X.js
+|   |       browser-BiBUsfQl.js
+|   |       debug-CAU9f7jy.js
+|   |       DebugSession-DwxtqUdZ.css
+|   |       DebugSession-yG2bY0Qf.js
+|   |       GeohashMapContent-C9Bejg9L.js
+|   |       hls-DdkpVA0Y.js
 |   |       icons-DT3cSZe7.svg
-|   |       index-B0IaygLp.js
-|   |       index-BJXkHhTy.js
-|   |       index-Btm5SCg_.js
-|   |       index-Cei9yUQr.js
-|   |       index-DdW_gexI.js
-|   |       index-DGK0eXA5.js
-|   |       index-IAPgQIyt.js
-|   |       index-UshSSAeB.js
-|   |       main-ChC8tLaM.js
+|   |       index-1-AMON8G.js
+|   |       index-BBPMusxG.js
+|   |       index-Bhy6dxDE.js
+|   |       index-Bkv7gCqp.js
+|   |       index-B_uPBL3G.js
+|   |       index-C8-urYg0.js
+|   |       index-D1ZgP32a.js
+|   |       index-DUhZVHFs.js
+|   |       main-D0nUN7Z2.js
 |   |       main-Dgihpmma.css
-|   |       module-CzG25rTb.js
+|   |       module-BesyosZx.js
 |   |       native-48B9X9Wg.js
 |   |       ostrich-black-C7nn6yEE.png
 |   |       profileData-Bl6K0-YF.js
-|   |       QRScanner-Bhi5Br-S.js
+|   |       QRScanner-DRvbuZIh.js
 |   |       running-ostrich-C7wXPfXR.gif
 |   |       socialGraph-CKDidhMy.bin
-|   |       vendor-7NCd0Ofr.js
+|   |       TownSquare-BhNVNCGO.js
+|   |       vendor-Cr2J_clO.js
 |   |       
 |   +---cashu
 |   |   |   clean.png
@@ -212,15 +217,50 @@ C:\USERS\MICHAEL\BELIEVER
 |   |           wide-1.png
 |   |           wide-2.png
 |   |           
-|   \---img
-|           android-chrome-192x192.png
-|           android-chrome-512x512.png
-|           apple-touch-icon.png
-|           icon128.png
-|           irisconnects.png
-|           maskable_icon.png
-|           maskable_icon_x192.png
-|           zap.png
+|   +---images
+|   |   |   town-square-base.png
+|   |   |   
+|   |   \---slices
+|   |       +---rooms
+|   |       |       atheism-slice.png
+|   |       |       church-slice.png
+|   |       |       lobby-slice.png
+|   |       |       market-slice.png
+|   |       |       mathris-slice.png
+|   |       |       mosque-slice.png
+|   |       |       news-slice.png
+|   |       |       synagogue-slice.png
+|   |       |       temple-slice.png
+|   |       |       
+|   |       \---sounds
+|   |               atheist-flag-slice.png
+|   |               brahma-slice.png
+|   |               buddha-slice.png
+|   |               church-bell-slice.png
+|   |               muhammad-slice.png
+|   |               star-of-david-slice.png
+|   |               
+|   +---img
+|   |       android-chrome-192x192.png
+|   |       android-chrome-512x512.png
+|   |       apple-touch-icon.png
+|   |       eyespace.gif
+|   |       icon128.png
+|   |       irisconnects.png
+|   |       maskable_icon.png
+|   |       maskable_icon_x192.png
+|   |       zap.png
+|   |       
+|   \---sounds
+|           atheist-flag.mp3
+|           brahma.mp3
+|           buddha.mp3
+|           church-bell.mp3
+|           door-sound.mp3
+|           market.mp3
+|           muhammad.mp3
+|           news.mp3
+|           star-of-david.mp3
 |           
 +---node_modules
 |   |   .yarn-integrity
@@ -317,8 +357,6 @@ C:\USERS\MICHAEL\BELIEVER
 |   |       update-browserslist-db
 |   |       update-browserslist-db.cmd
 |   |       vite
-|   |       vite-node
-|   |       vite-node.cmd
 |   |       vite.cmd
 |   |       vitest
 |   |       vitest.cmd
@@ -337,8 +375,6 @@ C:\USERS\MICHAEL\BELIEVER
 |   |           @noble_hashes_sha256.js.map
 |   |           @noble_hashes_utils.js
 |   |           @noble_hashes_utils.js.map
-|   |           @nostr-dev-kit_ndk-cache-dexie.js
-|   |           @nostr-dev-kit_ndk-cache-dexie.js.map
 |   |           @nostr-dev-kit_ndk.js
 |   |           @nostr-dev-kit_ndk.js.map
 |   |           @remixicon_react.js
@@ -363,22 +399,18 @@ C:\USERS\MICHAEL\BELIEVER
 |   |           chunk-5ZVQ3YY7.js.map
 |   |           chunk-7C3FUUEP.js
 |   |           chunk-7C3FUUEP.js.map
-|   |           chunk-7SLSBZ2Z.js
-|   |           chunk-7SLSBZ2Z.js.map
-|   |           chunk-AGFWYLLI.js
-|   |           chunk-AGFWYLLI.js.map
 |   |           chunk-BPHBMKE3.js
 |   |           chunk-BPHBMKE3.js.map
 |   |           chunk-D6AOQFXW.js
 |   |           chunk-D6AOQFXW.js.map
+|   |           chunk-DOTFCNOK.js
+|   |           chunk-DOTFCNOK.js.map
 |   |           chunk-DTJJZWBZ.js
 |   |           chunk-DTJJZWBZ.js.map
 |   |           chunk-EDSMOWQ5.js
 |   |           chunk-EDSMOWQ5.js.map
 |   |           chunk-EW46UDEH.js
 |   |           chunk-EW46UDEH.js.map
-|   |           chunk-FQ6OZDW5.js
-|   |           chunk-FQ6OZDW5.js.map
 |   |           chunk-HQOAXL3O.js
 |   |           chunk-HQOAXL3O.js.map
 |   |           chunk-IDPCM3JA.js
@@ -395,14 +427,14 @@ C:\USERS\MICHAEL\BELIEVER
 |   |           chunk-PTCI7ZZB.js.map
 |   |           chunk-SWTSMTVN.js
 |   |           chunk-SWTSMTVN.js.map
+|   |           chunk-VGACZRH2.js
+|   |           chunk-VGACZRH2.js.map
 |   |           chunk-WNG2P66T.js
 |   |           chunk-WNG2P66T.js.map
 |   |           chunk-WULUS5HF.js
 |   |           chunk-WULUS5HF.js.map
 |   |           chunk-XZYRVESA.js
 |   |           chunk-XZYRVESA.js.map
-|   |           chunk-YHG3BEJ2.js
-|   |           chunk-YHG3BEJ2.js.map
 |   |           chunk-YM6OSNOT.js
 |   |           chunk-YM6OSNOT.js.map
 |   |           chunk-Z6TW6TL3.js
@@ -5305,23 +5337,38 @@ C:\USERS\MICHAEL\BELIEVER
 |   |   |   |           package.json
 |   |   |   |           
 |   |   |   +---node_modules
-|   |   |   |   \---@rollup
-|   |   |   |       \---pluginutils
-|   |   |   |           |   LICENSE
-|   |   |   |           |   package.json
-|   |   |   |           |   README.md
-|   |   |   |           |   
-|   |   |   |           +---dist
-|   |   |   |           |   +---cjs
-|   |   |   |           |   |       index.js
-|   |   |   |           |   |       
-|   |   |   |           |   \---es
-|   |   |   |           |           index.js
-|   |   |   |           |           package.json
-|   |   |   |           |           
-|   |   |   |           \---types
-|   |   |   |                   index.d.ts
-|   |   |   |                   
+|   |   |   |   +---@rollup
+|   |   |   |   |   \---pluginutils
+|   |   |   |   |       |   LICENSE
+|   |   |   |   |       |   package.json
+|   |   |   |   |       |   README.md
+|   |   |   |   |       |   
+|   |   |   |   |       +---dist
+|   |   |   |   |       |   +---cjs
+|   |   |   |   |       |   |       index.js
+|   |   |   |   |       |   |       
+|   |   |   |   |       |   \---es
+|   |   |   |   |       |           index.js
+|   |   |   |   |       |           package.json
+|   |   |   |   |       |           
+|   |   |   |   |       \---types
+|   |   |   |   |               index.d.ts
+|   |   |   |   |               
+|   |   |   |   \---magic-string
+|   |   |   |       |   LICENSE
+|   |   |   |       |   package.json
+|   |   |   |       |   README.md
+|   |   |   |       |   
+|   |   |   |       \---dist
+|   |   |   |               magic-string.cjs.d.ts
+|   |   |   |               magic-string.cjs.js
+|   |   |   |               magic-string.cjs.js.map
+|   |   |   |               magic-string.es.d.mts
+|   |   |   |               magic-string.es.mjs
+|   |   |   |               magic-string.es.mjs.map
+|   |   |   |               magic-string.umd.js
+|   |   |   |               magic-string.umd.js.map
+|   |   |   |               
 |   |   |   \---types
 |   |   |           index.d.ts
 |   |   |           
@@ -6432,6 +6479,18 @@ C:\USERS\MICHAEL\BELIEVER
 |   |       |   README.md
 |   |       |   
 |   |       \---dist
+|   |               index.d.ts
+|   |               index.js
+|   |               
+|   +---@standard-schema
+|   |   \---spec
+|   |       |   LICENSE
+|   |       |   package.json
+|   |       |   README.md
+|   |       |   
+|   |       \---dist
+|   |               index.cjs
+|   |               index.d.cts
 |   |               index.d.ts
 |   |               index.js
 |   |               
@@ -9719,11 +9778,14 @@ C:\USERS\MICHAEL\BELIEVER
 |   |       |       index.js
 |   |       |       refresh-runtime.js
 |   |       |       
-|   |       \---node_modules
-|   |           \---.bin
-|   |                   vite
-|   |                   vite.cmd
-|   |                   
+|   |       +---node_modules
+|   |       |   \---.bin
+|   |       |           vite
+|   |       |           vite.cmd
+|   |       |           
+|   |       \---types
+|   |               preamble.d.ts
+|   |               
 |   +---@vitest
 |   |   +---expect
 |   |   |   |   LICENSE
@@ -9742,47 +9804,154 @@ C:\USERS\MICHAEL\BELIEVER
 |   |   |   +---dist
 |   |   |   |       auto-register.d.ts
 |   |   |   |       auto-register.js
+|   |   |   |       automock.d.ts
+|   |   |   |       automock.js
 |   |   |   |       browser.d.ts
 |   |   |   |       browser.js
+|   |   |   |       chunk-automock.js
 |   |   |   |       chunk-interceptor-native.js
 |   |   |   |       chunk-mocker.js
 |   |   |   |       chunk-pathe.M-eThtNZ.js
 |   |   |   |       chunk-registry.js
 |   |   |   |       chunk-utils.js
+|   |   |   |       index.d-C-sLYZi-.d.ts
 |   |   |   |       index.d.ts
 |   |   |   |       index.js
-|   |   |   |       mocker.d-Ce9_ySj5.d.ts
+|   |   |   |       mocker.d-TnKRhz7N.d.ts
 |   |   |   |       node.d.ts
 |   |   |   |       node.js
 |   |   |   |       redirect.d.ts
 |   |   |   |       redirect.js
 |   |   |   |       register.d.ts
 |   |   |   |       register.js
-|   |   |   |       registry.d-D765pazg.d.ts
-|   |   |   |       types.d-D_aRZRdy.d.ts
+|   |   |   |       types.d-B8CCKmHt.d.ts
 |   |   |   |       
 |   |   |   \---node_modules
 |   |   |       +---.bin
 |   |   |       |       vite
 |   |   |       |       vite.cmd
 |   |   |       |       
-|   |   |       \---estree-walker
-|   |   |           |   LICENSE
+|   |   |       +---estree-walker
+|   |   |       |   |   LICENSE
+|   |   |       |   |   package.json
+|   |   |       |   |   README.md
+|   |   |       |   |   
+|   |   |       |   +---src
+|   |   |       |   |       async.js
+|   |   |       |   |       index.js
+|   |   |       |   |       sync.js
+|   |   |       |   |       walker.js
+|   |   |       |   |       
+|   |   |       |   \---types
+|   |   |       |           async.d.ts
+|   |   |       |           index.d.ts
+|   |   |       |           sync.d.ts
+|   |   |       |           walker.d.ts
+|   |   |       |           
+|   |   |       +---rollup
+|   |   |       |   |   LICENSE.md
+|   |   |       |   |   package.json
+|   |   |       |   |   README.md
+|   |   |       |   |   
+|   |   |       |   \---dist
+|   |   |       |       |   getLogFilter.d.ts
+|   |   |       |       |   getLogFilter.js
+|   |   |       |       |   loadConfigFile.d.ts
+|   |   |       |       |   loadConfigFile.js
+|   |   |       |       |   native.js
+|   |   |       |       |   parseAst.d.ts
+|   |   |       |       |   parseAst.js
+|   |   |       |       |   rollup.d.ts
+|   |   |       |       |   rollup.js
+|   |   |       |       |   
+|   |   |       |       +---bin
+|   |   |       |       |       rollup
+|   |   |       |       |       
+|   |   |       |       +---es
+|   |   |       |       |   |   getLogFilter.js
+|   |   |       |       |   |   package.json
+|   |   |       |       |   |   parseAst.js
+|   |   |       |       |   |   rollup.js
+|   |   |       |       |   |   
+|   |   |       |       |   \---shared
+|   |   |       |       |           node-entry.js
+|   |   |       |       |           parseAst.js
+|   |   |       |       |           watch.js
+|   |   |       |       |           
+|   |   |       |       \---shared
+|   |   |       |               fsevents-importer.js
+|   |   |       |               index.js
+|   |   |       |               loadConfigFile.js
+|   |   |       |               parseAst.js
+|   |   |       |               rollup.js
+|   |   |       |               watch-cli.js
+|   |   |       |               watch.js
+|   |   |       |               
+|   |   |       \---vite
+|   |   |           |   client.d.ts
+|   |   |           |   LICENSE.md
 |   |   |           |   package.json
 |   |   |           |   README.md
 |   |   |           |   
-|   |   |           +---src
-|   |   |           |       async.js
-|   |   |           |       index.js
-|   |   |           |       sync.js
-|   |   |           |       walker.js
+|   |   |           +---bin
+|   |   |           |       openChrome.js
+|   |   |           |       vite.js
 |   |   |           |       
+|   |   |           +---dist
+|   |   |           |   +---client
+|   |   |           |   |       client.mjs
+|   |   |           |   |       env.mjs
+|   |   |           |   |       
+|   |   |           |   \---node
+|   |   |           |       |   cli.js
+|   |   |           |       |   index.d.ts
+|   |   |           |       |   index.js
+|   |   |           |       |   module-runner.d.ts
+|   |   |           |       |   module-runner.js
+|   |   |           |       |   
+|   |   |           |       \---chunks
+|   |   |           |               build.js
+|   |   |           |               build2.js
+|   |   |           |               chunk.js
+|   |   |           |               config.js
+|   |   |           |               config2.js
+|   |   |           |               dist.js
+|   |   |           |               lib.js
+|   |   |           |               logger.js
+|   |   |           |               moduleRunnerTransport.d.ts
+|   |   |           |               optimizer.js
+|   |   |           |               postcss-import.js
+|   |   |           |               preview.js
+|   |   |           |               server.js
+|   |   |           |               
+|   |   |           +---misc
+|   |   |           |       false.js
+|   |   |           |       true.js
+|   |   |           |       
+|   |   |           +---node_modules
+|   |   |           |   \---.bin
+|   |   |           |           esbuild
+|   |   |           |           esbuild.cmd
+|   |   |           |           rollup
+|   |   |           |           rollup.cmd
+|   |   |           |           tsx
+|   |   |           |           tsx.cmd
+|   |   |           |           
 |   |   |           \---types
-|   |   |                   async.d.ts
-|   |   |                   index.d.ts
-|   |   |                   sync.d.ts
-|   |   |                   walker.d.ts
-|   |   |                   
+|   |   |               |   customEvent.d.ts
+|   |   |               |   hmrPayload.d.ts
+|   |   |               |   hot.d.ts
+|   |   |               |   import-meta.d.ts
+|   |   |               |   importGlob.d.ts
+|   |   |               |   importMeta.d.ts
+|   |   |               |   metadata.d.ts
+|   |   |               |   package.json
+|   |   |               |   
+|   |   |               \---internal
+|   |   |                       cssPreprocessorOptions.d.ts
+|   |   |                       lightningcssOptions.d.ts
+|   |   |                       terserOptions.d.ts
+|   |   |                       
 |   |   +---pretty-format
 |   |   |   |   LICENSE
 |   |   |   |   package.json
@@ -9799,10 +9968,10 @@ C:\USERS\MICHAEL\BELIEVER
 |   |   |   |   utils.d.ts
 |   |   |   |   
 |   |   |   \---dist
-|   |   |           chunk-hooks.js
+|   |   |           chunk-tasks.js
+|   |   |           hooks.d-C0RE9A6t.d.ts
 |   |   |           index.d.ts
 |   |   |           index.js
-|   |   |           tasks.d-CkscK4of.d.ts
 |   |   |           types.d.ts
 |   |   |           types.js
 |   |   |           utils.d.ts
@@ -9842,17 +10011,32 @@ C:\USERS\MICHAEL\BELIEVER
 |   |       |   package.json
 |   |       |   
 |   |       \---dist
+|   |               chunk-pathe.M-eThtNZ.js
 |   |               chunk-_commonjsHelpers.js
+|   |               constants.d.ts
+|   |               constants.js
 |   |               diff.d.ts
 |   |               diff.js
+|   |               display.d.ts
+|   |               display.js
 |   |               error.d.ts
 |   |               error.js
 |   |               helpers.d.ts
 |   |               helpers.js
+|   |               highlight.d.ts
+|   |               highlight.js
 |   |               index.d.ts
 |   |               index.js
+|   |               offset.d.ts
+|   |               offset.js
+|   |               resolver.d.ts
+|   |               resolver.js
+|   |               serialize.d.ts
+|   |               serialize.js
 |   |               source-map.d.ts
 |   |               source-map.js
+|   |               timers.d.ts
+|   |               timers.js
 |   |               types.d-BCElaP-c.d.ts
 |   |               types.d.ts
 |   |               types.js
@@ -10306,13 +10490,6 @@ C:\USERS\MICHAEL\BELIEVER
 |   |           \---util
 |   |                   comparisons.js
 |   |                   
-|   +---assertion-error
-|   |       index.d.ts
-|   |       index.js
-|   |       LICENSE
-|   |       package.json
-|   |       README.md
-|   |       
 |   +---async
 |   |   |   all.js
 |   |   |   allLimit.js
@@ -10992,27 +11169,6 @@ C:\USERS\MICHAEL\BELIEVER
 |   |       package.json
 |   |       readme.md
 |   |       
-|   +---cac
-|   |   |   index-compat.js
-|   |   |   LICENSE
-|   |   |   mod.js
-|   |   |   mod.ts
-|   |   |   package.json
-|   |   |   README.md
-|   |   |   
-|   |   +---deno
-|   |   |       CAC.ts
-|   |   |       Command.ts
-|   |   |       deno.ts
-|   |   |       index.ts
-|   |   |       Option.ts
-|   |   |       utils.ts
-|   |   |       
-|   |   \---dist
-|   |           index.d.ts
-|   |           index.js
-|   |           index.mjs
-|   |           
 |   +---call-bind
 |   |   |   .eslintignore
 |   |   |   .eslintrc
@@ -11954,57 +12110,14 @@ C:\USERS\MICHAEL\BELIEVER
 |   |       readme.md
 |   |       
 |   +---chai
-|   |   |   chai.js
-|   |   |   index.js
-|   |   |   LICENSE
-|   |   |   package.json
-|   |   |   README.md
-|   |   |   register-assert.js
-|   |   |   register-expect.js
-|   |   |   register-should.js
-|   |   |   
-|   |   \---lib
-|   |       |   chai.js
-|   |       |   
-|   |       \---chai
-|   |           |   assertion.js
-|   |           |   config.js
-|   |           |   
-|   |           +---core
-|   |           |       assertions.js
-|   |           |       
-|   |           +---interface
-|   |           |       assert.js
-|   |           |       expect.js
-|   |           |       should.js
-|   |           |       
-|   |           \---utils
-|   |                   addChainableMethod.js
-|   |                   addLengthGuard.js
-|   |                   addMethod.js
-|   |                   addProperty.js
-|   |                   compareByInspect.js
-|   |                   expectTypes.js
-|   |                   flag.js
-|   |                   getActual.js
-|   |                   getMessage.js
-|   |                   getOperator.js
-|   |                   getOwnEnumerableProperties.js
-|   |                   getOwnEnumerablePropertySymbols.js
-|   |                   getProperties.js
-|   |                   index.js
-|   |                   inspect.js
-|   |                   isNaN.js
-|   |                   isProxyEnabled.js
-|   |                   objDisplay.js
-|   |                   overwriteChainableMethod.js
-|   |                   overwriteMethod.js
-|   |                   overwriteProperty.js
-|   |                   proxify.js
-|   |                   test.js
-|   |                   transferFlags.js
-|   |                   type-detect.js
-|   |                   
+|   |       index.js
+|   |       LICENSE
+|   |       package.json
+|   |       README.md
+|   |       register-assert.js
+|   |       register-expect.js
+|   |       register-should.js
+|   |       
 |   +---chalk
 |   |   |   index.d.ts
 |   |   |   license
@@ -12029,12 +12142,6 @@ C:\USERS\MICHAEL\BELIEVER
 |   |       license
 |   |       package.json
 |   |       readme.md
-|   |       
-|   +---check-error
-|   |       index.js
-|   |       LICENSE
-|   |       package.json
-|   |       README.md
 |   |       
 |   +---chokidar
 |   |   |   index.js
@@ -13071,12 +13178,6 @@ C:\USERS\MICHAEL\BELIEVER
 |   |       decimal.js
 |   |       decimal.mjs
 |   |       LICENCE.md
-|   |       package.json
-|   |       README.md
-|   |       
-|   +---deep-eql
-|   |       index.js
-|   |       LICENSE
 |   |       package.json
 |   |       README.md
 |   |       
@@ -23241,74 +23342,6 @@ C:\USERS\MICHAEL\BELIEVER
 |   |       README.md
 |   |       replace.js
 |   |       
-|   +---loupe
-|   |   |   LICENSE
-|   |   |   loupe.js
-|   |   |   package.json
-|   |   |   README.md
-|   |   |   
-|   |   \---lib
-|   |           arguments.d.ts
-|   |           arguments.d.ts.map
-|   |           arguments.js
-|   |           array.d.ts
-|   |           array.d.ts.map
-|   |           array.js
-|   |           bigint.d.ts
-|   |           bigint.d.ts.map
-|   |           bigint.js
-|   |           class.d.ts
-|   |           class.d.ts.map
-|   |           class.js
-|   |           date.d.ts
-|   |           date.d.ts.map
-|   |           date.js
-|   |           error.d.ts
-|   |           error.d.ts.map
-|   |           error.js
-|   |           function.d.ts
-|   |           function.d.ts.map
-|   |           function.js
-|   |           helpers.d.ts
-|   |           helpers.d.ts.map
-|   |           helpers.js
-|   |           html.d.ts
-|   |           html.d.ts.map
-|   |           html.js
-|   |           index.d.ts
-|   |           index.d.ts.map
-|   |           index.js
-|   |           map.d.ts
-|   |           map.d.ts.map
-|   |           map.js
-|   |           number.d.ts
-|   |           number.d.ts.map
-|   |           number.js
-|   |           object.d.ts
-|   |           object.d.ts.map
-|   |           object.js
-|   |           promise.d.ts
-|   |           promise.d.ts.map
-|   |           promise.js
-|   |           regexp.d.ts
-|   |           regexp.d.ts.map
-|   |           regexp.js
-|   |           set.d.ts
-|   |           set.d.ts.map
-|   |           set.js
-|   |           string.d.ts
-|   |           string.d.ts.map
-|   |           string.js
-|   |           symbol.d.ts
-|   |           symbol.d.ts.map
-|   |           symbol.js
-|   |           typedarray.d.ts
-|   |           typedarray.d.ts.map
-|   |           typedarray.js
-|   |           types.d.ts
-|   |           types.d.ts.map
-|   |           types.js
-|   |           
 |   +---lru-cache
 |   |   |   LICENSE
 |   |   |   package.json
@@ -25141,12 +25174,6 @@ C:\USERS\MICHAEL\BELIEVER
 |   |               pathe.BSlhyZSM.cjs
 |   |               pathe.M-eThtNZ.mjs
 |   |               
-|   +---pathval
-|   |       index.js
-|   |       LICENSE
-|   |       package.json
-|   |       README.md
-|   |       
 |   +---pbkdf2
 |   |   |   .eslintrc
 |   |   |   .nycrc
@@ -29538,26 +29565,6 @@ C:\USERS\MICHAEL\BELIEVER
 |   |       package.json
 |   |       readme.md
 |   |       
-|   +---strip-literal
-|   |   |   LICENSE
-|   |   |   package.json
-|   |   |   README.md
-|   |   |   
-|   |   +---dist
-|   |   |       index.cjs
-|   |   |       index.d.cts
-|   |   |       index.d.mts
-|   |   |       index.d.ts
-|   |   |       index.mjs
-|   |   |       
-|   |   \---node_modules
-|   |       \---js-tokens
-|   |               index.d.ts
-|   |               index.js
-|   |               LICENSE
-|   |               package.json
-|   |               README.md
-|   |               
 |   +---sucrase
 |   |   |   LICENSE
 |   |   |   package.json
@@ -30529,40 +30536,7 @@ C:\USERS\MICHAEL\BELIEVER
 |   |           index.d.mts
 |   |           index.mjs
 |   |           
-|   +---tinypool
-|   |   |   LICENSE
-|   |   |   package.json
-|   |   |   README.md
-|   |   |   
-|   |   \---dist
-|   |       |   common-Qw-RoVFD.js
-|   |       |   index.d.ts
-|   |       |   index.js
-|   |       |   utils-B--2TaWv.js
-|   |       |   utils-De75vAgL.js
-|   |       |   
-|   |       \---entry
-|   |               process.d.ts
-|   |               process.js
-|   |               utils.d.ts
-|   |               utils.js
-|   |               worker.d.ts
-|   |               worker.js
-|   |               
 |   +---tinyrainbow
-|   |   |   LICENCE
-|   |   |   package.json
-|   |   |   README.md
-|   |   |   
-|   |   \---dist
-|   |           browser.d.ts
-|   |           browser.js
-|   |           chunk-BVHSVHOK.js
-|   |           index-8b61d5bc.d.ts
-|   |           node.d.ts
-|   |           node.js
-|   |           
-|   +---tinyspy
 |   |   |   LICENCE
 |   |   |   package.json
 |   |   |   README.md
@@ -31718,52 +31692,6 @@ C:\USERS\MICHAEL\BELIEVER
 |   |               lightningcssOptions.d.ts
 |   |               terserOptions.d.ts
 |   |               
-|   +---vite-node
-|   |   |   LICENSE
-|   |   |   package.json
-|   |   |   README.md
-|   |   |   vite-node.mjs
-|   |   |   
-|   |   +---dist
-|   |   |       chunk-browser.cjs
-|   |   |       chunk-browser.mjs
-|   |   |       chunk-hmr.cjs
-|   |   |       chunk-hmr.mjs
-|   |   |       cli.cjs
-|   |   |       cli.d.ts
-|   |   |       cli.mjs
-|   |   |       client.cjs
-|   |   |       client.d.ts
-|   |   |       client.mjs
-|   |   |       constants.cjs
-|   |   |       constants.d.ts
-|   |   |       constants.mjs
-|   |   |       hmr.cjs
-|   |   |       hmr.d.ts
-|   |   |       hmr.mjs
-|   |   |       index.cjs
-|   |   |       index.d-DGmxD2U7.d.ts
-|   |   |       index.d.ts
-|   |   |       index.mjs
-|   |   |       server.cjs
-|   |   |       server.d.ts
-|   |   |       server.mjs
-|   |   |       source-map.cjs
-|   |   |       source-map.d.ts
-|   |   |       source-map.mjs
-|   |   |       trace-mapping.d-DLVdEqOp.d.ts
-|   |   |       types.cjs
-|   |   |       types.d.ts
-|   |   |       types.mjs
-|   |   |       utils.cjs
-|   |   |       utils.d.ts
-|   |   |       utils.mjs
-|   |   |       
-|   |   \---node_modules
-|   |       \---.bin
-|   |               vite
-|   |               vite.cmd
-|   |               
 |   +---vite-plugin-node-polyfills
 |   |   |   LICENSE
 |   |   |   package.json
@@ -31869,11 +31797,9 @@ C:\USERS\MICHAEL\BELIEVER
 |   |           package.json
 |   |           
 |   +---vitest
-|   |   |   browser.d.ts
 |   |   |   config.d.ts
 |   |   |   coverage.d.ts
 |   |   |   environments.d.ts
-|   |   |   execute.d.ts
 |   |   |   globals.d.ts
 |   |   |   import-meta.d.ts
 |   |   |   importMeta.d.ts
@@ -31891,10 +31817,13 @@ C:\USERS\MICHAEL\BELIEVER
 |   |   |   snapshot.d.ts
 |   |   |   suite.d.ts
 |   |   |   suppress-warnings.cjs
-|   |   |   utils.d.ts
 |   |   |   vitest.mjs
-|   |   |   workers.d.ts
+|   |   |   worker.d.ts
 |   |   |   
+|   |   +---browser
+|   |   |       context.d.ts
+|   |   |       context.js
+|   |   |       
 |   |   +---dist
 |   |   |   |   browser.d.ts
 |   |   |   |   browser.js
@@ -31906,12 +31835,13 @@ C:\USERS\MICHAEL\BELIEVER
 |   |   |   |   coverage.js
 |   |   |   |   environments.d.ts
 |   |   |   |   environments.js
-|   |   |   |   execute.d.ts
-|   |   |   |   execute.js
 |   |   |   |   index.d.ts
 |   |   |   |   index.js
 |   |   |   |   mocker.d.ts
 |   |   |   |   mocker.js
+|   |   |   |   module-evaluator.d.ts
+|   |   |   |   module-evaluator.js
+|   |   |   |   module-runner.js
 |   |   |   |   node.d.ts
 |   |   |   |   node.js
 |   |   |   |   path.js
@@ -31924,55 +31854,57 @@ C:\USERS\MICHAEL\BELIEVER
 |   |   |   |   spy.js
 |   |   |   |   suite.d.ts
 |   |   |   |   suite.js
+|   |   |   |   worker.d.ts
 |   |   |   |   worker.js
-|   |   |   |   workers.d.ts
-|   |   |   |   workers.js
 |   |   |   |   
 |   |   |   +---chunks
-|   |   |   |       base.DfmxU-tU.js
-|   |   |   |       benchmark.CYdenmiT.js
-|   |   |   |       benchmark.d.BwvBVTda.d.ts
-|   |   |   |       cac.Cb-PYCCB.js
-|   |   |   |       cli-api.BkDphVBG.js
-|   |   |   |       config.d.D2ROskhv.d.ts
-|   |   |   |       console.CtFJOzRO.js
-|   |   |   |       constants.DnKduX2e.js
-|   |   |   |       coverage.d.S9RMNXIe.d.ts
-|   |   |   |       coverage.DL5VHqXY.js
-|   |   |   |       coverage.DVF1vEu8.js
-|   |   |   |       creator.GK6I-cL4.js
+|   |   |   |       base.BgTO2qAg.js
+|   |   |   |       benchmark.B3N2zMcH.js
+|   |   |   |       benchmark.d.DAaHLpsq.d.ts
+|   |   |   |       browser.d.DTTM2PTh.d.ts
+|   |   |   |       cac.CfkWq8Qy.js
+|   |   |   |       cli-api.BQ-bjcRi.js
+|   |   |   |       config.d.BTfZNUu9.d.ts
+|   |   |   |       console.Cf-YriPC.js
+|   |   |   |       constants.D_Q9UYh-.js
+|   |   |   |       coverage.d.BZtK59WP.d.ts
+|   |   |   |       coverage.D_JHT54q.js
+|   |   |   |       coverage.NVjCOln1.js
+|   |   |   |       creator.fzVyoMf3.js
 |   |   |   |       date.Bq6ZW5rf.js
-|   |   |   |       defaults.B7q_naMc.js
+|   |   |   |       defaults.BOqNVLsY.js
 |   |   |   |       env.D4Lgay0q.js
-|   |   |   |       environment.d.cL3nLXbE.d.ts
-|   |   |   |       execute.B7h3T_Hc.js
-|   |   |   |       git.BVQ8w_Sw.js
-|   |   |   |       global.d.MAmajcmJ.d.ts
-|   |   |   |       globals.DEHgCU4V.js
-|   |   |   |       index.B521nVV-.js
-|   |   |   |       index.BCWujgDG.js
-|   |   |   |       index.CdQS2e2Q.js
-|   |   |   |       index.CmSc2RE5.js
-|   |   |   |       index.CwejwG0H.js
+|   |   |   |       environment.d.CrsxCzP1.d.ts
+|   |   |   |       evaluatedModules.Dg1zASAC.js
+|   |   |   |       git.Bm2pzPAa.js
+|   |   |   |       global.d.DVdCfKp5.d.ts
+|   |   |   |       globals.DOh96BiR.js
+|   |   |   |       index.BY4-tcno.js
 |   |   |   |       index.D3XRDfWc.js
-|   |   |   |       index.VByaPkjc.js
-|   |   |   |       index.X0nbfr6-.js
-|   |   |   |       inspector.C914Efll.js
+|   |   |   |       index.DAL392Ss.js
+|   |   |   |       index.Dc3xnDvT.js
+|   |   |   |       index.DfKyPFVi.js
+|   |   |   |       index.DIFZf73e.js
+|   |   |   |       index.kotH7DY7.js
+|   |   |   |       index.op2Re5rn.js
+|   |   |   |       init-forks.2hx7cf78.js
+|   |   |   |       init-threads.Cm4OCIWA.js
+|   |   |   |       init.DMDG-idf.js
+|   |   |   |       inspector.CvyFGlXm.js
 |   |   |   |       mocker.d.BE_2ls6u.d.ts
-|   |   |   |       node.fjCdwEIl.js
-|   |   |   |       reporters.d.BFLkQcL6.d.ts
-|   |   |   |       rpc.-pEldfrD.js
-|   |   |   |       runBaseTests.9Ij9_de-.js
-|   |   |   |       setup-common.Dd054P77.js
-|   |   |   |       suite.d.FvehnV49.d.ts
-|   |   |   |       typechecker.DRKU1-1g.js
-|   |   |   |       utils.CAioKnHs.js
-|   |   |   |       utils.XdZDrNZV.js
-|   |   |   |       vi.bdSIJ99Y.js
-|   |   |   |       vite.d.CMLlLIFP.d.ts
-|   |   |   |       vm.BThCzidc.js
-|   |   |   |       worker.d.1GmBbd7G.d.ts
-|   |   |   |       worker.d.CKwWzBSj.d.ts
+|   |   |   |       moduleRunner.d.CzOZ_4wC.d.ts
+|   |   |   |       node.Ce0vMQM7.js
+|   |   |   |       plugin.d.D4RrtywJ.d.ts
+|   |   |   |       reporters.d.Da1D1VbQ.d.ts
+|   |   |   |       rpc.BUV7uWKJ.js
+|   |   |   |       setup-common.LGjNSzXp.js
+|   |   |   |       startModuleRunner.BOmUtLIO.js
+|   |   |   |       suite.d.BJWk38HB.d.ts
+|   |   |   |       test.ClrAtjMv.js
+|   |   |   |       utils.DvEY5TfP.js
+|   |   |   |       vi.Bgcdy3bQ.js
+|   |   |   |       vm.BIkCDs68.js
+|   |   |   |       worker.d.DadbA89M.d.ts
 |   |   |   |       _commonjsHelpers.BFTU3MAI.js
 |   |   |   |       
 |   |   |   \---workers
@@ -31983,14 +31915,116 @@ C:\USERS\MICHAEL\BELIEVER
 |   |   |           vmThreads.js
 |   |   |           
 |   |   \---node_modules
-|   |       \---.bin
-|   |               vite
-|   |               vite-node
-|   |               vite-node.cmd
-|   |               vite.cmd
-|   |               why-is-node-running
-|   |               why-is-node-running.cmd
-|   |               
+|   |       +---.bin
+|   |       |       vite
+|   |       |       vite.cmd
+|   |       |       why-is-node-running
+|   |       |       why-is-node-running.cmd
+|   |       |       
+|   |       +---rollup
+|   |       |   |   LICENSE.md
+|   |       |   |   package.json
+|   |       |   |   README.md
+|   |       |   |   
+|   |       |   \---dist
+|   |       |       |   getLogFilter.d.ts
+|   |       |       |   getLogFilter.js
+|   |       |       |   loadConfigFile.d.ts
+|   |       |       |   loadConfigFile.js
+|   |       |       |   native.js
+|   |       |       |   parseAst.d.ts
+|   |       |       |   parseAst.js
+|   |       |       |   rollup.d.ts
+|   |       |       |   rollup.js
+|   |       |       |   
+|   |       |       +---bin
+|   |       |       |       rollup
+|   |       |       |       
+|   |       |       +---es
+|   |       |       |   |   getLogFilter.js
+|   |       |       |   |   package.json
+|   |       |       |   |   parseAst.js
+|   |       |       |   |   rollup.js
+|   |       |       |   |   
+|   |       |       |   \---shared
+|   |       |       |           node-entry.js
+|   |       |       |           parseAst.js
+|   |       |       |           watch.js
+|   |       |       |           
+|   |       |       \---shared
+|   |       |               fsevents-importer.js
+|   |       |               index.js
+|   |       |               loadConfigFile.js
+|   |       |               parseAst.js
+|   |       |               rollup.js
+|   |       |               watch-cli.js
+|   |       |               watch.js
+|   |       |               
+|   |       \---vite
+|   |           |   client.d.ts
+|   |           |   LICENSE.md
+|   |           |   package.json
+|   |           |   README.md
+|   |           |   
+|   |           +---bin
+|   |           |       openChrome.js
+|   |           |       vite.js
+|   |           |       
+|   |           +---dist
+|   |           |   +---client
+|   |           |   |       client.mjs
+|   |           |   |       env.mjs
+|   |           |   |       
+|   |           |   \---node
+|   |           |       |   cli.js
+|   |           |       |   index.d.ts
+|   |           |       |   index.js
+|   |           |       |   module-runner.d.ts
+|   |           |       |   module-runner.js
+|   |           |       |   
+|   |           |       \---chunks
+|   |           |               build.js
+|   |           |               build2.js
+|   |           |               chunk.js
+|   |           |               config.js
+|   |           |               config2.js
+|   |           |               dist.js
+|   |           |               lib.js
+|   |           |               logger.js
+|   |           |               moduleRunnerTransport.d.ts
+|   |           |               optimizer.js
+|   |           |               postcss-import.js
+|   |           |               preview.js
+|   |           |               server.js
+|   |           |               
+|   |           +---misc
+|   |           |       false.js
+|   |           |       true.js
+|   |           |       
+|   |           +---node_modules
+|   |           |   \---.bin
+|   |           |           esbuild
+|   |           |           esbuild.cmd
+|   |           |           rollup
+|   |           |           rollup.cmd
+|   |           |           tsx
+|   |           |           tsx.cmd
+|   |           |           
+|   |           \---types
+|   |               |   customEvent.d.ts
+|   |               |   hmrPayload.d.ts
+|   |               |   hot.d.ts
+|   |               |   import-meta.d.ts
+|   |               |   importGlob.d.ts
+|   |               |   importMeta.d.ts
+|   |               |   metadata.d.ts
+|   |               |   package.json
+|   |               |   
+|   |               \---internal
+|   |                       cssPreprocessorOptions.d.ts
+|   |                       lightningcssOptions.d.ts
+|   |                       terserOptions.d.ts
+|   |                       
 |   +---vm-browserify
 |   |   |   .travis.yml
 |   |   |   CHANGELOG.md

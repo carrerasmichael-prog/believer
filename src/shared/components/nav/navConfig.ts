@@ -1,46 +1,46 @@
-import {MouseEventHandler} from "react"
+import { MouseEventHandler } from 'react';
 
 export interface NavItemConfig {
-  to: string
-  label: string
-  icon?: string
-  activeIcon?: string
-  inactiveIcon?: string
-  requireLogin?: boolean
-  onClick?: MouseEventHandler<HTMLAnchorElement>
+  to: string; // ✅ REQUIRED again
+  label: string;
+  icon?: string;
+  activeIcon?: string;
+  inactiveIcon?: string;
+  requireLogin?: boolean;
+  onClick?: MouseEventHandler<HTMLAnchorElement>;
 }
 
 export const navItemsConfig = (): Record<string, NavItemConfig> => ({
-  home: {to: "/", icon: "home", label: "Destiny"}, // Changed label to "Destiny"
+  home: { to: '/', label: 'Destiny', icon: 'home' }, // ✅ Add to '/'
   search: {
-    to: "/u",
-    icon: "search",
-    label: "Search",
+    to: '/u',
+    icon: 'search',
+    label: 'Search',
   },
   messages: {
-    to: "/chats",
-    icon: "mail",
-    label: "Chats",
+    to: '/chats',
+    icon: 'mail',
+    label: 'Chats',
     requireLogin: true,
   },
   notifications: {
-    to: "/notifications",
-    icon: "notifications",
-    label: "Notifications",
+    to: '/notifications',
+    icon: 'notifications',
+    label: 'Notifications',
     requireLogin: true,
   },
   wallet: {
-    to: "/wallet",
-    icon: "wallet",
-    label: "Wallet",
+    to: '/wallet',
+    icon: 'wallet',
+    label: 'Wallet',
     requireLogin: true,
   },
-  settings: {to: "/settings", icon: "settings", label: "Settings", requireLogin: true},
+  settings: { to: '/settings', icon: 'settings', label: 'Settings', requireLogin: true },
   subscription: {
-    to: "/subscribe",
-    icon: "star",
-    label: "Subscription",
+    to: '/subscribe',
+    icon: 'star',
+    label: 'Subscription',
     requireLogin: true,
   },
-  about: {to: "/about", icon: "info", label: "About"},
-})
+  about: { to: '/about', icon: 'info', label: 'About' },
+});
