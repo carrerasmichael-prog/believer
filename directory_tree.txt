@@ -1,5 +1,5 @@
 Folder PATH listing for volume System
-Volume serial number is 000000D0 7A24:C3EB
+Volume serial number is 00000012 7A24:C3EB
 C:\USERS\MICHAEL\BELIEVER
 |   .dockerignore
 |   .env
@@ -81,6 +81,7 @@ C:\USERS\MICHAEL\BELIEVER
 |   |   
 |   +---.well-known
 |   |       assetlinks.json
+|   |       believer-manifest.json
 |   |       
 |   +---assets
 |   |       animalname-BGl4g59X.js
@@ -88,19 +89,19 @@ C:\USERS\MICHAEL\BELIEVER
 |   |       debug-CAU9f7jy.js
 |   |       DebugSession-DwxtqUdZ.css
 |   |       DebugSession-yG2bY0Qf.js
-|   |       GeohashMapContent-C9Bejg9L.js
+|   |       GeohashMapContent-DrEALUKS.js
 |   |       hls-DdkpVA0Y.js
 |   |       icons-DT3cSZe7.svg
-|   |       index-1-AMON8G.js
-|   |       index-BBPMusxG.js
-|   |       index-Bhy6dxDE.js
-|   |       index-Bkv7gCqp.js
-|   |       index-B_uPBL3G.js
-|   |       index-C8-urYg0.js
-|   |       index-D1ZgP32a.js
-|   |       index-DUhZVHFs.js
-|   |       main-D0nUN7Z2.js
+|   |       index-BQIDlUGp.js
+|   |       index-BzPGbBxR.js
+|   |       index-CYkxpBYu.js
+|   |       index-D98BqHOY.js
+|   |       index-DG_BWDtV.js
+|   |       index-DUGmvb8n.js
+|   |       index-OysDffsP.js
+|   |       index-ZPG60u6d.js
 |   |       main-Dgihpmma.css
+|   |       main-q4yYbGZo.js
 |   |       module-BesyosZx.js
 |   |       native-48B9X9Wg.js
 |   |       ostrich-black-C7nn6yEE.png
@@ -108,7 +109,7 @@ C:\USERS\MICHAEL\BELIEVER
 |   |       QRScanner-DRvbuZIh.js
 |   |       running-ostrich-C7wXPfXR.gif
 |   |       socialGraph-CKDidhMy.bin
-|   |       TownSquare-BhNVNCGO.js
+|   |       TownSquare-BNity4Dg.js
 |   |       vendor-Cr2J_clO.js
 |   |       
 |   +---cashu

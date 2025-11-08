@@ -6,6 +6,7 @@ import config from 'config';
 
 export default defineConfig({
   base: './',
+  publicDir: 'public',  // ← THIS LINE FIXES IT
   plugins: [
     nodePolyfills(),
     react(),
@@ -31,70 +32,50 @@ export default defineConfig({
       '@': '/src',
     },
   },
-  build: {
-    reportCompressedSize: true,
-    chunkSizeWarningLimit: 2000, // Increased from 1000 to 2000 kB
-    rollupOptions: {
-      input: {
-        main: 'index.html',
-        debug: 'debug.html',
-      },
-      external: [],
-      onLog(level, log, handler) {
-        if (log.code === 'CIRCULAR_DEPENDENCY') return;
-        if (log.message.includes('node_modules/tseep') && log.message.includes('Use of eval')) return;
-        handler(level, log);
-      },
-      output: {
-        manualChunks: (id) => {
-          if (id.includes('nostr-social-graph/data/profileData.json')) {
-            return 'profileData';
-          }
-          if (
-            id.includes('utils/AnimalName') ||
-            id.includes('utils/data/animals') ||
-            id.includes('utils/data/adjectives')
-          ) {
-            return 'animalname';
-          }
-          const vendorLibs = [
-            'react',
-            'react-dom/client',
-            'react-helmet',
-            '@nostr-dev-kit/ndk',
-            'markdown-to-jsx',
-            '@nostr-dev-kit/ndk-cache-dexie',
-            '@remixicon/react',
-            'minidenticons',
-            'nostr-tools',
-            'nostr-social-graph',
-            'lodash',
-            'lodash/debounce',
-            'lodash/throttle',
-            'localforage',
-            'dexie',
-            '@noble/hashes',
-            '@noble/curves',
-            '@scure/base',
-            '@scure/bip32',
-            '@scure/bip39',
-            'classnames',
-            'fuse.js',
-            'react-string-replace',
-            'tseep',
-            'typescript-lru-cache',
-            'zustand',
-            'blurhash',
-          ];
-          if (vendorLibs.some((lib) => id.includes(`node_modules/${lib}`))) {
-            return 'vendor';
-          }
-        },
+build: {
+  reportCompressedSize: true,
+  chunkSizeWarningLimit: 2000,
+  rollupOptions: {
+    input: {
+      main: 'index.html',
+      debug: 'debug.html',
+    },
+    external: [],
+    onLog(level, log, handler) {
+      if (log.code === 'CIRCULAR_DEPENDENCY') return;
+      if (log.message.includes('node_modules/tseep') && log.message.includes('Use of eval')) return;
+      handler(level, log);
+    },
+    output: {
+      manualChunks: (id) => {
+        if (id.includes('nostr-social-graph/data/profileData.json')) {
+          return 'profileData';
+        }
+        if (
+          id.includes('utils/AnimalName') ||
+          id.includes('utils/data/animals') ||
+          id.includes('utils/data/adjectives')
+        ) {
+          return 'animalname';
+        }
+        const vendorLibs = [
+          'react', 'react-dom/client', 'react-helmet', '@nostr-dev-kit/ndk',
+          'markdown-to-jsx', '@nostr-dev-kit/ndk-cache-dexie', '@remixicon/react',
+          'minidenticons', 'nostr-tools', 'nostr-social-graph', 'lodash',
+          'lodash/debounce', 'lodash/throttle', 'localforage', 'dexie',
+          '@noble/hashes', '@noble/curves', '@scure/base', '@scure/bip32',
+          '@scure/bip39', 'classnames', 'fuse.js', 'react-string-replace',
+          'tseep', 'typescript-lru-cache', 'zustand', 'blurhash',
+        ];
+        if (vendorLibs.some((lib) => id.includes(`node_modules/${lib}`))) {
+          return 'vendor';
+        }
       },
     },
-    assetsDir: 'assets',
-    copyPublicDir: true,
   },
+  assetsDir: 'assets',
+  copyPublicDir: true,
+},
   define: {
     CONFIG: config,
     global: {},
