@@ -82,7 +82,10 @@ const ChatList = ({className}: ChatListProps) => {
   return (
     <nav className={classNames("flex flex-col h-full", className)}>
       <div className="md:hidden">
-        <Header title="Chats" slideUp={false} />
+        <Header slideUp={false} />
+      <div className="p-4 border-b border-base-300 text-center bg-base-100">
+      <h1 className="text-2xl font-bold">Chats</h1>
+      </div>
       </div>
       <div className="flex-1 overflow-y-auto">
         <div className="flex flex-col pt-[calc(4rem+env(safe-area-inset-top))] md:pt-0 pb-[calc(4rem+env(safe-area-inset-bottom))] md:pb-0">

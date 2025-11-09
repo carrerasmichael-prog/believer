@@ -93,7 +93,7 @@ export const townSquareSlices: TownSquareSlice[] = [
     src: "/room/church",
   },
   {
-    id: "mathris",
+    id: "mandir",
     top: 746,
     left: 1353,
     width: 173,

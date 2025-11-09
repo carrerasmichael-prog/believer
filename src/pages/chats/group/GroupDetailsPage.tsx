@@ -16,7 +16,10 @@ const GroupDetailsPage = () => {
 
   return (
     <>
-      <Header title="Group Details" showBack />
+      <Header showBack />
+    <div className="p-4 border-b border-base-300 text-center bg-base-100">
+    <h1 className="text-2xl font-bold">Group Details</h1>
+    </div>
       <div className="w-full mx-auto p-6 text-left pt-[calc(4rem+env(safe-area-inset-top))] pb-[calc(4rem+env(safe-area-inset-bottom))] md:pt-6 md:pb-6">
         <div className="flex items-center gap-4 mb-6">
           {group.picture ? (

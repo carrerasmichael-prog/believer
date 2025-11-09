@@ -14,11 +14,14 @@ import {RelayConnectivityIndicator} from "../RelayConnectivityIndicator"
 import RoomSelector from '@/components/RoomSelector';
 
 interface HeaderProps {
-  rightContent?: ReactNode
-  showBack?: boolean
-  showNotifications?: boolean
-  scrollDown?: boolean
-  slideUp?: boolean
+  children?: ReactNode;
+  title?: string;                 // ← ADD THIS
+  rightContent?: ReactNode;
+  showBack?: boolean;
+  showNotifications?: boolean;
+  scrollDown?: boolean;
+  slideUp?: boolean;
+  bold?: boolean;
 }
 
 const Header = ({

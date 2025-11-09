@@ -23,7 +23,10 @@ function Notifications() {
   return (
     <div className="flex flex-1 relative h-full">
       <div className="flex flex-col flex-1 h-full relative">
-        <Header title="Notifications" />
+        <Header />
+      <div className="p-4 border-b border-base-300 text-center bg-base-100">
+      <h1 className="text-2xl font-bold">Notifications</h1>
+      </div>
         <ScrollablePageContainer>
           <NotificationsFeed />
         </ScrollablePageContainer>

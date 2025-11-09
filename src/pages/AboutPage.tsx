@@ -9,7 +9,6 @@ import {
 } from "@remixicon/react"
 import RightColumn from "@/shared/components/RightColumn"
 import AlgorithmicFeed from "@/shared/components/feed/AlgorithmicFeed"
-import Header from "@/shared/components/header/Header"
 import Widget from "@/shared/components/ui/Widget"
 import {useState, useEffect} from "react"
 import {Link} from "@/navigation"
@@ -64,7 +63,9 @@ export const AboutPage = () => {
     <div className="flex justify-center">
       <div className="flex-1">
         <section className="flex flex-col">
-          <Header title="About" />
+          <div className="p-4 border-b border-base-300 text-center bg-base-100">
+          <h1 className="text-2xl font-bold">About</h1>
+          </div>
           <div className="flex flex-1 mx-4 my-4 lg:mx-8 pt-[calc(4rem+env(safe-area-inset-top))] pb-[calc(4rem+env(safe-area-inset-bottom))] md:pt-0 md:pb-0">
             <div className="prose max-w-prose">
               <h1>About</h1>

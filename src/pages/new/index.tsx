@@ -20,7 +20,10 @@ function NewNote() {
 
   return (
     <>
-      <Header title="New Post" />
+      <Header />
+      <div className="p-4 border-b border-base-300 text-center bg-base-100">
+      <h1 className="text-2xl font-bold">New Post</h1>
+      </div>
       <div className="flex-1 overflow-y-auto pt-[calc(4rem+env(safe-area-inset-top))] pb-[calc(4rem+env(safe-area-inset-bottom))] md:pt-0 md:pb-0">
         <InlineNoteCreator
           onPublish={handlePublish}

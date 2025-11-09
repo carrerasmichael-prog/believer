@@ -3,25 +3,25 @@ import { useParams } from "@/navigation";
 import { ROOM_CONFIGS } from "@/rooms/roomConfig.ts";
 import { ndk } from "@/utils/ndk";
 import { useEffect, useState } from "react";
+import { playRoomSound } from '@/utils/playSoundWithFallback';  // ← NEW
 
 const Room = () => {
   const { roomid = 'lobby' } = useParams();
-  const roomId = roomid.toLowerCase();
+  const roomId = roomid.toLowerCase().trim();  // ← CLEAN
   const config = ROOM_CONFIGS[roomId];
 
   // === PLAY SOUND ON ENTER ===
   useEffect(() => {
-    if (config?.sound) {
-      const audio = new Audio(`/${config.sound}`);
-      audio.play().catch(() => {});
+    if (roomId) {
+      console.log('[room.tsx] Playing sound for:', roomId);  // ← DEBUG
+      playRoomSound(roomId);
     }
-  }, [config?.sound]);
+  }, [roomId]);  // ← DEPENDS ON roomId
 
   // === EXTERNAL URL (News → OANN) ===
   if (config?.externalUrl) {
     return (
       <div className="flex flex-col h-full">
-        {/* CLEAN HEADER */}
         <div className="p-4 border-b border-base-300 text-center bg-base-100">
           <h1 className="text-2xl font-bold">{config.name}</h1>
           <p className="text-sm text-base-content/70 mt-1">{config.subtitle}</p>
@@ -65,7 +65,6 @@ const Room = () => {
 
   return (
     <div className="flex flex-col h-full">
-      {/* CLEAN HEADER */}
       <div className="p-4 border-b border-base-300 text-center bg-base-100">
         <h1 className="text-2xl font-bold">{config.name}</h1>
         <p className="text-sm text-base-content/70 mt-1">{config.subtitle}</p>

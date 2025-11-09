@@ -34,7 +34,10 @@ const PublicChatDetails = () => {
 
   return (
     <>
-      <Header title="Chat Details" showBack />
+      <Header showBack />
+    <div className="p-4 border-b border-base-300 text-center bg-base-100">
+    <h1 className="text-2xl font-bold">Chat Details</h1>
+    </div>
       <ScrollablePageContainer>
         <div className="p-4">
           {!metadata && <div className="text-center">Chat not found</div>}

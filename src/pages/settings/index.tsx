@@ -164,7 +164,10 @@ function Settings() {
 
   return (
     <div className="flex flex-col h-full">
-      <Header title={getSettingsTitle()} />
+      <Header />
+      <div className="p-4 border-b border-base-300 text-center bg-base-100">
+        <h1 className="text-2xl font-bold">{getSettingsTitle()}</h1>
+      </div>
       <div
         className="flex flex-1 overflow-y-scroll overflow-x-hidden scrollbar-hide relative"
         data-main-scroll-container="true"

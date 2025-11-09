@@ -121,7 +121,10 @@ export default function MarketPage() {
     return (
       <div className="flex flex-1 flex-row relative h-full">
         <div className="flex flex-col flex-1 h-full relative">
-          <Header title={pageTitle} />
+          <Header />
+        <div className="p-4 border-b border-base-300 text-center bg-base-100">
+        <h1 className="text-2xl font-bold">{pageTitle}</h1>
+        </div>
           <ScrollablePageContainer className="flex flex-col items-center">
             <div className="flex-1 w-full flex flex-col gap-2 md:pt-2">
               <FeedComponent />
