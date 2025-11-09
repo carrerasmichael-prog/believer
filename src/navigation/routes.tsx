@@ -8,7 +8,7 @@ import WalletPage from '@/pages/wallet/WalletPage';
 import { AboutPage } from '@/pages/AboutPage';
 import SearchPage from '@/pages/search';
 import NewNote from '@/pages/new';
-import DynamicRoom from '@/components/dynamicroom';
+import Room from '@/rooms/room';
 
 // Lazy load main pages
 const ChatsPage = lazy(() => import('@/pages/chats'));
@@ -25,7 +25,7 @@ const TownSquare = lazy(() => import('@/pages/landing/TownSquare'));
 export const routes: RouteDefinition[] = [
   // Believer.go Routes
   { path: '/', component: TownSquare, alwaysKeep: true }, // landing page
-  { path: '/room/:roomid', component: DynamicRoom }, // dynamic client view
+  { path: '/room/:roomid', component: Room }, // dynamic client view
 
   // Client routes
   { path: '/new', component: NewNote },
