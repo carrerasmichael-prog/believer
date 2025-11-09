@@ -1,25 +1,52 @@
 // src/rooms/room.tsx
 import { useParams } from "@/navigation";
-import { ROOM_CONFIGS } from "@/rooms/roomConfig.ts";
+import { ROOM_CONFIGS } from "@/rooms/roomConfig";
 import { ndk } from "@/utils/ndk";
 import { useEffect, useState } from "react";
-import { playRoomSound } from '@/utils/playSoundWithFallback';  // ← NEW
 
 const Room = () => {
   const { roomid = 'lobby' } = useParams();
-  const roomId = roomid.toLowerCase().trim();  // ← CLEAN
+  const roomId = roomid.toLowerCase().trim();
   const config = ROOM_CONFIGS[roomId];
 
-  // === PLAY SOUND ON ENTER ===
+  // === PLAY SOUND ON ENTER WITH RETRY ===
   useEffect(() => {
-    if (roomId) {
-      console.log('[room.tsx] Playing sound for:', roomId);  // ← DEBUG
-      playRoomSound(roomId);
+    if (roomId && config?.sound) {
+      console.log('[room.tsx] Playing sound for:', roomId);
+      const playSoundWithRetry = async (soundPath: string, retries = 3, delay = 500) => {
+        for (let i = 0; i < retries; i++) {
+          try {
+            const audio = new Audio(soundPath);
+            audio.volume = 0.6;
+            await audio.play();
+            console.log('[room.tsx] Sound played successfully:', soundPath);
+            return;
+          } catch (err: unknown) {
+            const errorMessage = err instanceof Error ? err.message : String(err);
+            console.log(`[room.tsx] Autoplay blocked or failed (attempt ${i + 1}):`, errorMessage);
+            if (i < retries - 1) {
+              await new Promise(resolve => setTimeout(resolve, delay));
+            }
+          }
+        }
+        console.warn('[room.tsx] Failed to play sound after retries:', soundPath);
+      };
+      playSoundWithRetry(`/${config.sound}`); // Use correct path: /sounds/market.mp3
     }
-  }, [roomId]);  // ← DEPENDS ON roomId
+  }, [roomId, config?.sound]);
+
+  // === ROOM NOT FOUND ===
+  if (!config) {
+    return (
+      <div className="flex flex-col items-center justify-center h-full text-base-content/50">
+        <h2 className="text-xl mb-2">Room not found</h2>
+        <p>Try Lobby or another room.</p>
+      </div>
+    );
+  }
 
   // === EXTERNAL URL (News → OANN) ===
-  if (config?.externalUrl) {
+  if (config.externalUrl) {
     return (
       <div className="flex flex-col h-full">
         <div className="p-4 border-b border-base-300 text-center bg-base-100">
@@ -31,17 +58,16 @@ const Room = () => {
           className="flex-1 w-full border-0"
           title={config.name}
           sandbox="allow-scripts allow-same-origin allow-forms allow-popups"
+          loading="lazy"
         />
       </div>
     );
   }
 
-  // === NOSTR FEED ===
+  // === NOSTR FEED (ALL OTHER ROOMS) ===
   const [posts, setPosts] = useState<any[]>([]);
 
   useEffect(() => {
-    if (!config) return;
-
     const sub = ndk().subscribe(
       { kinds: [1], "#t": config.tags },
       { relayUrls: config.relayUrl ? [config.relayUrl] : undefined }
@@ -53,15 +79,6 @@ const Room = () => {
 
     return () => sub.stop();
   }, [config]);
-
-  if (!config) {
-    return (
-      <div className="flex flex-col items-center justify-center h-full text-base-content/50">
-        <h2 className="text-xl mb-2">Room not found</h2>
-        <p>Try Lobby or another room.</p>
-      </div>
-    );
-  }
 
   return (
     <div className="flex flex-col h-full">

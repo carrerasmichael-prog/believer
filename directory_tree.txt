@@ -1,5 +1,5 @@
 Folder PATH listing for volume System
-Volume serial number is 000000A5 7A24:C3EB
+Volume serial number is 0000007B 7A24:C3EB
 C:\USERS\MICHAEL\BELIEVER
 |   .dockerignore
 |   .env
@@ -84,33 +84,33 @@ C:\USERS\MICHAEL\BELIEVER
 |   |       assetlinks.json
 |   |       
 |   +---assets
-|   |       animalname-DIFbIbvw.js
-|   |       browser-CawtB04X.js
-|   |       debug-9ivzqV6n.js
-|   |       DebugSession-C0IXzHsQ.js
-|   |       DebugSession-DwxtqUdZ.css
-|   |       GeohashMapContent-Pkk5EHgK.js
+|   |       animalname-BBI_zxTK.js
+|   |       browser-B2PcJ4IG.js
+|   |       debug-CeJ2JFZ5.js
+|   |       DebugSession-Df3PiBs1.css
+|   |       DebugSession-DQPnVdmF.js
+|   |       GeohashMapContent-BmPDdhMG.js
 |   |       hls-DdkpVA0Y.js
 |   |       icons-DT3cSZe7.svg
-|   |       index-BH2N8aaR.js
-|   |       index-BIfu9AJ4.js
-|   |       index-B_iCI1um.js
-|   |       index-CsQv5D2p.js
-|   |       index-Cw2NBt_f.js
-|   |       index-DD7HSpbC.js
-|   |       index-DYoRjol5.js
-|   |       index-yDU9xJMC.js
+|   |       index-BIpLf5i8.js
+|   |       index-Ch7Hsgy1.js
+|   |       index-DngCXVuL.js
+|   |       index-gy3fxfy2.js
+|   |       index-KAbTDm1o.js
+|   |       index-pNgyqmc1.js
+|   |       index-U9dtgEu6.js
+|   |       index-VeawwThH.js
+|   |       main-DFYk1Yd1.js
 |   |       main-Dgihpmma.css
-|   |       main-Do4Y6tWJ.js
-|   |       module-M9g9cs3N.js
+|   |       module-Cp5zNv2N.js
 |   |       native-48B9X9Wg.js
 |   |       ostrich-black-C7nn6yEE.png
 |   |       profileData-Bl6K0-YF.js
-|   |       QRScanner-BIoJBMRy.js
+|   |       QRScanner-BhGKZt0a.js
 |   |       running-ostrich-C7wXPfXR.gif
 |   |       socialGraph-CKDidhMy.bin
-|   |       TownSquare-BOCSeYxh.js
-|   |       vendor-DtVADsRl.js
+|   |       TownSquare-DqmSnOA6.js
+|   |       vendor-nz4Bgwxi.js
 |   |       
 |   +---cashu
 |   |   |   clean.png
@@ -218,6 +218,17 @@ C:\USERS\MICHAEL\BELIEVER
 |   |           wide-1.png
 |   |           wide-2.png
 |   |           
+|   +---icons
+|   |       atheism.png
+|   |       church.png
+|   |       lobby.png
+|   |       mandir.png
+|   |       market.png
+|   |       mosque.png
+|   |       news.png
+|   |       synagogue.png
+|   |       temple.png
+|   |       
 |   +---images
 |   |   |   town-square-base.png
 |   |   |   
@@ -242,10 +253,12 @@ C:\USERS\MICHAEL\BELIEVER
 |   |               star-of-david-slice.png
 |   |               
 |   +---img
+|   |       32x32.png
 |   |       android-chrome-192x192.png
 |   |       android-chrome-512x512.png
 |   |       apple-touch-icon.png
 |   |       eyespace.gif
+|   |       eyespace.png
 |   |       icon128.png
 |   |       irisconnects.png
 |   |       maskable_icon.png
@@ -40292,6 +40305,17 @@ C:\USERS\MICHAEL\BELIEVER
 |   |           wide-1.png
 |   |           wide-2.png
 |   |           
+|   +---icons
+|   |       atheism.png
+|   |       church.png
+|   |       lobby.png
+|   |       mandir.png
+|   |       market.png
+|   |       mosque.png
+|   |       news.png
+|   |       synagogue.png
+|   |       temple.png
+|   |       
 |   +---images
 |   |   |   town-square-base.png
 |   |   |   
@@ -40316,10 +40340,12 @@ C:\USERS\MICHAEL\BELIEVER
 |   |               star-of-david-slice.png
 |   |               
 |   +---img
+|   |       32x32.png
 |   |       android-chrome-192x192.png
 |   |       android-chrome-512x512.png
 |   |       apple-touch-icon.png
 |   |       eyespace.gif
+|   |       eyespace.png
 |   |       icon128.png
 |   |       irisconnects.png
 |   |       maskable_icon.png
@@ -40378,6 +40404,7 @@ C:\USERS\MICHAEL\BELIEVER
 |   +---components
 |   |       feed.tsx
 |   |       navigation.tsx
+|   |       RoomSelector.tsx
 |   |       slice.tsx
 |   |       
 |   +---constants
@@ -40583,42 +40610,17 @@ C:\USERS\MICHAEL\BELIEVER
 |   |           
 |   +---rooms
 |   |   |   room.tsx
-|   |   |   roomConfig.ts
+|   |   |   roomConfig.tsx
 |   |   |   
 |   |   +---atheism
-|   |   |   |   roomconfig.ts
-|   |   |   |   
-|   |   |   \---assets
 |   |   +---church
-|   |   |   |   roomconfig.ts
-|   |   |   |   
-|   |   |   \---assets
 |   |   +---lobby
-|   |   |   |   roomconfig.ts
-|   |   |   |   
-|   |   |   \---assets
 |   |   +---market
-|   |   |       roomconfig.ts
-|   |   |       
 |   |   +---mathris
-|   |   |   |   roomconfig.ts
-|   |   |   |   
-|   |   |   \---assets
 |   |   +---mosque
-|   |   |   |   roomconfig.ts
-|   |   |   |   
-|   |   |   \---assets
 |   |   +---news
-|   |   |       roomconfig.ts
-|   |   |       
 |   |   +---synagogue
-|   |   |   |   roomconfig.ts
-|   |   |   |   
-|   |   |   \---assets
 |   |   \---temple
-|   |       |   roomconfig.ts
-|   |       |   
-|   |       \---assets
 |   +---session
 |   |   |   SessionManager.ts
 |   |   |   StorageAdapter.ts
@@ -40648,6 +40650,7 @@ C:\USERS\MICHAEL\BELIEVER
 |   |   |   |   RelayList.tsx
 |   |   |   |   RelayStats.tsx
 |   |   |   |   RightColumn.tsx
+|   |   |   |   RoomSelector.tsx
 |   |   |   |   SocialGraphWidget.tsx
 |   |   |   |   
 |   |   |   +---button
@@ -41024,6 +41027,7 @@ C:\USERS\MICHAEL\BELIEVER
 |       |   npubcash.ts
 |       |   nwc.ts
 |       |   playSound.ts
+|       |   playSoundWithFallback.ts
 |       |   profileCache.ts
 |       |   profileSearch.ts
 |       |   pushNotifications.ts

@@ -79,12 +79,6 @@ const TownSquare: React.FC = () => {
       audio.play().catch(() => {})  // Ignore autoplay errors
     }
 
-    // THEN: Handle navigation
-    if (config?.externalUrl) {
-      window.open(config.externalUrl, '_blank', 'noopener,noreferrer')
-      return
-    }
-
     navigate(`/room/${roomId}`)
     return
   }

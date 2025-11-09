@@ -1,2 +1,5 @@
+# Cashu route (keep first)
 /cashu    /cashu    200
+
+# SPA fallback — must be LAST
 /*    /index.html   200
