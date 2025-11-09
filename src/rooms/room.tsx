@@ -1,6 +1,6 @@
 // src/rooms/room.tsx
 import { useParams } from "@/navigation";
-import { ROOM_CONFIGS } from "@/rooms/roomConfig.ts";  // ← CENTRAL CONFIG
+import { ROOM_CONFIGS } from "@/rooms/roomConfig.ts";
 import { ndk } from "@/utils/ndk";
 import { useEffect, useState } from "react";
 
@@ -21,12 +21,10 @@ const Room = () => {
   if (config?.externalUrl) {
     return (
       <div className="flex flex-col h-full">
-        <div className="p-4 border-b border-base-300 flex items-center gap-3">
-          {config.icon && <img src={`/${config.icon}`} className="w-8 h-8 rounded" alt={config.name} />}
-          <div>
-            <h1 className="text-2xl font-bold">{config.name}</h1>
-            <p className="text-sm text-base-content/70">{config.subtitle}</p>
-          </div>
+        {/* CLEAN HEADER */}
+        <div className="p-4 border-b border-base-300 text-center bg-base-100">
+          <h1 className="text-2xl font-bold">{config.name}</h1>
+          <p className="text-sm text-base-content/70 mt-1">{config.subtitle}</p>
         </div>
         <iframe
           src={config.externalUrl}
@@ -67,12 +65,10 @@ const Room = () => {
 
   return (
     <div className="flex flex-col h-full">
-      <div className="p-4 border-b border-base-300 flex items-center gap-3">
-        {config.icon && <img src={`/${config.icon}`} className="w-8 h-8 rounded" alt={config.name} />}
-        <div>
-          <h1 className="text-2xl font-bold">{config.name}</h1>
-          <p className="text-sm text-base-content/70">{config.subtitle}</p>
-        </div>
+      {/* CLEAN HEADER */}
+      <div className="p-4 border-b border-base-300 text-center bg-base-100">
+        <h1 className="text-2xl font-bold">{config.name}</h1>
+        <p className="text-sm text-base-content/70 mt-1">{config.subtitle}</p>
       </div>
       <div className="flex-1 overflow-y-auto p-4 space-y-4">
         {posts.length ? (

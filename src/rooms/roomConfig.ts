@@ -14,7 +14,7 @@ export const ROOM_CONFIGS: Record<string, RoomConfig> = {
   lobby: {
     id: 'lobby',
     name: 'Lobby',
-    subtitle: 'Main hub for all believers',
+    subtitle: 'Main hub free for all',
     tags: ['lobby', 'religion', 'spirituality'],
     sound: 'lobby/door.mp3',
     icon: 'lobby/icon.png',
@@ -46,7 +46,7 @@ export const ROOM_CONFIGS: Record<string, RoomConfig> = {
   temple: {
     id: 'temple',
     name: 'Temple',
-    subtitle: 'Hindu devotion',
+    subtitle: 'Worship and Meditation',
     tags: ['temple', 'hinduism'],
     sound: 'temple/bell.mp3',
     icon: 'temple/icon.png',
@@ -54,14 +54,14 @@ export const ROOM_CONFIGS: Record<string, RoomConfig> = {
   news: {
     id: 'news',
     name: 'News',
-    subtitle: 'World events through faith',
+    subtitle: 'World events',
     tags: ['news'],
     externalUrl: 'https://www.oann.com/',
   },
   market: {
     id: 'market',
     name: 'Market',
-    subtitle: 'Buy, sell, trade in faith',
+    subtitle: 'Buy, Sell, Trade',
     tags: ['market', 'commerce'],
     sound: 'market/coin.mp3',
     icon: 'market/icon.png',
@@ -69,7 +69,7 @@ export const ROOM_CONFIGS: Record<string, RoomConfig> = {
   mathris: {
     id: 'mathris',
     name: 'Mathris',
-    subtitle: 'Mathematical theology',
+    subtitle: 'Hindu Devotion',
     tags: ['mathris', 'logic', 'proof'],
     sound: 'mathris/equation.mp3',
     icon: 'mathris/icon.png',
@@ -77,7 +77,7 @@ export const ROOM_CONFIGS: Record<string, RoomConfig> = {
   atheism: {
     id: 'atheism',
     name: 'Atheism',
-    subtitle: 'Reason without faith',
+    subtitle: 'Reason',
     tags: ['atheism', 'skepticism'],
     sound: 'atheism/silence.mp3',
     icon: 'atheism/icon.png',

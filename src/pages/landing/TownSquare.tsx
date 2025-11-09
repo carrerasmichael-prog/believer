@@ -19,33 +19,29 @@ const TownSquare: React.FC = () => {
   const capitalize = (str: string) => str.charAt(0).toUpperCase() + str.slice(1)
 
   const updateScale = () => {
-    if (!containerRef.current) {
-      console.log("No container ref found")
-      setScale(1)
-      return
-    }
-    const containerRect = containerRef.current.getBoundingClientRect()
-    console.log("Container size:", containerRect.width, containerRect.height)
-    const img = containerRef.current.querySelector("img.town-square")
-    if (!img) {
-      console.log("No town square image found, using fallback scale: 1")
-      setScale(1)
-      return
-    }
-    const {width: imgWidth, height: imgHeight} = img.getBoundingClientRect()
-    const uniformScale = Math.min(imgWidth / BASE_WIDTH, imgHeight / BASE_HEIGHT)
-    console.log("Image size:", imgWidth, imgHeight, "Scale:", uniformScale)
-    setScale(uniformScale || 1)
+  if (!containerRef.current) {
+    console.log("No container ref found")
+    setScale(1)
+    return
   }
+  const { width, height } = containerRef.current.getBoundingClientRect()
+  console.log("Container size:", width, height)
+
+  const img = containerRef.current.querySelector("img.town-square")
+  if (!img) {
+    console.log("No town square image found, using fallback scale: 1")
+    setScale(1)
+    return
+  }
+  const {width: imgWidth, height: imgHeight} = img.getBoundingClientRect()
+  const uniformScale = Math.min(imgWidth / BASE_WIDTH, imgHeight / BASE_HEIGHT)
+  console.log("Image size:", imgWidth, imgHeight, "Scale:", uniformScale)
+  setScale(uniformScale || 1)
+}
 
   useEffect(() => {
-    const img = containerRef.current?.querySelector(
-      "img.town-square"
-    ) as HTMLImageElement | null
-    if (!img) {
-      console.log("Image not found on initial load")
-      return
-    }
+    const img = containerRef.current?.querySelector("img.town-square") as HTMLImageElement | null
+    if (!img) return
 
     const handleLoad = () => updateScale()
     img.addEventListener("load", handleLoad)
@@ -161,6 +157,7 @@ const TownSquare: React.FC = () => {
           Save Button Positions
         </button>
       )}
+      {/* CLEAN SLICES — NO ICONS, TOOLTIPS KEPT */}
       {slices.map((slice) => {
         const scaledTop = slice.top * scale
         const scaledLeft = slice.left * scale
@@ -171,7 +168,7 @@ const TownSquare: React.FC = () => {
           <div
             key={slice.id}
             onClick={() => handleClick(slice)}
-            title={capitalize(slice.id)}
+            title={capitalize(slice.id)}  // ← TOOLTIP KEPT
             onMouseDown={handleMouseDown(slice.id)}
             style={{
               position: "absolute",
@@ -180,8 +177,7 @@ const TownSquare: React.FC = () => {
               width: scaledWidth,
               height: scaledHeight,
               cursor: DEBUG_MODE ? "move" : "pointer",
-              background: slice.isRoom ? `url(/icons/${slice.id}.png)` : "transparent",
-              backgroundSize: "cover",
+              background: "transparent",
               display: "flex",
               alignItems: "center",
               justifyContent: "center",
@@ -198,7 +194,7 @@ const TownSquare: React.FC = () => {
             }}
             onMouseLeave={(e) => {
               e.currentTarget.style.transform = "scale(1)"
-              e.currentTarget.style.boxShadow = "0 0 0px rgba(255, 255, 0, 0)"
+              e.currentTarget.style.boxShadow = "0 0 0 0"
             }}
           />
         )
