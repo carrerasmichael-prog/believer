@@ -99,7 +99,7 @@ export const townSquareSlices: TownSquareSlice[] = [
     width: 173,
     height: 113,
     isRoom: true,
-    src: "/room/mathris",
+    src: "/room/mandir",  // ← FIXED: was "/room/mathris"
   },
   {
     id: "atheist-flag",

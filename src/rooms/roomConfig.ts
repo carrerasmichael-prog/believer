@@ -16,7 +16,7 @@ export const ROOM_CONFIGS: Record<string, RoomConfig> = {
   name: 'Lobby',
   subtitle: 'Main hub for all believers',
   tags: ['lobby'],
-  sound: '/sounds/lobby.mp3',
+  sound: 'sounds/door-sound.mp3',
   icon: 'lobby.png',
 },
 church: {
@@ -24,7 +24,7 @@ church: {
   name: 'Church',
   subtitle: 'Christian fellowship',
   tags: ['church'],
-  sound: '/sounds/church.mp3',
+  sound: 'sounds/church-bell.mp3',
   icon: 'church.png',
 },
 mosque: {
@@ -32,7 +32,7 @@ mosque: {
   name: 'Mosque',
   subtitle: 'Islamic community',
   tags: ['mosque'],
-  sound: '/sounds/mosque.mp3',
+  sound: 'sounds/door-sound.mp3',
   icon: 'mosque.png',
 },
 synagogue: {
@@ -40,7 +40,7 @@ synagogue: {
   name: 'Synagogue',
   subtitle: 'Jewish gathering',
   tags: ['synagogue'],
-  sound: '/sounds/synagogue.mp3',
+  sound: 'sounds/door-sound.mp3',
   icon: 'synagogue.png',
 },
 temple: {
@@ -48,7 +48,7 @@ temple: {
   name: 'Temple',
   subtitle: 'Hindu & Buddhist devotion',
   tags: ['temple'],
-  sound: '/sounds/temple.mp3',
+  sound: 'sounds/door-sound.mp3',
   icon: 'temple.png',
 },
 mandir: {
@@ -56,7 +56,7 @@ mandir: {
   name: 'Mandir',
   subtitle: 'Hindu temple of worship',
   tags: ['mandir', 'hinduism'],
-  sound: '/sounds/mandir.mp3',
+  sound: 'sounds/door-sound.mp3',
   icon: 'mandir.png',
 },
 market: {
@@ -64,7 +64,7 @@ market: {
   name: 'Market',
   subtitle: 'Buy, sell, trade in faith',
   tags: ['market'],
-  sound: '/sounds/market.mp3',
+  sound: 'sounds/market.mp3',
   icon: 'market.png',
 },
 atheism: {
@@ -72,7 +72,7 @@ atheism: {
   name: 'Atheism',
   subtitle: 'Reason without faith',
   tags: ['atheism'],
-  sound: '/sounds/atheism.mp3',
+  sound: 'sounds/door-sound.mp3',
   icon: 'atheism.png',
 },
 news: {
@@ -80,7 +80,7 @@ news: {
   name: 'News',
   subtitle: 'World events through faith',
   tags: ['news'],
-  sound: '/sounds/news.mp3',
+  sound: 'sounds/news.mp3',
   externalUrl: 'https://www.oann.com/',
   icon: 'news.png',
 },

@@ -1,7 +1,8 @@
-import React, {useRef, useEffect, useState} from "react"
-import {useNavigate} from "react-router-dom"
-import {playSound} from "@/utils/playSound"
-import {townSquareSlices, TownSquareSlice} from "@/constants/townSquareSlices"
+import React, { useRef, useEffect, useState } from "react"
+import { useNavigate } from "@/navigation"
+import { playSound } from "@/utils/playSound"
+import { townSquareSlices, TownSquareSlice } from "@/constants/townSquareSlices"
+import { ROOM_CONFIGS } from "@/rooms/roomConfig"  // ← NEW: Import config
 import HomeFeed from "@/pages/home/feed/components/HomeFeed"
 
 const BASE_WIDTH = 1920
@@ -19,25 +20,25 @@ const TownSquare: React.FC = () => {
   const capitalize = (str: string) => str.charAt(0).toUpperCase() + str.slice(1)
 
   const updateScale = () => {
-  if (!containerRef.current) {
-    console.log("No container ref found")
-    setScale(1)
-    return
-  }
-  const { width, height } = containerRef.current.getBoundingClientRect()
-  console.log("Container size:", width, height)
+    if (!containerRef.current) {
+      console.log("No container ref found")
+      setScale(1)
+      return
+    }
+    const { width, height } = containerRef.current.getBoundingClientRect()
+    console.log("Container size:", width, height)
 
-  const img = containerRef.current.querySelector("img.town-square")
-  if (!img) {
-    console.log("No town square image found, using fallback scale: 1")
-    setScale(1)
-    return
+    const img = containerRef.current.querySelector("img.town-square")
+    if (!img) {
+      console.log("No town square image found, using fallback scale: 1")
+      setScale(1)
+      return
+    }
+    const { width: imgWidth, height: imgHeight } = img.getBoundingClientRect()
+    const uniformScale = Math.min(imgWidth / BASE_WIDTH, imgHeight / BASE_HEIGHT)
+    console.log("Image size:", imgWidth, imgHeight, "Scale:", uniformScale)
+    setScale(uniformScale || 1)
   }
-  const {width: imgWidth, height: imgHeight} = img.getBoundingClientRect()
-  const uniformScale = Math.min(imgWidth / BASE_WIDTH, imgHeight / BASE_HEIGHT)
-  console.log("Image size:", imgWidth, imgHeight, "Scale:", uniformScale)
-  setScale(uniformScale || 1)
-}
 
   useEffect(() => {
     const img = containerRef.current?.querySelector("img.town-square") as HTMLImageElement | null
@@ -55,12 +56,39 @@ const TownSquare: React.FC = () => {
     }
   }, [])
 
+  // NEW: Unified click handler
   const handleClick = (slice: TownSquareSlice) => {
-    if (!DEBUG_MODE) {
-      if (slice.isSound) playSound(slice.src)
-      else if (slice.isRoom) navigate(slice.src)
-    }
+  if (DEBUG_MODE) return
+
+  const roomId = slice.src.split('/').pop()!
+
+  // CASE 1: Sound slice (old system)
+  if (slice.isSound) {
+    playSound(slice.src)
+    return
   }
+
+  // CASE 2: Room slice
+  if (slice.isRoom) {
+    const config = ROOM_CONFIGS[roomId]
+
+    // PLAY SOUND FIRST
+    if (config?.sound) {
+      const audio = new Audio(`/${config.sound}`)
+      audio.volume = 0.6
+      audio.play().catch(() => {})  // Ignore autoplay errors
+    }
+
+    // THEN: Handle navigation
+    if (config?.externalUrl) {
+      window.open(config.externalUrl, '_blank', 'noopener,noreferrer')
+      return
+    }
+
+    navigate(`/room/${roomId}`)
+    return
+  }
+}
 
   const handleMouseDown = (id: string) => (e: React.MouseEvent) => {
     if (!DEBUG_MODE) return
@@ -168,7 +196,7 @@ const TownSquare: React.FC = () => {
           <div
             key={slice.id}
             onClick={() => handleClick(slice)}
-            title={capitalize(slice.id)}  // ← TOOLTIP KEPT
+            title={capitalize(slice.id)}
             onMouseDown={handleMouseDown(slice.id)}
             style={{
               position: "absolute",
