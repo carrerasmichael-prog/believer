@@ -1,3 +1,4 @@
+// src/navigation/routes.tsx
 import { lazy } from 'react';
 import { RouteDefinition } from './types';
 
@@ -18,13 +19,15 @@ const RelayPage = lazy(() => import('@/pages/relay'));
 const MapPage = lazy(() => import('@/pages/map'));
 const MarketPage = lazy(() => import('@/pages/market'));
 const UserSearchPage = lazy(() => import('@/pages/user-search'));
+const MobileHome = lazy(() => import('@/pages/mobile-home'));
 
 // Lazy-loaded TownSquare
 const TownSquare = lazy(() => import('@/pages/landing/TownSquare'));
 
 export const routes: RouteDefinition[] = [
   // Believer.go Routes
-  { path: '/', component: TownSquare, alwaysKeep: true }, // landing page
+  { path: '/', component: TownSquare, alwaysKeep: true }, // Desktop: TownSquare
+  { path: '/mobile-home', component: MobileHome }, // Mobile: ProfileCard Home
   { path: '/room/:roomid', component: Room }, // dynamic client view
 
   // Client routes

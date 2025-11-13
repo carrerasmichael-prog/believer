@@ -1,5 +1,7 @@
+/** @type {import('tailwindcss').Config} */
 export default {
   content: ["./index.html", "./src/**/*.{js,ts,jsx,tsx}"],
+  darkMode: 'class', // Enable class-based dark mode for manual control
   theme: {
     extend: {
       boxShadow: {
@@ -80,7 +82,8 @@ export default {
           "--border-color": "rgba(255, 255, 255, 0.2)",
         },
       },
-      {   believer: {
+      {
+        believer: {
           primary: "#0509f0ff",
           secondary: "#f87171",
           accent: "#db8216",
@@ -99,5 +102,13 @@ export default {
       },
     ],
   },
-  safelist: ["border-custom overflow-y-scroll"],
+  safelist: [
+    "border-custom",
+    "overflow-y-scroll",
+    "dark", // Ensure dark class is not purged
+    // Add DaisyUI theme classes to prevent purging
+    { pattern: /^bg-base-(100|200|300)$/ },
+    { pattern: /^text-base-content$/ },
+    { pattern: /^border-base-(100|200|300)$/ },
+  ],
 }

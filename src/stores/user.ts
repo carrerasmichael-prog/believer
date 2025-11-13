@@ -1,7 +1,8 @@
-import {getDefaultServers} from "@/pages/settings/mediaservers-utils"
-import {persist} from "zustand/middleware"
-import {create} from "zustand"
-import {DEFAULT_RELAYS} from "@/shared/constants/relays"
+// src/stores/user.ts
+import { getDefaultServers } from "@/pages/settings/mediaservers-utils"
+import { create } from "zustand"
+import { DEFAULT_RELAYS } from "@/shared/constants/relays"
+import { NDKUser, NDKEvent } from "@nostr-dev-kit/ndk"
 
 type MediaServerProtocol = "blossom" | "nip96"
 
@@ -13,29 +14,38 @@ interface MediaServer {
 
 export interface RelayConfig {
   url: string
-  disabled?: boolean // If not set, relay is enabled by default
+  disabled?: boolean
+}
+
+export interface UserIdentity {
+  state: "nomad" | "believer" | "atheist"
+  room?: string
+  default_room?: string
+  hasSeenThreshold?: boolean
 }
 
 interface UserState {
   publicKey: string
   privateKey: string
-
   nip07Login: boolean
-
   DHTPublicKey: string
   DHTPrivateKey: string
-
   relays: string[]
   relayConfigs: RelayConfig[]
   mediaservers: MediaServer[]
   defaultMediaserver: MediaServer | null
-
   walletConnect: boolean
   defaultZapAmount: number
   defaultZapComment: string
   ndkOutboxModel: boolean
-
   hasHydrated: boolean
+
+  // Identity
+  identity: UserIdentity
+
+  // Computed
+  isLoggedIn: boolean
+  hasSeenThreshold: boolean
 
   setPublicKey: (publicKey: string) => void
   setPrivateKey: (privateKey: string) => void
@@ -58,157 +68,196 @@ interface UserState {
   reset: () => void
   ensureDefaultMediaserver: (isSubscriber: boolean) => void
   awaitHydration: () => Promise<void>
+  completeHydration: () => void  // ← NEW: explicitly resolve
+
+  // Identity + kind:0
+  setIdentity: (identity: Partial<UserIdentity>) => void
+  syncKind0: (ndk: any) => Promise<void>
+  markThresholdSeen: () => void
 }
 
 let hydrationPromise: Promise<void> | null = null
 let resolveHydration: (() => void) | null = null
 
-export const useUserStore = create<UserState>()(
-  persist(
-    (set, get) => {
-      const initialState = {
-        publicKey: "",
-        privateKey: "",
-        nip07Login: false,
-        DHTPublicKey: "",
-        DHTPrivateKey: "",
-        relays: DEFAULT_RELAYS,
-        relayConfigs: DEFAULT_RELAYS.map((url) => ({url})),
-        mediaservers: [],
-        defaultMediaserver: null,
-        walletConnect: false,
-        defaultZapAmount: 0,
-        defaultZapComment: "",
-        ndkOutboxModel: !import.meta.env.VITE_USE_LOCAL_RELAY,
-        hasHydrated: false,
-      }
+export const useUserStore = create<UserState>()((set, get) => {
+  const initialState = {
+    publicKey: "",
+    privateKey: "",
+    nip07Login: false,
+    DHTPublicKey: "",
+    DHTPrivateKey: "",
+    relays: DEFAULT_RELAYS,
+    relayConfigs: DEFAULT_RELAYS.map((url) => ({ url })),
+    mediaservers: [],
+    defaultMediaserver: null,
+    walletConnect: false,
+    defaultZapAmount: 0,
+    defaultZapComment: "",
+    ndkOutboxModel: !import.meta.env.VITE_USE_LOCAL_RELAY,
+    hasHydrated: false,
+    identity: { 
+      state: "nomad",
+      default_room: "lobby",
+      hasSeenThreshold: false
+    } as UserIdentity,
+    isLoggedIn: false,
+    hasSeenThreshold: false,
+  }
 
-      const actions = {
-        setPublicKey: (publicKey: string) => set({publicKey}),
-        setPrivateKey: (privateKey: string) => set({privateKey}),
-        setNip07Login: (nip07Login: boolean) => set({nip07Login}),
-        setDHTPublicKey: (DHTPublicKey: string) => set({DHTPublicKey}),
-        setDHTPrivateKey: (DHTPrivateKey: string) => set({DHTPrivateKey}),
-        setRelays: (relays: string[]) => {
-          // When setting relays, update both old relays array and new relayConfigs
-          // Keep existing configs for known relays, add new ones as enabled (no disabled flag)
-          set((state) => {
-            const existingConfigs = new Map(state.relayConfigs.map((c) => [c.url, c]))
-            const newConfigs = relays.map(
-              (url) => existingConfigs.get(url) || {url} // No disabled flag means enabled
-            )
-            return {relays, relayConfigs: newConfigs}
-          })
-        },
-        setRelayConfigs: (configs: RelayConfig[]) => {
-          // Update both relayConfigs and relays array (for backward compatibility)
-          const enabledRelays = configs.filter((c) => !c.disabled).map((c) => c.url)
-          set({relayConfigs: configs, relays: enabledRelays})
-        },
-        toggleRelayConnection: (url: string) => {
-          set((state) => {
-            const configs = state.relayConfigs.map((c) =>
-              c.url === url ? {...c, disabled: !c.disabled} : c
-            )
-            const enabledRelays = configs.filter((c) => !c.disabled).map((c) => c.url)
-            return {relayConfigs: configs, relays: enabledRelays}
-          })
-        },
-        addRelay: (url: string, disabled: boolean = false) => {
-          set((state) => {
-            // Check if relay already exists
-            if (state.relayConfigs.some((c) => c.url === url)) {
-              return state
-            }
-            const newConfig = disabled ? {url, disabled} : {url}
-            const configs = [...state.relayConfigs, newConfig]
-            const enabledRelays = configs.filter((c) => !c.disabled).map((c) => c.url)
-            return {relayConfigs: configs, relays: enabledRelays}
-          })
-        },
-        removeRelay: (url: string) => {
-          set((state) => {
-            const configs = state.relayConfigs.filter((c) => c.url !== url)
-            const enabledRelays = configs.filter((c) => !c.disabled).map((c) => c.url)
-            return {relayConfigs: configs, relays: enabledRelays}
-          })
-        },
-        setMediaservers: (mediaservers: MediaServer[]) => set({mediaservers}),
-        setDefaultMediaserver: (server: MediaServer) => set({defaultMediaserver: server}),
-        addMediaserver: (server: MediaServer) =>
-          set((state) => ({
-            mediaservers: [...new Set([...state.mediaservers, server])],
-          })),
-        removeMediaserver: (url: string) =>
-          set((state) => ({
-            mediaservers: state.mediaservers.filter((s) => s.url !== url),
-          })),
-        setWalletConnect: (walletConnect: boolean) => set({walletConnect}),
-        setDefaultZapAmount: (defaultZapAmount: number) => set({defaultZapAmount}),
-        setDefaultZapComment: (defaultZapComment: string) => set({defaultZapComment}),
-        setNdkOutboxModel: (ndkOutboxModel: boolean) => set({ndkOutboxModel}),
-        reset: () => set(initialState),
-        ensureDefaultMediaserver: (isSubscriber: boolean) =>
-          set((state) => {
-            if (!state.defaultMediaserver) {
-              const defaults = getDefaultServers(isSubscriber)
-              return {
-                mediaservers: defaults,
-                defaultMediaserver: defaults[0],
-              }
-            }
-            return {}
-          }),
-        awaitHydration: () => {
-          if (get().hasHydrated) return Promise.resolve()
-          if (!hydrationPromise) {
-            hydrationPromise = new Promise<void>((resolve) => {
-              resolveHydration = resolve
-            })
+  const actions = {
+    setPublicKey: (publicKey: string) => set({ 
+      publicKey,
+      isLoggedIn: publicKey !== ""
+    }),
+    setPrivateKey: (privateKey: string) => set({ privateKey }),
+    setNip07Login: (nip07Login: boolean) => set({ nip07Login }),
+    setDHTPublicKey: (DHTPublicKey: string) => set({ DHTPublicKey }),
+    setDHTPrivateKey: (DHTPrivateKey: string) => set({ DHTPrivateKey }),
+    setRelays: (relays: string[]) => {
+      set((state) => {
+        const existingConfigs = new Map(state.relayConfigs.map((c) => [c.url, c]))
+        const newConfigs = relays.map(
+          (url) => existingConfigs.get(url) || { url }
+        )
+        return { relays, relayConfigs: newConfigs }
+      })
+    },
+    setRelayConfigs: (configs: RelayConfig[]) => {
+      const enabledRelays = configs.filter((c) => !c.disabled).map((c) => c.url)
+      set({ relayConfigs: configs, relays: enabledRelays })
+    },
+    toggleRelayConnection: (url: string) => {
+      set((state) => {
+        const configs = state.relayConfigs.map((c) =>
+          c.url === url ? { ...c, disabled: !c.disabled } : c
+        )
+        const enabledRelays = configs.filter((c) => !c.disabled).map((c) => c.url)
+        return { relayConfigs: configs, relays: enabledRelays }
+      })
+    },
+    addRelay: (url: string, disabled: boolean = false) => {
+      set((state) => {
+        if (state.relayConfigs.some((c) => c.url === url)) return state
+        const newConfig = disabled ? { url, disabled } : { url }
+        const configs = [...state.relayConfigs, newConfig]
+        const enabledRelays = configs.filter((c) => !c.disabled).map((c) => c.url)
+        return { relayConfigs: configs, relays: enabledRelays }
+      })
+    },
+    removeRelay: (url: string) => {
+      set((state) => {
+        const configs = state.relayConfigs.filter((c) => c.url !== url)
+        const enabledRelays = configs.filter((c) => !c.disabled).map((c) => c.url)
+        return { relayConfigs: configs, relays: enabledRelays }
+      })
+    },
+    setMediaservers: (mediaservers: MediaServer[]) => set({ mediaservers }),
+    setDefaultMediaserver: (server: MediaServer) => set({ defaultMediaserver: server }),
+    addMediaserver: (server: MediaServer) =>
+      set((state) => ({
+        mediaservers: [...new Set([...state.mediaservers, server])],
+      })),
+    removeMediaserver: (url: string) =>
+      set((state) => ({
+        mediaservers: state.mediaservers.filter((s) => s.url !== url),
+      })),
+    setWalletConnect: (walletConnect: boolean) => set({ walletConnect }),
+    setDefaultZapAmount: (defaultZapAmount: number) => set({ defaultZapAmount }),
+    setDefaultZapComment: (defaultZapComment: string) => set({ defaultZapComment }),
+    setNdkOutboxModel: (ndkOutboxModel: boolean) => set({ ndkOutboxModel }),
+    reset: () => set(initialState),
+    ensureDefaultMediaserver: (isSubscriber: boolean) =>
+      set((state) => {
+        if (!state.defaultMediaserver) {
+          const defaults = getDefaultServers(isSubscriber)
+          return {
+            mediaservers: defaults,
+            defaultMediaserver: defaults[0],
           }
-          return hydrationPromise
-        },
+        }
+        return {}
+      }),
+    awaitHydration: () => {
+      if (get().hasHydrated) return Promise.resolve()
+      if (!hydrationPromise) {
+        hydrationPromise = new Promise<void>((resolve) => {
+          resolveHydration = resolve
+        })
       }
+      return hydrationPromise
+    },
+    completeHydration: () => {
+      if (resolveHydration) {
+        resolveHydration()  // ← EXPLICIT READ: satisfies TS6133
+        resolveHydration = null
+        hydrationPromise = null
+      }
+      set({ hasHydrated: true })
+    },
+    setIdentity: (updates: Partial<UserIdentity>) => set((state) => ({
+      identity: { ...state.identity, ...updates }
+    })),
+    markThresholdSeen: () => set((state) => ({
+      identity: { ...state.identity, hasSeenThreshold: true },
+      hasSeenThreshold: true
+    })),
+    syncKind0: async (ndk: any) => {
+      const { publicKey } = get()
+      if (!publicKey || !ndk) return
 
-      return {
-        ...initialState,
-        ...actions,
+      try {
+        const user = new NDKUser({ pubkey: publicKey })
+        user.ndk = ndk
+        const profileEvent = await user.fetchProfile()
+
+        if (profileEvent?.content) {
+          let content: any = {}
+          try {
+            content = JSON.parse(profileEvent.content as string)
+          } catch (e) {
+            console.warn("Failed to parse kind:0 content", e)
+          }
+
+          const belief = content.belief ?? "nomad"
+          const default_room = content.default_room ?? "lobby"
+
+          set((state) => ({
+            identity: {
+              ...state.identity,
+              state: belief.includes("Believer") ? "believer" : belief.toLowerCase() as any,
+              room: belief.includes("Believer") ? belief.split(" in ")[1]?.toLowerCase() : undefined,
+              default_room,
+            }
+          }))
+        } else {
+          const event = new NDKEvent(ndk)
+          event.kind = 0
+          event.content = JSON.stringify({
+            name: "Nomad",
+            belief: "Nomad",
+            default_room: "lobby"
+          })
+          await event.sign()
+          await event.publish()
+        }
+      } catch (error) {
+        console.warn("kind:0 sync failed:", error)
       }
     },
-    {
-      name: "user-storage",
-      version: 2, // Bump version to trigger migration
-      onRehydrateStorage: () => (state) => {
-        if (state) {
-          // Migration: Initialize relayConfigs with DEFAULT_RELAYS if empty
-          if (!state.relayConfigs || state.relayConfigs.length === 0) {
-            console.log("Migrating: Adding default relays to relayConfigs")
-            state.relayConfigs = DEFAULT_RELAYS.map((url) => ({url}))
-            state.relays = DEFAULT_RELAYS
-          }
+  }
 
-          state.hasHydrated = true
-          if (resolveHydration) {
-            resolveHydration()
-            resolveHydration = null
-            hydrationPromise = null
-          }
-        }
-      },
-      migrate: (persistedState: unknown, version: number) => {
-        const state = persistedState as Record<string, unknown>
-        if (version === 0 || version === 1) {
-          // Migrate from version 0/1 to 2
-          const configs = state.relayConfigs as RelayConfig[] | undefined
-          if (!configs || configs.length === 0) {
-            state.relayConfigs = DEFAULT_RELAYS.map((url: string) => ({url}))
-            state.relays = DEFAULT_RELAYS
-          }
-        }
-        return state
-      },
-    }
-  )
-)
+  return {
+    ...initialState,
+    ...actions,
+  }
+})
 
+// Export hooks
 export const usePublicKey = () => useUserStore((state) => state.publicKey)
+export const useIsLoggedIn = () => useUserStore((state) => state.isLoggedIn)
+export const useHasSeenThreshold = () => useUserStore((state) => state.identity.hasSeenThreshold)
+export const useDefaultRoom = () => useUserStore((state) => state.identity.default_room || "lobby")
+export const useSetIdentity = () => useUserStore((state) => state.setIdentity)
+export const useSyncKind0 = () => useUserStore((state) => state.syncKind0)
+export const useMarkThresholdSeen = () => useUserStore((state) => state.markThresholdSeen)
+export const useCompleteHydration = () => useUserStore((state) => state.completeHydration)

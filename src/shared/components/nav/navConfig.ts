@@ -1,46 +1,83 @@
-import { MouseEventHandler } from 'react';
-
-export interface NavItemConfig {
-  to: string; // ✅ REQUIRED again
+// src/shared/components/nav/navConfig.ts
+interface NavItemConfig {
+  to?: string;
   label: string;
-  icon?: string;
-  activeIcon?: string;
-  inactiveIcon?: string;
+  icon: string;
+  activeIcon: string;
+  inactiveIcon: string;
   requireLogin?: boolean;
-  onClick?: MouseEventHandler<HTMLAnchorElement>;
+  onClick?: () => void;
+  includeInLargeScreen?: boolean;
 }
 
-export const navItemsConfig = (): Record<string, NavItemConfig> => ({
-  home: { to: '/', label: 'Destiny', icon: 'home' }, // ✅ Add to '/'
-  search: {
-    to: '/u',
-    icon: 'search',
-    label: 'Search',
-  },
-  messages: {
-    to: '/chats',
-    icon: 'mail',
-    label: 'Chats',
-    requireLogin: true,
-  },
-  notifications: {
-    to: '/notifications',
-    icon: 'notifications',
-    label: 'Notifications',
-    requireLogin: true,
-  },
-  wallet: {
-    to: '/wallet',
-    icon: 'wallet',
-    label: 'Wallet',
-    requireLogin: true,
-  },
-  settings: { to: '/settings', icon: 'settings', label: 'Settings', requireLogin: true },
-  subscription: {
-    to: '/subscribe',
-    icon: 'star',
-    label: 'Subscription',
-    requireLogin: true,
-  },
-  about: { to: '/about', icon: 'info', label: 'About' },
-});
+export const navItemsConfig = (): Record<string, NavItemConfig> => {
+  return {
+    home: {
+      to: '/',
+      label: 'Home',
+      icon: 'ri-home-line',
+      activeIcon: 'ri-home-fill',
+      inactiveIcon: 'ri-home-line',
+      includeInLargeScreen: true,
+    },
+    search: {
+      to: '/search',
+      label: 'Search',
+      icon: 'ri-search-line',
+      activeIcon: 'ri-search-fill',
+      inactiveIcon: 'ri-search-line',
+      includeInLargeScreen: true,
+    },
+    about: {
+      to: '/about',
+      label: 'About',
+      icon: 'ri-information-line',
+      activeIcon: 'ri-information-fill',
+      inactiveIcon: 'ri-information-line',
+      includeInLargeScreen: true,
+    },
+    destiny: {
+      label: 'Destiny',
+      icon: 'ri-map-pin-line',
+      activeIcon: 'ri-map-pin-fill',
+      inactiveIcon: 'ri-map-pin-line',
+      includeInLargeScreen: false,
+    },
+    notifications: {
+      to: '/notifications',
+      label: 'Notifications',
+      icon: 'ri-notification-line',
+      activeIcon: 'ri-notification-fill',
+      inactiveIcon: 'ri-notification-line',
+      requireLogin: true,
+      includeInLargeScreen: true,
+    },
+    chats: {
+      to: '/messages',
+      label: 'Chats',
+      icon: 'ri-chat-1-line',
+      activeIcon: 'ri-chat-1-fill',
+      inactiveIcon: 'ri-chat-1-line',
+      requireLogin: true,
+      includeInLargeScreen: true,
+    },
+    subscription: {
+      to: '/subscription',
+      label: 'Subscription',
+      icon: 'ri-star-line',
+      activeIcon: 'ri-star-fill',
+      inactiveIcon: 'ri-star-line',
+      requireLogin: true,
+      includeInLargeScreen: true,
+    },
+    wallet: {
+      to: '/wallet',
+      label: 'Wallet',
+      icon: 'ri-wallet-line',
+      activeIcon: 'ri-wallet-fill',
+      inactiveIcon: 'ri-wallet-line',
+      requireLogin: true,
+      includeInLargeScreen: true,
+    },
+  };
+};

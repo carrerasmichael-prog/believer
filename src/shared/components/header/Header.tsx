@@ -1,21 +1,22 @@
-import {ReactNode, useRef} from "react"
-import {useScrollableParent} from "@/shared/hooks/useScrollableParent"
-import NotificationButton from "./NotificationButton"
-import UnseenMessagesBadge from "@/shared/components/messages/UnseenMessagesBadge"
-import Icon from "@/shared/components/Icons/Icon"
-import {useUserStore} from "@/stores/user"
-import {useLocation, useNavigate} from "@/navigation"
-import {useUIStore} from "@/stores/ui"
-import classNames from "classnames"
-import {useHeaderScroll} from "./useHeaderScroll"
-import {HeaderNavigation} from "./HeaderNavigation"
-import {useHeaderClick} from "./useHeaderClick"
-import {RelayConnectivityIndicator} from "../RelayConnectivityIndicator"
-import RoomSelector from '@/components/RoomSelector';
+// src/shared/components/header/Header.tsx
+import { ReactNode, useRef } from "react";
+import { useScrollableParent } from "@/shared/hooks/useScrollableParent";
+import NotificationButton from "./NotificationButton";
+import UnseenMessagesBadge from "@/shared/components/messages/UnseenMessagesBadge";
+import Icon from "@/shared/components/Icons/Icon";
+import { useUserStore } from "@/stores/user";
+import { useLocation, useNavigate } from "@/navigation";
+import { useUIStore } from "@/stores/ui";
+import classNames from "classnames";
+import { useHeaderScroll } from "./useHeaderScroll";
+import { useHeaderClick } from "./useHeaderClick";
+import { RelayConnectivityIndicator } from "../RelayConnectivityIndicator";
+import RoomSelector from '@/shared/components/RoomSelector';
+import { HeaderNavigation } from './HeaderNavigation'; // Fixed import
 
 interface HeaderProps {
   children?: ReactNode;
-  title?: string;                 // ← ADD THIS
+  title?: string;
   rightContent?: ReactNode;
   showBack?: boolean;
   showNotifications?: boolean;
@@ -36,33 +37,31 @@ const Header = ({
   const location = useLocation();
   const navigate = useNavigate();
 
-  const headerRef = useRef<HTMLDivElement>(null)
-  const contentRef = useRef<HTMLDivElement>(null)
-  const {scrollContainer, findScrollableParent} = useScrollableParent(headerRef)
+  const headerRef = useRef<HTMLDivElement>(null);
+  const contentRef = useRef<HTMLDivElement>(null);
+  const { scrollContainer, findScrollableParent } = useScrollableParent(headerRef);
 
-  // Use extracted scroll hook
   useHeaderScroll({
     slideUp,
     headerRef,
     contentRef,
     pathname: location.pathname,
-  })
+  });
 
   const handleHeaderClick = useHeaderClick({
     headerRef,
     scrollContainer,
     findScrollableParent,
     scrollDown,
-  })
+  });
 
-  // Only show back button if showBack is true, otherwise no left button
-  const leftButton = showBack ? <HeaderNavigation showBack={showBack} /> : null
+  const leftButton = showBack ? <HeaderNavigation showBack={showBack} /> : null;
 
   return (
     <header
       ref={headerRef}
       onClick={handleHeaderClick}
-      style={slideUp ? {transform: "translateY(0px)"} : undefined}
+      style={slideUp ? { transform: "translateY(0px)" } : undefined}
       className={classNames(
         "pt-[env(safe-area-inset-top)] min-h-16 flex top-0 bg-base-200 md:bg-opacity-80 md:backdrop-blur-sm text-base-content px-2 z-30 select-none w-full cursor-pointer",
         "fixed md:sticky"
@@ -73,11 +72,13 @@ const Header = ({
         className="flex justify-between items-center flex-1 w-full py-2"
       >
         <div className="flex items-center gap-2 flex-1">
-        {leftButton}
-        <div className="flex-1 flex justify-center">
-        <RoomSelector />
+          {leftButton}
+          <div className="flex-1 flex justify-center">
+            <div className="relative z-[1000] w-full max-w-xs">
+              <RoomSelector />
+            </div>
+          </div>
         </div>
-      </div>
         <div className="flex items-center gap-2 mr-2 flex-shrink-0">
           <div className="md:hidden">
             <RelayConnectivityIndicator />
@@ -122,7 +123,7 @@ const Header = ({
         </div>
       </div>
     </header>
-  )
-}
+  );
+};
 
-export default Header
+export default Header;

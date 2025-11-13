@@ -1,5 +1,5 @@
 // src/navigation/Router.tsx
-import { Suspense } from 'react';
+import { Suspense, useEffect } from 'react';
 import { useNavigation } from './hooks';
 import { routes } from './routes';
 import { matchPath } from './utils';
@@ -8,6 +8,7 @@ import { RouteProvider } from './RouteContext';
 import { RouteBaseContext } from './contexts';
 import ErrorBoundary from '@/shared/components/ui/ErrorBoundary';
 import TownSquare from '@/pages/landing/TownSquare';
+import { useHasSeenThreshold, useDefaultRoom, useIsLoggedIn, useMarkThresholdSeen } from '@/stores/user';
 
 // Define StackItem type explicitly
 interface StackItem {
@@ -16,12 +17,37 @@ interface StackItem {
   state?: unknown;
 }
 
-// Named export instead of default
+// Named export
 export const Router = () => {
-  const { stack, currentIndex } = useNavigation();
+  const { stack, currentIndex, replace } = useNavigation();
 
-  // Ensure stack is initialized with fallback route if empty
+  // User state
+  const hasSeenThreshold = useHasSeenThreshold();
+  const defaultRoom = useDefaultRoom();
+  const isLoggedIn = useIsLoggedIn();
+  const markThresholdSeen = useMarkThresholdSeen();
+
+  // Ensure stack is initialized
   const effectiveStack: StackItem[] = stack.length > 0 ? stack : [{ url: '/', index: 0 }];
+
+  // Smart routing after login / first visit
+  useEffect(() => {
+    const currentUrl = effectiveStack[currentIndex]?.url || '/';
+
+    // First visit → show Threshold
+    if (!hasSeenThreshold && currentUrl === '/') {
+      replace('/');
+      markThresholdSeen(); // Mark seen immediately
+      return;
+    }
+
+    // Returning user + logged in + at root → redirect
+    if (hasSeenThreshold && isLoggedIn && currentUrl === '/') {
+      const isDesktop = window.innerWidth >= 1200;
+      const targetUrl = isDesktop ? '/townsquare' : `/room/${defaultRoom}`;
+      replace(targetUrl);
+    }
+  }, [hasSeenThreshold, isLoggedIn, defaultRoom, currentIndex, effectiveStack, replace, markThresholdSeen]);
 
   return (
     <>
@@ -30,15 +56,20 @@ export const Router = () => {
         let params: Record<string, string> = {};
         let basePath = '';
 
-        for (const route of routes) {
-          const match = matchPath(item.url, route.path);
-          if (match) {
-            matchedRoute = route;
-            params = match.params;
-            if (route.path.endsWith('/*')) {
-              basePath = route.path.slice(0, -2);
+        // Force Threshold on root if not seen
+        if (item.url === '/' && !hasSeenThreshold) {
+          matchedRoute = { component: TownSquare };
+        } else {
+          for (const route of routes) {
+            const match = matchPath(item.url, route.path);
+            if (match) {
+              matchedRoute = route;
+              params = match.params;
+              if (route.path.endsWith('/*')) {
+                basePath = route.path.slice(0, -2);
+              }
+              break;
             }
-            break;
           }
         }
 

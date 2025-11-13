@@ -27,10 +27,10 @@ RewriteRule ^(.*)$ index.html [L]
 });
 
 export default defineConfig(({ mode }) => ({
-  base: process.env.VITE_BASE_PATH || '/', // Dynamic base for root or subdirectory
-  publicDir: 'public', // Copies public/ contents to /dist
+  base: process.env.VITE_BASE_PATH || '/',
+  publicDir: 'public',
   plugins: [
-    mode === 'production' ? nodePolyfills() : null, // Apply nodePolyfills only in production
+    mode === 'production' ? nodePolyfills() : null,
     react(),
     VitePWA({
       injectManifest: {
@@ -44,21 +44,21 @@ export default defineConfig(({ mode }) => ({
       filename: 'service-worker.ts',
       registerType: 'autoUpdate',
       devOptions: {
-        enabled: false, // Disable Psalm 150
+        enabled: false,
       },
     } as VitePWAOptions),
-    copyDotFilesPlugin(), // Ensure .htaccess is included in /dist
-  ].filter(Boolean), // Remove null plugins
+    copyDotFilesPlugin(),
+  ].filter(Boolean),
   resolve: {
     alias: {
-      '@': '/src',
+      '@': resolve(__dirname, './src'),
     },
   },
   build: {
     reportCompressedSize: true,
     chunkSizeWarningLimit: 2000,
     rollupOptions: {
-      input: resolve(__dirname, 'index.html'), // Single entry point
+      input: resolve(__dirname, 'index.html'),
       external: [],
       onLog(level, log, handler) {
         if (log.code === 'CIRCULAR_DEPENDENCY') return;
@@ -93,7 +93,7 @@ export default defineConfig(({ mode }) => ({
       },
     },
     assetsDir: 'assets',
-    copyPublicDir: true, // Ensures public/ contents are copied
+    copyPublicDir: true,
   },
   define: {
     CONFIG: config,
@@ -103,13 +103,12 @@ export default defineConfig(({ mode }) => ({
     'import.meta.env.VITE_BASE_PATH': JSON.stringify(process.env.VITE_BASE_PATH || '/'),
   },
   server: {
-    port: 5174, // Use 5174 to avoid EADDRINUSE
+    port: 5174,
     hmr: {
       overlay: true,
-      port: 5174, // Match server port
+      port: 5174,
     },
     proxy: {
-      // Simplified proxy for API routes only
       '/user': {
         target: 'http://localhost:8000',
         changeOrigin: true,
@@ -125,6 +124,11 @@ export default defineConfig(({ mode }) => ({
       '/.well-known': {
         target: 'http://localhost:8000',
         changeOrigin: true,
+      },
+      '/.well-known/appspecific/com.chrome.devtools.json': {
+        target: 'http://localhost:5174',
+        changeOrigin: true,
+        rewrite: () => '',
       },
     },
   },

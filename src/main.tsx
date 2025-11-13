@@ -4,7 +4,7 @@ import { useUserStore } from './stores/user';
 import ReactDOM from 'react-dom/client';
 import { BrowserRouter } from 'react-router-dom';
 import { subscribeToDMNotifications, subscribeToNotifications } from './utils/notifications';
-import { migrateUserState, migratePublicChats } from './utils/migration';
+import { migratePublicChats } from './utils/migration'; // Removed unused migrateUserState
 import pushNotifications from './utils/pushNotifications';
 import { useSettingsStore } from '@/stores/settings';
 import { ndk } from './utils/ndk';
@@ -51,7 +51,7 @@ const attachSessionEventListener = () => {
   }
 };
 
-// Move initialization to a function to avoid side effects
+// Initialize app
 const initializeApp = () => {
   // Call ndk() to get NDK instance
   const ndkInstance = ndk();
@@ -82,15 +82,13 @@ const initializeApp = () => {
 
   document.title = 'Believer';
 
-  // Initialize theme from settings store
+  // Initialize theme: localStorage > settings store > system preference
+  const storedTheme = localStorage.getItem('theme');
   const { appearance } = useSettingsStore.getState();
-  document.documentElement.setAttribute(
-    'data-theme',
-    appearance.theme || 'light'
-  );
-
-  // Perform migration before rendering the app
-  migrateUserState();
+  const systemPrefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+  const initialTheme = storedTheme || appearance.theme || (systemPrefersDark ? 'dark' : 'light');
+  document.documentElement.setAttribute('data-theme', initialTheme);
+  document.documentElement.classList.toggle('dark', initialTheme === 'dark');
 };
 
 // Initialize app
@@ -124,12 +122,24 @@ const unsubscribeUser = useUserStore.subscribe((state, prevState) => {
   }
 });
 
-// Subscribe to theme changes
+// Subscribe to theme changes and persist to localStorage
 const unsubscribeTheme = useSettingsStore.subscribe((state) => {
   if (typeof state.appearance.theme === 'string') {
     document.documentElement.setAttribute('data-theme', state.appearance.theme);
+    document.documentElement.classList.toggle('dark', state.appearance.theme === 'dark');
+    localStorage.setItem('theme', state.appearance.theme); // Persist for reloads
   }
 });
+
+// Prevent flash-of-wrong-theme by applying theme early
+const applyInitialTheme = () => {
+  const storedTheme = localStorage.getItem('theme');
+  const systemPrefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+  const theme = storedTheme || (systemPrefersDark ? 'dark' : 'light');
+  document.documentElement.setAttribute('data-theme', theme);
+  document.documentElement.classList.toggle('dark', theme === 'dark');
+};
+applyInitialTheme();
 
 // HMR support
 if (import.meta.hot) {

@@ -129,8 +129,7 @@ iframe {
   }
 }
 
-/* modals */
-
+/* Modals */
 .modal-box {
   max-width: fit-content !important;
 }
@@ -210,4 +209,53 @@ iframe {
 .landing-fullscreen {
   height: 100vh;
   overflow: hidden;
+}
+
+/* === MOBILE NAV SPACING (64px = 16 * 4) === */
+@media (max-width: 767px) {
+  .pb-mobile-nav {
+    padding-bottom: 64px !important;
+  }
+
+  /* MOBILE: Fullscreen TownSquare */
+  .landing-fullscreen {
+    height: 100dvh;
+    overflow: hidden;
+  }
+
+  .pb-mobile-nav {
+    padding-bottom: max(64px, env(safe-area-inset-bottom)) !important;
+  }
+
+  /* Hide scrollbar but keep scrollable */
+  .scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+/* Theme toggle button styles */
+.theme-toggle-btn {
+  @apply flex items-center w-full px-4 py-2 text-base-content hover:bg-base-200 transition-colors duration-200;
+}
+
+.theme-toggle-btn img {
+  @apply w-6 h-6 mr-2;
+}
+
+.theme-toggle-btn span {
+  @apply text-base font-medium;
+}
+
+/* Dark mode specific styles */
+[data-theme="dark"] .theme-toggle-btn {
+  @apply text-base-content hover:bg-base-300;
+}
+
+/* Light mode specific styles */
+[data-theme="light"] .theme-toggle-btn {
+  @apply text-base-content hover:bg-base-200;
 }

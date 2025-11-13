@@ -1,5 +1,5 @@
 Folder PATH listing for volume System
-Volume serial number is 0000007B 7A24:C3EB
+Volume serial number is 000000B3 7A24:C3EB
 C:\USERS\MICHAEL\BELIEVER
 |   .dockerignore
 |   .env
@@ -70,8 +70,8 @@ C:\USERS\MICHAEL\BELIEVER
 |       strfry.conf
 |       
 +---dist
+|   |   .htaccess
 |   |   clean.png
-|   |   debug.html
 |   |   favicon.png
 |   |   index.html
 |   |   manifest.json
@@ -84,33 +84,30 @@ C:\USERS\MICHAEL\BELIEVER
 |   |       assetlinks.json
 |   |       
 |   +---assets
-|   |       animalname-BBI_zxTK.js
-|   |       browser-B2PcJ4IG.js
-|   |       debug-CeJ2JFZ5.js
-|   |       DebugSession-Df3PiBs1.css
-|   |       DebugSession-DQPnVdmF.js
-|   |       GeohashMapContent-BmPDdhMG.js
+|   |       animalname-O_ZNDApU.js
+|   |       browser-7UbTlisB.js
+|   |       GeohashMapContent-GZTVAzKx.js
 |   |       hls-DdkpVA0Y.js
 |   |       icons-DT3cSZe7.svg
-|   |       index-BIpLf5i8.js
-|   |       index-Ch7Hsgy1.js
-|   |       index-DngCXVuL.js
-|   |       index-gy3fxfy2.js
-|   |       index-KAbTDm1o.js
-|   |       index-pNgyqmc1.js
-|   |       index-U9dtgEu6.js
-|   |       index-VeawwThH.js
-|   |       main-DFYk1Yd1.js
-|   |       main-Dgihpmma.css
-|   |       module-Cp5zNv2N.js
+|   |       index-BFOBnEHW.js
+|   |       index-BkVpCTfM.js
+|   |       index-BW_BAIVP.js
+|   |       index-B_dMtpml.css
+|   |       index-CWorLC7L.js
+|   |       index-d9J_7lK-.js
+|   |       index-Dd_2otC_.js
+|   |       index-DS3QUd66.js
+|   |       index-DYm4lNts.js
+|   |       index-iBPF-4VJ.js
+|   |       index-Yw0WHfAV.js
+|   |       module-gil6Nfqt.js
 |   |       native-48B9X9Wg.js
 |   |       ostrich-black-C7nn6yEE.png
 |   |       profileData-Bl6K0-YF.js
-|   |       QRScanner-BhGKZt0a.js
+|   |       QRScanner-C3zMDfIu.js
 |   |       running-ostrich-C7wXPfXR.gif
 |   |       socialGraph-CKDidhMy.bin
-|   |       TownSquare-DqmSnOA6.js
-|   |       vendor-nz4Bgwxi.js
+|   |       vendor-BpG2yVb2.js
 |   |       
 |   +---cashu
 |   |   |   clean.png
@@ -472,54 +469,42 @@ C:\USERS\MICHAEL\BELIEVER
 |   |           @tauri-apps_plugin-os.js.map
 |   |           blurhash.js
 |   |           blurhash.js.map
-|   |           chunk-2HHOCECA.js
-|   |           chunk-2HHOCECA.js.map
-|   |           chunk-3KTEDZL5.js
-|   |           chunk-3KTEDZL5.js.map
-|   |           chunk-5ZVQ3YY7.js
-|   |           chunk-5ZVQ3YY7.js.map
-|   |           chunk-7C3FUUEP.js
-|   |           chunk-7C3FUUEP.js.map
-|   |           chunk-BPHBMKE3.js
-|   |           chunk-BPHBMKE3.js.map
-|   |           chunk-D6AOQFXW.js
-|   |           chunk-D6AOQFXW.js.map
-|   |           chunk-DOTFCNOK.js
-|   |           chunk-DOTFCNOK.js.map
-|   |           chunk-DTJJZWBZ.js
-|   |           chunk-DTJJZWBZ.js.map
-|   |           chunk-EDSMOWQ5.js
-|   |           chunk-EDSMOWQ5.js.map
-|   |           chunk-EW46UDEH.js
-|   |           chunk-EW46UDEH.js.map
-|   |           chunk-HQOAXL3O.js
-|   |           chunk-HQOAXL3O.js.map
-|   |           chunk-IDPCM3JA.js
-|   |           chunk-IDPCM3JA.js.map
-|   |           chunk-KQXAY6CS.js
-|   |           chunk-KQXAY6CS.js.map
-|   |           chunk-MM4ZP7PH.js
-|   |           chunk-MM4ZP7PH.js.map
-|   |           chunk-NPDFYLHK.js
-|   |           chunk-NPDFYLHK.js.map
-|   |           chunk-O4LW53BV.js
-|   |           chunk-O4LW53BV.js.map
-|   |           chunk-PTCI7ZZB.js
-|   |           chunk-PTCI7ZZB.js.map
-|   |           chunk-SWTSMTVN.js
-|   |           chunk-SWTSMTVN.js.map
-|   |           chunk-VGACZRH2.js
-|   |           chunk-VGACZRH2.js.map
-|   |           chunk-WNG2P66T.js
-|   |           chunk-WNG2P66T.js.map
-|   |           chunk-WULUS5HF.js
-|   |           chunk-WULUS5HF.js.map
-|   |           chunk-XZYRVESA.js
-|   |           chunk-XZYRVESA.js.map
-|   |           chunk-YM6OSNOT.js
-|   |           chunk-YM6OSNOT.js.map
-|   |           chunk-Z6TW6TL3.js
-|   |           chunk-Z6TW6TL3.js.map
+|   |           chunk-2ACD7LEZ.js
+|   |           chunk-2ACD7LEZ.js.map
+|   |           chunk-2TRJ25QW.js
+|   |           chunk-2TRJ25QW.js.map
+|   |           chunk-53B2YAQ4.js
+|   |           chunk-53B2YAQ4.js.map
+|   |           chunk-6EXAMU6Q.js
+|   |           chunk-6EXAMU6Q.js.map
+|   |           chunk-6KLJHLWE.js
+|   |           chunk-6KLJHLWE.js.map
+|   |           chunk-6RMLJOHS.js
+|   |           chunk-6RMLJOHS.js.map
+|   |           chunk-BR2ZYEQS.js
+|   |           chunk-BR2ZYEQS.js.map
+|   |           chunk-CCUEKEDR.js
+|   |           chunk-CCUEKEDR.js.map
+|   |           chunk-FGWFZREX.js
+|   |           chunk-FGWFZREX.js.map
+|   |           chunk-GDZKV5FY.js
+|   |           chunk-GDZKV5FY.js.map
+|   |           chunk-LMDATAUO.js
+|   |           chunk-LMDATAUO.js.map
+|   |           chunk-OE5VTYOE.js
+|   |           chunk-OE5VTYOE.js.map
+|   |           chunk-PR4QN5HX.js
+|   |           chunk-PR4QN5HX.js.map
+|   |           chunk-SIXXX4LO.js
+|   |           chunk-SIXXX4LO.js.map
+|   |           chunk-UBQEHEVZ.js
+|   |           chunk-UBQEHEVZ.js.map
+|   |           chunk-XSTLBLSK.js
+|   |           chunk-XSTLBLSK.js.map
+|   |           chunk-ZBUEQHIV.js
+|   |           chunk-ZBUEQHIV.js.map
+|   |           chunk-ZVWJT3ZX.js
+|   |           chunk-ZVWJT3ZX.js.map
 |   |           classnames.js
 |   |           classnames.js.map
 |   |           dexie.js
@@ -585,24 +570,6 @@ C:\USERS\MICHAEL\BELIEVER
 |   |           tseep.js.map
 |   |           typescript-lru-cache.js
 |   |           typescript-lru-cache.js.map
-|   |           vite-plugin-node-polyfills_shims_buffer.js
-|   |           vite-plugin-node-polyfills_shims_buffer.js.map
-|   |           vite-plugin-node-polyfills_shims_global.js
-|   |           vite-plugin-node-polyfills_shims_global.js.map
-|   |           vite-plugin-node-polyfills_shims_process.js
-|   |           vite-plugin-node-polyfills_shims_process.js.map
-|   |           workbox-cacheable-response.js
-|   |           workbox-cacheable-response.js.map
-|   |           workbox-core.js
-|   |           workbox-core.js.map
-|   |           workbox-expiration.js
-|   |           workbox-expiration.js.map
-|   |           workbox-precaching.js
-|   |           workbox-precaching.js.map
-|   |           workbox-routing.js
-|   |           workbox-routing.js.map
-|   |           workbox-strategies.js
-|   |           workbox-strategies.js.map
 |   |           zustand.js
 |   |           zustand.js.map
 |   |           zustand_middleware.js
@@ -40402,8 +40369,8 @@ C:\USERS\MICHAEL\BELIEVER
 |   |       wallet-icon.svg
 |   |       
 |   +---components
+|   |       DestinyMenu.tsx
 |   |       feed.tsx
-|   |       navigation.tsx
 |   |       RoomSelector.tsx
 |   |       slice.tsx
 |   |       
@@ -40532,6 +40499,9 @@ C:\USERS\MICHAEL\BELIEVER
 |   |   |   \---components
 |   |   |           MarketFilters.tsx
 |   |   |           
+|   |   +---mobile-home
+|   |   |       index.tsx
+|   |   |       
 |   |   +---new
 |   |   |       index.tsx
 |   |   |       

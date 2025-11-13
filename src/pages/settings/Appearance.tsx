@@ -1,21 +1,26 @@
-import {SettingsGroup} from "@/shared/components/settings/SettingsGroup"
-import {SettingsGroupItem} from "@/shared/components/settings/SettingsGroupItem"
-import {useSettingsStore} from "@/stores/settings"
-import {ChangeEvent} from "react"
+// src/pages/settings/Appearance.tsx
+import { SettingsGroup } from "@/shared/components/settings/SettingsGroup";
+import { SettingsGroupItem } from "@/shared/components/settings/SettingsGroupItem";
+import { useSettingsStore } from "@/stores/settings";
+import { ChangeEvent } from "react";
 
 function AppearanceSettings() {
-  const {appearance, updateAppearance} = useSettingsStore()
+  const { appearance, updateAppearance } = useSettingsStore();
 
   function handleThemeChange(e: ChangeEvent<HTMLSelectElement>) {
-    updateAppearance({theme: e.target.value})
+    const value = e.target.value;
+    const validThemes = ['light', 'dark', 'iris', 'system', 'believer'];
+    if (validThemes.includes(value)) {
+      updateAppearance({ theme: value as 'light' | 'dark' });
+    }
   }
 
   function handleSingleColumnLayoutChange(e: ChangeEvent<HTMLInputElement>) {
-    updateAppearance({singleColumnLayout: e.target.checked})
+    updateAppearance({ singleColumnLayout: e.target.checked });
   }
 
   function handleLimitedMaxWidthChange(e: ChangeEvent<HTMLInputElement>) {
-    updateAppearance({limitedMaxWidth: e.target.checked})
+    updateAppearance({ limitedMaxWidth: e.target.checked });
   }
 
   return (
@@ -35,7 +40,7 @@ function AppearanceSettings() {
                   <option value="dark">Dark</option>
                   <option value="iris">Iris</option>
                   <option value="system">System</option>
-                  <option value="believer">Believer</option> {/* NEW THEME */}
+                  <option value="believer">Believer</option>
                 </select>
               </div>
             </SettingsGroupItem>
@@ -79,7 +84,7 @@ function AppearanceSettings() {
         </div>
       </div>
     </div>
-  )
+  );
 }
 
-export default AppearanceSettings
+export default AppearanceSettings;
