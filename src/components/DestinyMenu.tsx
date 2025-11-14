@@ -3,6 +3,7 @@ import { useState } from "react"
 import { useUserStore, useSetIdentity, useSyncKind0 } from "@/stores/user"
 import { ndk } from "@/utils/ndk"
 import { NDKEvent } from "@nostr-dev-kit/ndk"
+import Icon from "@/shared/components/Icons/Icon.tsx" // make sure this path is correct
 
 interface Room {
   id: string
@@ -67,7 +68,17 @@ export default function DestinyMenu({ onClose }: DestinyMenuProps) {
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
       <div className="bg-base-100 rounded-xl shadow-2xl max-w-md w-full p-6">
-        <h2 className="text-2xl font-bold text-center mb-2">Choose Your Destiny</h2>
+        {/* Header with icon on large screens */}
+        <div className="flex items-center justify-center mb-2">
+          <h2 className="text-2xl font-bold text-center mr-2">Choose Your Destiny</h2>
+          <div className="hidden lg:block">
+            <Icon
+              name="mail-outline"
+              className="w-6 h-6 text-base-content/80"
+            />
+          </div>
+        </div>
+
         <p className="text-sm text-base-content/70 text-center mb-6">
           This sets your belief and home room.
         </p>
