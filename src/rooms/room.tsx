@@ -20,7 +20,6 @@ const Room = () => {
       console.log('[room.tsx] Preparing sound for:', roomId);
 
       const audio = new Audio(`/${config.sound}`);
-      audio.loop = true;
       audio.volume = mute ? 0 : 0.6;
       setCurrentAudio(audio);
 
