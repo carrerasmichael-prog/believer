@@ -1,33 +1,54 @@
-import {expect} from "@playwright/test"
+// tests/helpers/auth.ts   (or keep it as auth.setup.ts if you prefer)
+import { expect, Page, Locator } from '@playwright/test';
 
-async function signUp(page, username = "Test User") {
-  // Start from the home page
-  await page.goto("/")
+/**
+ * Signs up a new user and returns the username that was used.
+ *
+ * @param page      – Playwright page instance (injected by the test fixture)
+ * @param username  – Name to use (defaults to "Test User")
+ */
+export async function signUp(page: Page, username: string = 'Test User'): Promise<string> {
+  // -----------------------------------------------------------------
+  // 1. Go to the home page
+  // -----------------------------------------------------------------
+  await page.goto('/');
 
-  // Wait for any signup button to be visible and click it
-  const signUpButtons = page.locator(".signup-btn")
-  const visibleButton = signUpButtons.filter({hasText: "Sign up"}).first()
-  await visibleButton.waitFor({state: "visible", timeout: 10000})
-  await visibleButton.click()
+  // -----------------------------------------------------------------
+  // 2. Click the first visible "Sign up" button with class .signup-btn
+  // -----------------------------------------------------------------
+  const signUpButtons: Locator = page.locator('.signup-btn');
+  const visibleButton: Locator = signUpButtons
+    .filter({ hasText: 'Sign up' })
+    .first();
 
-  // Wait for the signup dialog to appear
-  await expect(page.getByRole("heading", {name: "Sign up"})).toBeVisible()
+  await visibleButton.waitFor({ state: 'visible', timeout: 10_000 });
+  await visibleButton.click();
 
-  // Enter a name
-  const nameInput = page.getByPlaceholder("What's your name?")
-  await nameInput.fill(username)
+  // -----------------------------------------------------------------
+  // 3. Dialog appears → fill name → click “Go”
+  // -----------------------------------------------------------------
+  await expect(page.getByRole('heading', { name: 'Sign up' })).toBeVisible();
 
-  // Click the Go button
-  const goButton = page.getByRole("button", {name: "Go"})
-  await goButton.click()
+  const nameInput: Locator = page.getByPlaceholder("What's your name?");
+  await nameInput.fill(username);
 
-  // Wait for signup to complete
-  await expect(page.getByRole("heading", {name: "Sign up"})).not.toBeVisible()
-  await expect(page.locator("#main-content").getByTestId("new-post-button")).toBeVisible()
-  // Check that username appears in the sidebar (most reliable location)
-  await expect(page.getByTestId("sidebar-user-row").getByText(username)).toBeVisible()
+  const goButton: Locator = page.getByRole('button', { name: 'Go' });
+  await goButton.click();
 
-  return username
+  // -----------------------------------------------------------------
+  // 4. Wait for the dialog to disappear and the main UI to load
+  // -----------------------------------------------------------------
+  await expect(page.getByRole('heading', { name: 'Sign up' })).not.toBeVisible();
+  await expect(
+    page.locator('#main-content').getByTestId('new-post-button')
+  ).toBeVisible();
+
+  // -----------------------------------------------------------------
+  // 5. Verify the username shows up in the sidebar
+  // -----------------------------------------------------------------
+  await expect(
+    page.getByTestId('sidebar-user-row').getByText(username)
+  ).toBeVisible();
+
+  return username;
 }
-
-export {signUp}

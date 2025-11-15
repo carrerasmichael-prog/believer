@@ -34,12 +34,17 @@ const NavSideBar = () => {
 
   const logoUrl = CONFIG.navLogo;
 
+  // Mobile: Bottom Nav
   if (isSmall) {
     return (
       <ErrorBoundary>
         <nav className="fixed bottom-0 left-0 right-0 bg-base-200 border-t border-custom z-50 flex justify-around items-center h-16 px-2">
           <button className="flex flex-col items-center gap-1 text-xs" onClick={toggleTheme}>
-            <img src={appearance.theme === "dark" ? "/icons/lightmode.png" : "/icons/darkmode.png"} alt="Mode" className="w-6 h-6" />
+            <img
+              src={appearance.theme === "dark" ? "/icons/lightmode.png" : "/icons/darkmode.png"}
+              alt="Mode"
+              className="w-6 h-6"
+            />
             <span>Mode</span>
           </button>
 
@@ -71,6 +76,7 @@ const NavSideBar = () => {
     );
   }
 
+  // Desktop: Sidebar (Medium + Large)
   return (
     <ErrorBoundary>
       <div className="bg-base-200 hidden md:flex md:sticky top-0 h-screen z-[9999] flex-col justify-between border-r border-custom overflow-y-visible scrollbar-hide pt-[env(safe-area-inset-top)] flex-shrink-0 md:w-20 xl:w-64">
@@ -94,25 +100,46 @@ const NavSideBar = () => {
             </div>
           )}
 
-          {/* PERFECT: Icon only on Medium, full pill on Large */}
+          {/* Room Selector: Icon on Medium, Full on Large */}
           <RoomSelector iconOnly={!isLarge} />
 
           <button onClick={toggleTheme} className="flex items-center gap-3 p-3 hover:bg-base-300 rounded-lg">
-            <img src={appearance.theme === "dark" ? "/icons/lightmode.png" : "/icons/darkmode.png"} alt="Mode" className="w-6 h-6" />
+            <img
+              src={appearance.theme === "dark" ? "/icons/lightmode.png" : "/icons/darkmode.png"}
+              alt="Mode"
+              className="w-6 h-6"
+            />
             {isLarge && <span>Mode</span>}
           </button>
         </div>
 
-        {!myPubKey && (
-          <div className="p-4">
-            <button onClick={() => setShowLoginDialog(true)} className="btn btn-primary w-full text-lg">
-              Sign up
+        {/* Sign Up Button: Icon on Medium, Compact Pill on Large */}
+        {!myPubKey && !isSmall && (
+          <div className="p-4 border-t border-base-300">
+            <button
+              onClick={() => setShowLoginDialog(true)}
+              className={`
+                flex items-center justify-center gap-2 transition-all
+                ${isLarge
+                  ? 'w-auto justify-start btn btn-primary px-8 py-3 text-base font-bold rounded-full shadow-xl'
+                  : 'w-full p-3 hover:bg-base-300 rounded-lg'
+                }
+              `}
+            >
+              <RiLoginBoxLine className="w-6 h-6" />
+              {isLarge && <span>Sign up</span>}
             </button>
           </div>
         )}
 
-        {myPubKey && ndk().signer && <PublishButton />}
+        {/* Publish Button (Logged In) */}
+        {myPubKey && ndk().signer && (
+          <div className="p-4 border-t border-base-300">
+            <PublishButton />
+          </div>
+        )}
 
+        {/* User Row (Logged In) */}
         {myPubKey && (
           <div className="p-4 border-t border-base-300">
             <RelayConnectivityIndicator className="mb-3" />

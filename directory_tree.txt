@@ -1,5 +1,5 @@
 Folder PATH listing for volume System
-Volume serial number is 000000B3 7A24:C3EB
+Volume serial number is 00000026 7A24:C3EB
 C:\USERS\MICHAEL\BELIEVER
 |   .dockerignore
 |   .env
@@ -84,30 +84,30 @@ C:\USERS\MICHAEL\BELIEVER
 |   |       assetlinks.json
 |   |       
 |   +---assets
-|   |       animalname-O_ZNDApU.js
-|   |       browser-7UbTlisB.js
-|   |       GeohashMapContent-GZTVAzKx.js
+|   |       animalname-BfpzENI-.js
+|   |       browser-D75Hhwqo.js
+|   |       GeohashMapContent-BmIBxO1j.js
 |   |       hls-DdkpVA0Y.js
 |   |       icons-DT3cSZe7.svg
-|   |       index-BFOBnEHW.js
-|   |       index-BkVpCTfM.js
-|   |       index-BW_BAIVP.js
-|   |       index-B_dMtpml.css
-|   |       index-CWorLC7L.js
-|   |       index-d9J_7lK-.js
-|   |       index-Dd_2otC_.js
-|   |       index-DS3QUd66.js
-|   |       index-DYm4lNts.js
-|   |       index-iBPF-4VJ.js
-|   |       index-Yw0WHfAV.js
-|   |       module-gil6Nfqt.js
+|   |       index-0RWMU3Qt.js
+|   |       index-B2u-4mnB.js
+|   |       index-BIUoIYpj.js
+|   |       index-BnOHNfgu.js
+|   |       index-CH2CsArd.js
+|   |       index-CKhBHKVy.js
+|   |       index-DdCaZdUV.js
+|   |       index-Df6MmxDQ.js
+|   |       index-enmBVFZo.js
+|   |       index-T_0WolOk.js
+|   |       index-yvPksfQP.css
+|   |       module-DI9p0J2E.js
 |   |       native-48B9X9Wg.js
 |   |       ostrich-black-C7nn6yEE.png
 |   |       profileData-Bl6K0-YF.js
-|   |       QRScanner-C3zMDfIu.js
+|   |       QRScanner-CXER6rjc.js
 |   |       running-ostrich-C7wXPfXR.gif
 |   |       socialGraph-CKDidhMy.bin
-|   |       vendor-BpG2yVb2.js
+|   |       vendor-DP-JXwLS.js
 |   |       
 |   +---cashu
 |   |   |   clean.png
@@ -218,6 +218,8 @@ C:\USERS\MICHAEL\BELIEVER
 |   +---icons
 |   |       atheism.png
 |   |       church.png
+|   |       darkmode.png
+|   |       lightmode.png
 |   |       lobby.png
 |   |       mandir.png
 |   |       market.png
@@ -40275,6 +40277,8 @@ C:\USERS\MICHAEL\BELIEVER
 |   +---icons
 |   |       atheism.png
 |   |       church.png
+|   |       darkmode.png
+|   |       lightmode.png
 |   |       lobby.png
 |   |       mandir.png
 |   |       market.png
@@ -40371,7 +40375,6 @@ C:\USERS\MICHAEL\BELIEVER
 |   +---components
 |   |       DestinyMenu.tsx
 |   |       feed.tsx
-|   |       RoomSelector.tsx
 |   |       slice.tsx
 |   |       
 |   +---constants
@@ -40886,6 +40889,7 @@ C:\USERS\MICHAEL\BELIEVER
 |   |   |           UserRow.tsx
 |   |   |           
 |   |   +---constants
+|   |   |       menuItems.ts
 |   |   |       relays.ts
 |   |   |       
 |   |   +---hooks

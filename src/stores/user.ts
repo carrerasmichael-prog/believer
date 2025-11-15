@@ -68,7 +68,7 @@ interface UserState {
   reset: () => void
   ensureDefaultMediaserver: (isSubscriber: boolean) => void
   awaitHydration: () => Promise<void>
-  completeHydration: () => void  // ← NEW: explicitly resolve
+  completeHydration: () => void
 
   // Identity + kind:0
   setIdentity: (identity: Partial<UserIdentity>) => void
@@ -97,7 +97,7 @@ export const useUserStore = create<UserState>()((set, get) => {
     hasHydrated: false,
     identity: { 
       state: "nomad",
-      default_room: "lobby",
+      default_room: "square",
       hasSeenThreshold: false
     } as UserIdentity,
     isLoggedIn: false,
@@ -188,7 +188,7 @@ export const useUserStore = create<UserState>()((set, get) => {
     },
     completeHydration: () => {
       if (resolveHydration) {
-        resolveHydration()  // ← EXPLICIT READ: satisfies TS6133
+        resolveHydration()
         resolveHydration = null
         hydrationPromise = null
       }
@@ -219,7 +219,7 @@ export const useUserStore = create<UserState>()((set, get) => {
           }
 
           const belief = content.belief ?? "nomad"
-          const default_room = content.default_room ?? "lobby"
+          const default_room = content.default_room ?? "square"
 
           set((state) => ({
             identity: {
@@ -235,7 +235,7 @@ export const useUserStore = create<UserState>()((set, get) => {
           event.content = JSON.stringify({
             name: "Nomad",
             belief: "Nomad",
-            default_room: "lobby"
+            default_room: "square"
           })
           await event.sign()
           await event.publish()
@@ -256,7 +256,7 @@ export const useUserStore = create<UserState>()((set, get) => {
 export const usePublicKey = () => useUserStore((state) => state.publicKey)
 export const useIsLoggedIn = () => useUserStore((state) => state.isLoggedIn)
 export const useHasSeenThreshold = () => useUserStore((state) => state.identity.hasSeenThreshold)
-export const useDefaultRoom = () => useUserStore((state) => state.identity.default_room || "lobby")
+export const useDefaultRoom = () => useUserStore((state) => state.identity.default_room || "square")
 export const useSetIdentity = () => useUserStore((state) => state.setIdentity)
 export const useSyncKind0 = () => useUserStore((state) => state.syncKind0)
 export const useMarkThresholdSeen = () => useUserStore((state) => state.markThresholdSeen)

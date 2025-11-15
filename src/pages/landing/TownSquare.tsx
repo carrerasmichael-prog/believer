@@ -17,10 +17,10 @@ const TownSquare: React.FC = () => {
   // UI store for modal
   const setShowLoginDialog = useUIStore((state) => state.setShowLoginDialog)
 
-  // Guest → Lobby + mark seen
+  // Guest → Town Square + mark seen
   const handleBrowseAsGuest = () => {
     markThresholdSeen()
-    navigate("/room/lobby")
+    navigate("/room/square")
   }
 
   // Sign In → open modal

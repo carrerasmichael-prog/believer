@@ -38,11 +38,12 @@ const RoomSelector = ({ iconOnly }: RoomSelectorProps) => {
         </button>
       ) : (
         <button
-          onClick={() => setIsOpen(!isOpen)}
-          className="w-full bg-primary hover:bg-primary-focus text-primary-content rounded-full px-10 py-4 text-2xl font-bold shadow-2xl transition-all"
-        >
-          Destiny
-        </button>
+    onClick={() => setIsOpen(!isOpen)}
+    className="mx-auto bg-primary hover:bg-primary-focus text-primary-content rounded-full px-8 py-3 text-xl font-bold shadow-xl transition-all"
+    style={{ maxWidth: 'fit-content' }}
+  >
+    Destiny
+  </button>
       )}
 
       {/* Dropdown — opens UP only on mobile bottom nav */}
@@ -53,7 +54,7 @@ const RoomSelector = ({ iconOnly }: RoomSelectorProps) => {
               ? 'bottom-full mb-3 left-1/2 -translate-x-1/2'
               : 'top-full mt-3 left-0 right-0'
             }
-            absolute w-72 bg-base-200 border-4 border-primary rounded-3xl shadow-2xl z-[999999] overflow-hidden
+            absolute w-40 bg-base-200 border-4 border-primary rounded-3xl shadow-2xl z-[999999] overflow-hidden
           `}
         >
           {MENU_ITEMS.map((item, i) => {
@@ -65,12 +66,12 @@ const RoomSelector = ({ iconOnly }: RoomSelectorProps) => {
                   navigate(item.path);
                   setIsOpen(false);
                 }}
-                className="block w-full text-left px-6 py-3 text-lg font-medium hover:bg-primary hover:text-primary-content transition"
-              >
-                {item.label}
-              </button>
-            );
-          })}
+                className="block w-full text-left px-6 py-1.5 text-base font-medium hover:bg-primary hover:text-primary-content transition"
+          >
+            {item.label}
+          </button>
+        );
+})}
         </div>
       )}
     </div>

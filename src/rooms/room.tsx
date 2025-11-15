@@ -5,7 +5,7 @@ import { ndk } from "@/utils/ndk";
 import { useEffect, useState } from "react";
 
 const Room = () => {
-  const { roomid = 'lobby' } = useParams();
+  const { roomid = 'square' } = useParams();
   const roomId = roomid.toLowerCase().trim();
   const config = ROOM_CONFIGS[roomId];
 
@@ -40,12 +40,12 @@ const Room = () => {
     return (
       <div className="flex flex-col items-center justify-center h-full text-base-content/50">
         <h2 className="text-xl mb-2">Room not found</h2>
-        <p>Try Lobby or another room.</p>
+        <p>Try Town Square or another room.</p>
       </div>
     );
   }
 
-  // === EXTERNAL URL (News → OANN) ===
+  // === EXTERNAL URL (News to OANN) ===
   if (config.externalUrl) {
     return (
       <div className="flex flex-col h-full">

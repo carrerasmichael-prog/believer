@@ -13,7 +13,7 @@ interface Room {
 }
 
 const ROOMS: Room[] = [
-  { id: "lobby", name: "Lobby", belief: "Nomad", state: "nomad" },
+  { id: "square", name: "Town Square", belief: "Nomad", state: "nomad" },
   { id: "temple", name: "Temple", belief: "Believer in Temple", state: "believer" },
   { id: "mosque", name: "Mosque", belief: "Believer in Mosque", state: "believer" },
   { id: "church", name: "Church", belief: "Believer in Church", state: "believer" },
@@ -41,7 +41,7 @@ export default function DestinyMenu({ onClose }: DestinyMenuProps) {
     try {
       const newIdentity = {
         state: room.state,
-        room: room.id === "lobby" ? undefined : room.id,
+        room: room.id === "square" ? undefined : room.id,
         default_room: room.id,
       } as const
 
@@ -50,7 +50,7 @@ export default function DestinyMenu({ onClose }: DestinyMenuProps) {
       const event = new NDKEvent(ndk())
       event.kind = 0
       event.content = JSON.stringify({
-        name: room.id === "lobby" ? "Nomad" : room.id === "atheism" ? "Atheist" : "Believer",
+        name: room.id === "square" ? "Nomad" : room.id === "atheism" ? "Atheist" : "Believer",
         belief: room.belief,
         default_room: room.id,
       })

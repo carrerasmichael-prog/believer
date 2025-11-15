@@ -8,17 +8,19 @@ export interface RoomConfig {
   sound?: string;
   icon?: string;
   externalUrl?: string;  // ← REQUIRED for news
+  default?: boolean;
 }
 
 export const ROOM_CONFIGS: Record<string, RoomConfig> = {
   
-  lobby: {
-    id: 'lobby',
-    name: 'Lobby',
-    subtitle: 'Public square',
-    tags: ['lobby'],
-    sound: 'sounds/door-sound.mp3',
-    icon: 'lobby.png',
+  square: {
+    id: 'square',
+    name: 'Town Square',
+    subtitle: 'Where belief meets the public',
+    tags: ['neutral', 'debate', 'public'],
+    sound: 'sounds/town-ambience.mp3',  // ← we'll create this
+    icon: 'town-square.png',           // ← we'll rename later
+    default: true,
   },
   atheism: {
     id: 'atheism',
@@ -31,7 +33,7 @@ export const ROOM_CONFIGS: Record<string, RoomConfig> = {
   church: {
     id: 'church',
     name: 'Church',
-    subtitle: 'Christian communtiy',
+    subtitle: 'Christian community',
     tags: ['church'],
     sound: 'sounds/church-bell.mp3',
     icon: 'church.png',
@@ -76,14 +78,13 @@ export const ROOM_CONFIGS: Record<string, RoomConfig> = {
     sound: 'sounds/market.mp3',
     icon: 'market.png',
   },
-  
   news: {
-  id: 'news',
-  name: 'News',
-  subtitle: 'World events',
-  tags: ['news'],
-  sound: 'sounds/news.mp3',
-  icon: 'news.png',
-  externalUrl: 'https://www.oann.com/',
-},
+    id: 'news',
+    name: 'News',
+    subtitle: 'World events',
+    tags: ['news'],
+    sound: 'sounds/news.mp3',
+    icon: 'news.png',
+    externalUrl: 'https://www.oann.com/',
+  },
 };
