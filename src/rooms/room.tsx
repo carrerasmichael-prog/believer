@@ -3,37 +3,54 @@ import { useParams } from "@/navigation";
 import { ROOM_CONFIGS } from "@/rooms/roomConfig";
 import { ndk } from "@/utils/ndk";
 import { useEffect, useState } from "react";
+import { useSettingsStore } from "@/stores/settings";
 
 const Room = () => {
   const { roomid = 'square' } = useParams();
   const roomId = roomid.toLowerCase().trim();
   const config = ROOM_CONFIGS[roomId];
+  const [currentAudio, setCurrentAudio] = useState<HTMLAudioElement | null>(null);
+  
+  // REACTIVE: Subscribe to mute state
+  const mute = useSettingsStore((state) => state.mute);
 
-  // === PLAY SOUND ON ENTER WITH RETRY ===
+  // === PLAY SOUND WITH LIVE MUTE ===
   useEffect(() => {
     if (roomId && config?.sound) {
-      console.log('[room.tsx] Playing sound for:', roomId);
-      const playSoundWithRetry = async (soundPath: string, retries = 3, delay = 500) => {
-        for (let i = 0; i < retries; i++) {
-          try {
-            const audio = new Audio(soundPath);
-            audio.volume = 0.6;
-            await audio.play();
-            console.log('[room.tsx] Sound played successfully:', soundPath);
-            return;
-          } catch (err: unknown) {
-            const errorMessage = err instanceof Error ? err.message : String(err);
-            console.log(`[room.tsx] Autoplay blocked or failed (attempt ${i + 1}):`, errorMessage);
-            if (i < retries - 1) {
-              await new Promise(resolve => setTimeout(resolve, delay));
-            }
-          }
-        }
-        console.warn('[room.tsx] Failed to play sound after retries:', soundPath);
+      console.log('[room.tsx] Preparing sound for:', roomId);
+
+      const audio = new Audio(`/${config.sound}`);
+      audio.loop = true;
+      audio.volume = mute ? 0 : 0.6;
+      setCurrentAudio(audio);
+
+      audio.play().catch(err => {
+        console.warn('[room.tsx] Autoplay blocked:', err);
+      });
+
+      // Cleanup on room leave
+      return () => {
+        audio.pause();
+        audio.src = '';
+        setCurrentAudio(null);
       };
-      playSoundWithRetry(`/${config.sound}`); // Use correct path: /sounds/market.mp3
+    } else {
+      // No sound → stop any playing
+      if (currentAudio) {
+        currentAudio.pause();
+        currentAudio.src = '';
+        setCurrentAudio(null);
+      }
     }
   }, [roomId, config?.sound]);
+
+  // === INSTANT MUTE ON CHANGE ===
+  useEffect(() => {
+    if (currentAudio) {
+      currentAudio.volume = mute ? 0 : 0.6;
+      console.log('[room.tsx] Mute updated:', mute ? 'OFF' : 'ON', 'Volume:', currentAudio.volume);
+    }
+  }, [currentAudio, mute]);
 
   // === ROOM NOT FOUND ===
   if (!config) {

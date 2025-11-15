@@ -40,6 +40,11 @@ interface SettingsState {
     enabled: boolean;
     privateKey: string | null;
   };
+  // ---------- NEW ----------
+  mute: boolean;
+  toggleMute: () => void;
+  // --------------------------
+
   updateAppearance: (settings: Partial<SettingsState["appearance"]>) => void;
   updateContent: (settings: Partial<SettingsState["content"]>) => void;
   updateImgproxy: (settings: Partial<SettingsState["imgproxy"]>) => void;
@@ -86,6 +91,10 @@ export const useSettingsStore = create<SettingsState>()(
         enabled: false,
         privateKey: null,
       },
+      // ---------- NEW ----------
+      mute: false,
+      // --------------------------
+
       updateAppearance: (settings) =>
         set((state) => ({
           appearance: { ...state.appearance, ...settings },
@@ -121,6 +130,9 @@ export const useSettingsStore = create<SettingsState>()(
           };
         });
       },
+      // ---------- NEW ----------
+      toggleMute: () => set((state) => ({ mute: !state.mute })),
+      // --------------------------
     }),
     {
       name: "settings-storage",
