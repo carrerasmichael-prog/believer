@@ -21,12 +21,12 @@ const MarketPage = lazy(() => import('@/pages/market'));
 const UserSearchPage = lazy(() => import('@/pages/user-search'));
 const MobileHome = lazy(() => import('@/pages/mobile-home'));
 
-// Lazy-loaded TownSquare
-const TownSquare = lazy(() => import('@/pages/landing/TownSquare'));
+// Lazy-loaded Threshold (replaces TownSquare)
+const Threshold = lazy(() => import('@/pages/landing/Threshold'));
 
 export const routes: RouteDefinition[] = [
   // Believer.go Routes
-  { path: '/', component: TownSquare, alwaysKeep: true }, // Desktop: TownSquare
+  { path: '/', component: Threshold, alwaysKeep: true }, // Root → Threshold
   { path: '/mobile-home', component: MobileHome }, // Mobile: ProfileCard Home
   { path: '/room/:roomid', component: Room }, // dynamic client view
 
