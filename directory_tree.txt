@@ -1,5 +1,5 @@
 Folder PATH listing for volume System
-Volume serial number is 00000026 7A24:C3EB
+Volume serial number is 000000FF 7A24:C3EB
 C:\USERS\MICHAEL\BELIEVER
 |   .dockerignore
 |   .env
@@ -86,20 +86,20 @@ C:\USERS\MICHAEL\BELIEVER
 |   +---assets
 |   |       animalname-BfpzENI-.js
 |   |       browser-D75Hhwqo.js
-|   |       GeohashMapContent-BmIBxO1j.js
+|   |       GeohashMapContent-C8biebs3.js
 |   |       hls-DdkpVA0Y.js
 |   |       icons-DT3cSZe7.svg
-|   |       index-0RWMU3Qt.js
-|   |       index-B2u-4mnB.js
-|   |       index-BIUoIYpj.js
-|   |       index-BnOHNfgu.js
-|   |       index-CH2CsArd.js
-|   |       index-CKhBHKVy.js
-|   |       index-DdCaZdUV.js
-|   |       index-Df6MmxDQ.js
-|   |       index-enmBVFZo.js
-|   |       index-T_0WolOk.js
-|   |       index-yvPksfQP.css
+|   |       index-B3LCs2il.js
+|   |       index-BQI4fvNB.js
+|   |       index-BTHQScqs.js
+|   |       index-C-37hnv2.js
+|   |       index-Ce-3KQuR.js
+|   |       index-CqlZn1zD.js
+|   |       index-CRfZAi7r.js
+|   |       index-CrGZaxYV.css
+|   |       index-Dgu_NgJb.js
+|   |       index-DIO-aNu4.js
+|   |       index-DtoOht_i.js
 |   |       module-DI9p0J2E.js
 |   |       native-48B9X9Wg.js
 |   |       ostrich-black-C7nn6yEE.png
@@ -220,13 +220,15 @@ C:\USERS\MICHAEL\BELIEVER
 |   |       church.png
 |   |       darkmode.png
 |   |       lightmode.png
-|   |       lobby.png
 |   |       mandir.png
 |   |       market.png
 |   |       mosque.png
 |   |       news.png
+|   |       speaker-off.png
+|   |       speaker-on.png
 |   |       synagogue.png
 |   |       temple.png
+|   |       town-square.png
 |   |       
 |   +---images
 |   |   |   town-square-base.png
@@ -265,16 +267,20 @@ C:\USERS\MICHAEL\BELIEVER
 |   |       zap.png
 |   |       
 |   \---sounds
-|           atheist-flag.mp3
-|           brahma.mp3
-|           buddha.mp3
-|           church-bell.mp3
-|           door-sound.mp3
-|           market.mp3
-|           muhammad.mp3
-|           news.mp3
-|           star-of-david.mp3
-|           
+|       |   atheist-flag.mp3
+|       |   brahma.mp3
+|       |   buddha.mp3
+|       |   church-bell.mp3
+|       |   door-sound.mp3
+|       |   market.mp3
+|       |   muhammad.mp3
+|       |   news.mp3
+|       |   star-of-david.mp3
+|       |   town-ambience.mp3
+|       |   
+|       \---peaks
+|               town-ambience.mp3.reapeaks
+|               
 +---node_modules
 |   |   .package-lock.json
 |   |   .yarn-integrity
@@ -40279,13 +40285,15 @@ C:\USERS\MICHAEL\BELIEVER
 |   |       church.png
 |   |       darkmode.png
 |   |       lightmode.png
-|   |       lobby.png
 |   |       mandir.png
 |   |       market.png
 |   |       mosque.png
 |   |       news.png
+|   |       speaker-off.png
+|   |       speaker-on.png
 |   |       synagogue.png
 |   |       temple.png
+|   |       town-square.png
 |   |       
 |   +---images
 |   |   |   town-square-base.png
@@ -40324,16 +40332,20 @@ C:\USERS\MICHAEL\BELIEVER
 |   |       zap.png
 |   |       
 |   \---sounds
-|           atheist-flag.mp3
-|           brahma.mp3
-|           buddha.mp3
-|           church-bell.mp3
-|           door-sound.mp3
-|           market.mp3
-|           muhammad.mp3
-|           news.mp3
-|           star-of-david.mp3
-|           
+|       |   atheist-flag.mp3
+|       |   brahma.mp3
+|       |   buddha.mp3
+|       |   church-bell.mp3
+|       |   door-sound.mp3
+|       |   market.mp3
+|       |   muhammad.mp3
+|       |   news.mp3
+|       |   star-of-david.mp3
+|       |   town-ambience.mp3
+|       |   
+|       \---peaks
+|               town-ambience.mp3.reapeaks
+|               
 +---scripts
 |       deploy-ipfs.mjs
 |       performance-baseline.ts
@@ -40375,7 +40387,6 @@ C:\USERS\MICHAEL\BELIEVER
 |   +---components
 |   |       DestinyMenu.tsx
 |   |       feed.tsx
-|   |       slice.tsx
 |   |       
 |   +---constants
 |   |       townSquareSlices.ts
@@ -40487,7 +40498,8 @@ C:\USERS\MICHAEL\BELIEVER
 |   |   |               HomeFeed.tsx
 |   |   |               
 |   |   +---landing
-|   |   |       TownSquare.tsx
+|   |   |       Threshold.tsx
+|   |   |       TownSquareInteractive.tsx
 |   |   |       
 |   |   +---map
 |   |   |   |   index.tsx
@@ -40582,18 +40594,9 @@ C:\USERS\MICHAEL\BELIEVER
 |   |           WalletPage.tsx
 |   |           
 |   +---rooms
-|   |   |   room.tsx
-|   |   |   roomConfig.tsx
-|   |   |   
-|   |   +---atheism
-|   |   +---church
-|   |   +---lobby
-|   |   +---market
-|   |   +---mathris
-|   |   +---mosque
-|   |   +---news
-|   |   +---synagogue
-|   |   \---temple
+|   |       room.tsx
+|   |       roomConfig.tsx
+|   |       
 |   +---session
 |   |   |   SessionManager.ts
 |   |   |   StorageAdapter.ts

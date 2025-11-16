@@ -16,7 +16,7 @@ export const ROOM_CONFIGS: Record<string, RoomConfig> = {
   square: {
     id: 'square',
     name: 'Town Square',
-    subtitle: 'Where belief meets the public',
+    subtitle: 'Public discourse',
     tags: ['neutral', 'debate', 'public'],
     sound: 'sounds/town-ambience.mp3',  // ← we'll create this
     icon: 'town-square.png',           // ← we'll rename later
