@@ -126,25 +126,22 @@ const Room = () => {
       </div>
 
       {/* PORTAL OVERLAY */}
-      {showPortal && roomId === 'square' && (
-        <div 
-          className="fixed inset-0 z-[999999] bg-black/95 flex items-center justify-center p-4"
-          style={{ pointerEvents: 'auto' }}
-        >
-          <div className="relative w-full h-full max-w-7xl max-h-[90vh] bg-black rounded-3xl overflow-hidden shadow-2xl">
-            <button
-              onClick={closePortal}
-              className="absolute top-4 right-4 z-50 btn btn-circle btn-ghost text-white hover:bg-white/20"
-              style={{ pointerEvents: 'auto' }}
-        >
-              ✕
-            </button>
-            <div className="w-full h-full">
-              <TownSquareInteractive />
-              </div>
-            </div>
-          </div>
-        )}
+{showPortal && roomId === 'square' && (
+  <div className="fixed inset-0 z-[999999] bg-black/95 flex items-center justify-center p-4 animate-in fade-in duration-700">
+    <div className="relative w-full h-full max-w-7xl max-h-[90vh] rounded-3xl overflow-hidden shadow-2xl">
+      <button
+        onClick={closePortal}
+        className="absolute top-4 right-4 z-50 btn btn-circle btn-ghost text-white hover:bg-white/20"
+        aria-label="Close portal"
+      >
+        ✕
+      </button>
+      <div className="w-full h-full">
+        <TownSquareInteractive />
+      </div>
+    </div>
+  </div>
+)}
     </div>
   );
 };
