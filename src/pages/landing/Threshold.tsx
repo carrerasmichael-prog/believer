@@ -28,7 +28,7 @@ const Threshold: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 flex items-center justify-center p-4">
-      <div className="bg-white/10 backdrop-blur-md rounded-2xl shadow-2xl border border-white/20 max-w-md w-full mx-auto p-8 text-center">
+      <div className="bg-black backdrop-blur-md rounded-2xl shadow-2xl border border-white/20 max-w-md w-full mx-auto p-8 text-center">
 
         {/* Subtle faith icons */}
         <div className="relative mb-8 h-24 flex justify-center items-center overflow-hidden">
@@ -44,18 +44,10 @@ const Threshold: React.FC = () => {
         </div>
 
         <p className="text-slate-300 mb-8 text-lg leading-relaxed">
-          A sacred square for seekers, believers, and nomads.
+          Breaking the chain.
         </p>
 
         <div className="space-y-4">
-
-          {/* Alby Login */}
-          <button
-            onClick={() => setShowLoginDialog(true)}
-            className="w-full bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white font-semibold py-3 rounded-xl transition-all shadow-lg hover:shadow-xl"
-          >
-            Sign In with Alby
-          </button>
 
           {/* Nomad */}
           <button
@@ -70,12 +62,12 @@ const Threshold: React.FC = () => {
             onClick={openWallet}
             className="w-full bg-gradient-to-r from-amber-500 to-orange-600 hover:from-amber-600 hover:to-orange-700 text-white font-semibold py-3 rounded-xl transition-all shadow-lg hover:shadow-xl"
           >
-            Sign Up & Declare
+            Sign up / Sign in
           </button>
         </div>
 
         <p className="text-xs text-slate-400 mt-6">
-          All paths honored. No judgments, just connection.
+          Believer.go is an Iris-client fork powered by Nostr.
         </p>
       </div>
     </div>
