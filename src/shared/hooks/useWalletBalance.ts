@@ -1,13 +1,14 @@
+// src/hooks/useWalletBalance.ts
 import {useWalletStore} from "@/stores/wallet"
 import {useWalletProviderStore} from "@/stores/walletProvider"
-import {useEffect, useRef} from "react"
+import {useEffect, useRef, useState} from "react"
 
 export const useWalletBalance = () => {
   const {balance, setBalance} = useWalletStore()
   const {activeWallet, activeProviderType, activeNWCId, getBalance} =
     useWalletProviderStore()
   const pollIntervalRef = useRef<NodeJS.Timeout | null>(null)
-  const retryTimeoutRef = useRef<NodeJS.Timeout | null>(null)
+  const [isFetching, setIsFetching] = useState(false)
 
   useEffect(() => {
     console.log("🔍 useWalletBalance effect triggered:", {
@@ -18,37 +19,37 @@ export const useWalletBalance = () => {
       currentBalance: balance,
     })
 
-    // Clear any existing intervals/timeouts
+    // Clear existing interval
     if (pollIntervalRef.current) {
       clearInterval(pollIntervalRef.current)
       pollIntervalRef.current = null
     }
-    if (retryTimeoutRef.current) {
-      clearTimeout(retryTimeoutRef.current)
-      retryTimeoutRef.current = null
-    }
 
-    // Only clear balance when explicitly disabled
+    // Handle disabled provider
     if (activeProviderType === "disabled") {
       console.log("🔍 Wallet disabled, clearing balance")
       setBalance(null)
       return
     }
 
-    // If wallet isn't ready yet, just return without clearing balance
+    // Skip if no wallet
     if (activeProviderType === undefined || !activeWallet) {
-      console.log("🔍 Wallet not ready yet, keeping existing balance")
+      console.log("🔍 Wallet not ready, keeping existing balance")
       return
     }
 
     const updateBalance = async () => {
+      if (isFetching) {
+        console.log("🔍 Skipping balance check: already fetching")
+        return
+      }
+
+      setIsFetching(true)
       try {
         console.log("🔍 useWalletBalance: calling getBalance()")
         const newBalance = await getBalance()
         console.log("🔍 useWalletBalance: getBalance returned:", newBalance)
 
-        // Only update balance if we got a valid number
-        // Never set to null or undefined - keep existing balance
         if (typeof newBalance === "number") {
           setBalance(newBalance)
         } else {
@@ -59,42 +60,24 @@ export const useWalletBalance = () => {
             newBalance
           )
         }
-        return true
       } catch (error) {
-        // Don't spam console with expected balance request failures
         if (error instanceof Error && !error.message.includes("rate-limited")) {
           console.warn("Failed to get balance:", error)
         }
-        return false
+      } finally {
+        setIsFetching(false)
       }
     }
 
-    // Try to get balance with less frequent retries
-    const tryUpdateBalance = async (attempt = 1) => {
-      const success = await updateBalance()
+    // Initial call
+    updateBalance()
 
-      if (!success && attempt < 5) {
-        // Retry with backoff: 2s, 3s, 4.5s, 6.75s
-        const delay = Math.min(2000 * Math.pow(1.5, attempt - 1), 10000)
-        console.log(`Balance check failed, retrying in ${delay}ms (attempt ${attempt})`)
-        retryTimeoutRef.current = setTimeout(() => {
-          tryUpdateBalance(attempt + 1)
-        }, delay)
-      }
-    }
-
-    // Initial attempt immediately, then retry with backoff if needed
-    tryUpdateBalance()
-
-    // Set up more frequent polling (every 30 seconds) for better responsiveness
+    // Poll every 30 seconds
     pollIntervalRef.current = setInterval(updateBalance, 30000)
 
     return () => {
       if (pollIntervalRef.current) {
         clearInterval(pollIntervalRef.current)
-      }
-      if (retryTimeoutRef.current) {
-        clearTimeout(retryTimeoutRef.current)
       }
     }
   }, [activeWallet, activeProviderType, activeNWCId, setBalance, getBalance])

@@ -1,19 +1,19 @@
 // vite.config.ts
-import { defineConfig } from 'vite';
-import { nodePolyfills } from 'vite-plugin-node-polyfills';
-import react from '@vitejs/plugin-react';
-import { VitePWA, VitePWAOptions } from 'vite-plugin-pwa';
-import config from 'config';
-import { Plugin } from 'vite';
-import { resolve } from 'path';
+import {defineConfig} from "vite"
+import {nodePolyfills} from "vite-plugin-node-polyfills"
+import react from "@vitejs/plugin-react"
+import {VitePWA, VitePWAOptions} from "vite-plugin-pwa"
+import config from "config"
+import {Plugin} from "vite"
+import {resolve} from "path"
 
 // Plugin to ensure .htaccess is copied for Web2 SPA routing
 const copyDotFilesPlugin = (): Plugin => ({
-  name: 'copy-dot-files',
+  name: "copy-dot-files",
   generateBundle() {
     this.emitFile({
-      type: 'asset',
-      fileName: '.htaccess',
+      type: "asset",
+      fileName: ".htaccess",
       source: `
 RewriteEngine On
 RewriteBase /
@@ -22,27 +22,27 @@ RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
 RewriteRule ^(.*)$ index.html [L]
       `,
-    });
+    })
   },
-});
+})
 
-export default defineConfig(({ mode }) => ({
-  base: process.env.VITE_BASE_PATH || '/',
-  publicDir: 'public',
+export default defineConfig(({mode}) => ({
+  base: process.env.VITE_BASE_PATH || "/",
+  publicDir: "public",
   plugins: [
-    mode === 'production' ? nodePolyfills() : null,
+    mode === "production" ? nodePolyfills() : null,
     react(),
     VitePWA({
       injectManifest: {
         maximumFileSizeToCacheInBytes: 8 * 1024 * 1024,
-        globPatterns: ['**/*'],
+        globPatterns: ["**/*"],
       },
-      strategies: 'injectManifest',
-      injectRegister: 'script',
+      strategies: "injectManifest",
+      injectRegister: "script",
       manifest: false,
-      srcDir: 'src',
-      filename: 'service-worker.ts',
-      registerType: 'autoUpdate',
+      srcDir: "src",
+      filename: "service-worker.ts",
+      registerType: "autoUpdate",
       devOptions: {
         enabled: false,
       },
@@ -51,56 +51,80 @@ export default defineConfig(({ mode }) => ({
   ].filter(Boolean),
   resolve: {
     alias: {
-      '@': resolve(__dirname, './src'),
+      "@": resolve(__dirname, "./src"),
     },
   },
   build: {
     reportCompressedSize: true,
     chunkSizeWarningLimit: 2000,
     rollupOptions: {
-      input: resolve(__dirname, 'index.html'),
+      input: resolve(__dirname, "index.html"),
       external: [],
       onLog(level, log, handler) {
-        if (log.code === 'CIRCULAR_DEPENDENCY') return;
-        if (log.message.includes('node_modules/tseep') && log.message.includes('Use of eval')) return;
-        handler(level, log);
+        if (log.code === "CIRCULAR_DEPENDENCY") return
+        if (
+          log.message.includes("node_modules/tseep") &&
+          log.message.includes("Use of eval")
+        )
+          return
+        handler(level, log)
       },
       output: {
         manualChunks: (id) => {
-          if (id.includes('nostr-social-graph/data/profileData.json')) {
-            return 'profileData';
+          if (id.includes("nostr-social-graph/data/profileData.json")) {
+            return "profileData"
           }
           if (
-            id.includes('utils/AnimalName') ||
-            id.includes('utils/data/animals') ||
-            id.includes('utils/data/adjectives')
+            id.includes("utils/AnimalName") ||
+            id.includes("utils/data/animals") ||
+            id.includes("utils/data/adjectives")
           ) {
-            return 'animalname';
+            return "animalname"
           }
           const vendorLibs = [
-            'react', 'react-dom/client', 'react-helmet', '@nostr-dev-kit/ndk',
-            'markdown-to-jsx', '@nostr-dev-kit/ndk-cache-dexie', '@remixicon/react',
-            'minidenticons', 'nostr-tools', 'nostr-social-graph', 'lodash',
-            'lodash/debounce', 'lodash/throttle', 'localforage', 'dexie',
-            '@noble/hashes', '@noble/curves', '@scure/base', '@scure/bip32',
-            '@scure/bip39', 'classnames', 'fuse.js', 'react-string-replace',
-            'tseep', 'typescript-lru-cache', 'zustand', 'blurhash',
-          ];
+            "react",
+            "react-dom/client",
+            "react-helmet",
+            "@nostr-dev-kit/ndk",
+            "markdown-to-jsx",
+            "@nostr-dev-kit/ndk-cache-dexie",
+            "@remixicon/react",
+            "minidenticons",
+            "nostr-tools",
+            "nostr-social-graph",
+            "lodash",
+            "lodash/debounce",
+            "lodash/throttle",
+            "localforage",
+            "dexie",
+            "@noble/hashes",
+            "@noble/curves",
+            "@scure/base",
+            "@scure/bip32",
+            "@scure/bip39",
+            "classnames",
+            "fuse.js",
+            "react-string-replace",
+            "tseep",
+            "typescript-lru-cache",
+            "zustand",
+            "blurhash",
+          ]
           if (vendorLibs.some((lib) => id.includes(`node_modules/${lib}`))) {
-            return 'vendor';
+            return "vendor"
           }
         },
       },
     },
-    assetsDir: 'assets',
+    assetsDir: "assets",
     copyPublicDir: true,
   },
   define: {
     CONFIG: config,
     global: {},
-    'import.meta.env.VITE_APP_VERSION': JSON.stringify(process.env.npm_package_version),
-    'import.meta.env.VITE_BUILD_TIME': JSON.stringify(new Date().toISOString()),
-    'import.meta.env.VITE_BASE_PATH': JSON.stringify(process.env.VITE_BASE_PATH || '/'),
+    "import.meta.env.VITE_APP_VERSION": JSON.stringify(process.env.npm_package_version),
+    "import.meta.env.VITE_BUILD_TIME": JSON.stringify(new Date().toISOString()),
+    "import.meta.env.VITE_BASE_PATH": JSON.stringify(process.env.VITE_BASE_PATH || "/"),
   },
   server: {
     port: 5174,
@@ -109,31 +133,31 @@ export default defineConfig(({ mode }) => ({
       port: 5174,
     },
     proxy: {
-      '/user': {
-        target: 'http://localhost:8000',
+      "/user": {
+        target: "http://localhost:8000",
         changeOrigin: true,
       },
-      '/subscriptions': {
-        target: 'http://localhost:8000',
+      "/subscriptions": {
+        target: "http://localhost:8000",
         changeOrigin: true,
       },
-      '/invoices': {
-        target: 'http://localhost:8000',
+      "/invoices": {
+        target: "http://localhost:8000",
         changeOrigin: true,
       },
-      '/.well-known': {
-        target: 'http://localhost:8000',
+      "/.well-known": {
+        target: "http://localhost:8000",
         changeOrigin: true,
       },
-      '/.well-known/appspecific/com.chrome.devtools.json': {
-        target: 'http://localhost:5174',
+      "/.well-known/appspecific/com.chrome.devtools.json": {
+        target: "http://localhost:5174",
         changeOrigin: true,
-        rewrite: () => '',
+        rewrite: () => "",
       },
     },
   },
   optimizeDeps: {
-    exclude: ['@vite/client', '@vite/env'],
-    include: ['react', 'react-dom'],
+    exclude: ["@vite/client", "@vite/env"],
+    include: ["react", "react-dom"],
   },
-}));
+}))

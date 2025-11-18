@@ -1,18 +1,18 @@
 // src/shared/components/nav/NavItem.tsx
-import { ReactNode, MouseEventHandler } from 'react';
-import Icon from '@/shared/components/Icons/Icon';
-import classNames from 'classnames';
-import NavLink from './NavLink';
+import {ReactNode, MouseEventHandler} from "react"
+import Icon from "@/shared/components/Icons/Icon"
+import classNames from "classnames"
+import NavLink from "./NavLink"
 
 interface NavItemProps {
-  to: string;
-  icon?: string;
-  activeIcon?: string;
-  inactiveIcon?: string;
-  label: string;
-  onClick?: MouseEventHandler<HTMLAnchorElement>;
-  className?: string;
-  badge?: ReactNode;
+  to: string
+  icon?: string
+  activeIcon?: string
+  inactiveIcon?: string
+  label: string
+  onClick?: MouseEventHandler<HTMLAnchorElement>
+  className?: string
+  badge?: ReactNode
 }
 
 export const NavItem = ({
@@ -30,23 +30,25 @@ export const NavItem = ({
       <NavLink
         to={to}
         onClick={onClick}
-        className={({ isActive }) =>
+        className={({isActive}) =>
           classNames(
-            'w-full text-left px-4 py-2 rounded-lg flex items-center gap-3 transition',
+            "w-full text-left px-4 py-2 rounded-lg flex items-center gap-3 transition",
             {
-              'bg-base-300': isActive,
-              'hover:bg-base-300': !isActive,
+              "bg-base-300": isActive,
+              "hover:bg-base-300": !isActive,
             },
             className
           )
         }
       >
-        {({ isActive }) => (
+        {({isActive}) => (
           <>
             {icon && (
               <Icon
                 className="w-6 h-6 !block !text-base-content"
-                name={isActive ? activeIcon || `${icon}-fill` : inactiveIcon || `${icon}-line`}
+                name={
+                  isActive ? activeIcon || `${icon}-fill` : inactiveIcon || `${icon}-line`
+                }
               />
             )}
             <span className="font-medium">{label}</span>
@@ -59,5 +61,5 @@ export const NavItem = ({
         )}
       </NavLink>
     </li>
-  );
-};
+  )
+}

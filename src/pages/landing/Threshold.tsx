@@ -1,35 +1,34 @@
 // src/pages/landing/Threshold.tsx
-import React from 'react';
-import { useUIStore } from '@/stores/ui';
-import { useUserStore, useSetIdentity, useMarkThresholdSeen } from '@/stores/user';
-import { useNavigate } from '@/navigation';
-import { playSound } from '@/utils/playSound';
+import React from "react"
+import {useUIStore} from "@/stores/ui"
+import {useUserStore, useSetIdentity, useMarkThresholdSeen} from "@/stores/user"
+import {useNavigate} from "@/navigation"
+import {playSound} from "@/utils/playSound"
 
 const Threshold: React.FC = () => {
-  const { setShowLoginDialog } = useUIStore();
-  const { publicKey } = useUserStore();
-  const setIdentity = useSetIdentity();
-  const markThresholdSeen = useMarkThresholdSeen();
-  const navigate = useNavigate();
+  const {setShowLoginDialog} = useUIStore()
+  const {publicKey} = useUserStore()
+  const setIdentity = useSetIdentity()
+  const markThresholdSeen = useMarkThresholdSeen()
+  const navigate = useNavigate()
 
-  if (publicKey) return null;
+  if (publicKey) return null
 
   const enterAsNomad = () => {
-    setIdentity({ state: 'nomad' });
-    localStorage.setItem('userBelief', 'Nomad');
-    playSound?.('/sounds/town-ambience.mp3');
-    markThresholdSeen();
-    navigate('/room/square');
-  };
+    setIdentity({state: "nomad"})
+    localStorage.setItem("userBelief", "Nomad")
+    playSound?.("/sounds/town-ambience.mp3")
+    markThresholdSeen()
+    navigate("/room/square")
+  }
 
   const openWallet = () => {
-    setShowLoginDialog(true);   // opens Alby sign-up flow
-  };
+    setShowLoginDialog(true) // opens Alby sign-up flow
+  }
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 flex items-center justify-center p-4">
       <div className="bg-black backdrop-blur-md rounded-2xl shadow-2xl border border-white/20 max-w-md w-full mx-auto p-8 text-center">
-
         {/* Subtle faith icons */}
         <div className="relative mb-8 h-24 flex justify-center items-center overflow-hidden">
           <div className="absolute inset-0 animate-pulse flex gap-2 justify-center items-center">
@@ -43,12 +42,9 @@ const Threshold: React.FC = () => {
           </h1>
         </div>
 
-        <p className="text-slate-300 mb-8 text-lg leading-relaxed">
-          Breaking the chain.
-        </p>
+        <p className="text-slate-300 mb-8 text-lg leading-relaxed">Breaking the chain.</p>
 
         <div className="space-y-4">
-
           {/* Nomad */}
           <button
             onClick={enterAsNomad}
@@ -71,7 +67,7 @@ const Threshold: React.FC = () => {
         </p>
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default Threshold;
+export default Threshold

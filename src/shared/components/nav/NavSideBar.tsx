@@ -1,38 +1,38 @@
 // src/shared/components/nav/NavSideBar.tsx
-import { RiLoginBoxLine, RiLockLine, RiBugLine } from "@remixicon/react";
-import { useEffect, useState } from "react";
-import NavLink from "./NavLink";
-import PublishButton from "../ui/PublishButton";
-import ErrorBoundary from "../ui/ErrorBoundary";
-import { usePublicKey } from "@/stores/user";
-import { useSettingsStore } from "@/stores/settings";
-import { UserRow } from "../user/UserRow";
-import { useUIStore } from "@/stores/ui";
-import { ndk } from "@/utils/ndk";
-import { RelayConnectivityIndicator } from "../RelayConnectivityIndicator";
-import RoomSelector from "../RoomSelector";
+import {RiLoginBoxLine, RiLockLine, RiBugLine} from "@remixicon/react"
+import {useEffect, useState} from "react"
+import NavLink from "./NavLink"
+import PublishButton from "../ui/PublishButton"
+import ErrorBoundary from "../ui/ErrorBoundary"
+import {usePublicKey} from "@/stores/user"
+import {useSettingsStore} from "@/stores/settings"
+import {UserRow} from "../user/UserRow"
+import {useUIStore} from "@/stores/ui"
+import {ndk} from "@/utils/ndk"
+import {RelayConnectivityIndicator} from "../RelayConnectivityIndicator"
+import RoomSelector from "../RoomSelector"
 
 const useResponsive = () => {
-  const [width, setWidth] = useState(1024);
+  const [width, setWidth] = useState(1024)
   useEffect(() => {
-    const update = () => setWidth(window.innerWidth);
-    update();
-    window.addEventListener("resize", update);
-    return () => window.removeEventListener("resize", update);
-  }, []);
+    const update = () => setWidth(window.innerWidth)
+    update()
+    window.addEventListener("resize", update)
+    return () => window.removeEventListener("resize", update)
+  }, [])
   return {
     isLarge: width >= 1200,
     isSmall: width < 768,
-  };
-};
+  }
+}
 
 const NavSideBar = () => {
-  const { setShowLoginDialog } = useUIStore();
-  const myPubKey = usePublicKey();
-  const { debug, appearance, toggleTheme, mute, toggleMute } = useSettingsStore();
-  const { isLarge, isSmall } = useResponsive();
+  const {setShowLoginDialog} = useUIStore()
+  const myPubKey = usePublicKey()
+  const {debug, appearance, toggleTheme, mute, toggleMute} = useSettingsStore()
+  const {isLarge, isSmall} = useResponsive()
 
-  const logoUrl = CONFIG.navLogo;
+  const logoUrl = CONFIG.navLogo
 
   if (isSmall) {
     return (
@@ -40,7 +40,10 @@ const NavSideBar = () => {
         <nav className="fixed bottom-0 left-0 right-0 bg-base-200 border-t border-custom z-50 flex justify-around items-center h-16 px-2">
           {/* 1. Sign In (if not logged in) */}
           {!myPubKey && (
-            <button onClick={() => setShowLoginDialog(true)} className="flex flex-col items-center gap-1 text-xs">
+            <button
+              onClick={() => setShowLoginDialog(true)}
+              className="flex flex-col items-center gap-1 text-xs"
+            >
               <RiLoginBoxLine className="w-6 h-6" />
               <span>Sign In</span>
             </button>
@@ -53,9 +56,16 @@ const NavSideBar = () => {
           </div>
 
           {/* 3. Mode */}
-          <button className="flex flex-col items-center gap-1 text-xs" onClick={toggleTheme}>
+          <button
+            className="flex flex-col items-center gap-1 text-xs"
+            onClick={toggleTheme}
+          >
             <img
-              src={appearance.theme === "dark" ? "/icons/lightmode.png" : "/icons/darkmode.png"}
+              src={
+                appearance.theme === "dark"
+                  ? "/icons/lightmode.png"
+                  : "/icons/darkmode.png"
+              }
               alt="Mode"
               className="w-6 h-6"
             />
@@ -63,7 +73,10 @@ const NavSideBar = () => {
           </button>
 
           {/* 4. Mute */}
-          <button className="flex flex-col items-center gap-1 text-xs" onClick={toggleMute}>
+          <button
+            className="flex flex-col items-center gap-1 text-xs"
+            onClick={toggleMute}
+          >
             <img
               src={mute ? "/icons/speaker-off.png" : "/icons/speaker-on.png"}
               alt="Mute"
@@ -81,7 +94,7 @@ const NavSideBar = () => {
           )}
         </nav>
       </ErrorBoundary>
-    );
+    )
   }
 
   return (
@@ -114,10 +127,14 @@ const NavSideBar = () => {
           <div className="flex flex-col gap-2 p-3">
             <button
               onClick={toggleTheme}
-              className={`flex items-center gap-3 w-full ${isLarge ? 'hover:bg-base-300 rounded-lg p-2 -m-2' : ''}`}
+              className={`flex items-center gap-3 w-full ${isLarge ? "hover:bg-base-300 rounded-lg p-2 -m-2" : ""}`}
             >
               <img
-                src={appearance.theme === "dark" ? "/icons/lightmode.png" : "/icons/darkmode.png"}
+                src={
+                  appearance.theme === "dark"
+                    ? "/icons/lightmode.png"
+                    : "/icons/darkmode.png"
+                }
                 alt="Toggle theme"
                 className="w-6 h-6 flex-shrink-0"
               />
@@ -126,7 +143,7 @@ const NavSideBar = () => {
 
             <button
               onClick={toggleMute}
-              className={`flex items-center gap-3 w-full ${isLarge ? 'hover:bg-base-300 rounded-lg p-2 -m-2' : ''}`}
+              className={`flex items-center gap-3 w-full ${isLarge ? "hover:bg-base-300 rounded-lg p-2 -m-2" : ""}`}
             >
               <img
                 src={mute ? "/icons/speaker-off.png" : "/icons/speaker-on.png"}
@@ -145,9 +162,10 @@ const NavSideBar = () => {
               onClick={() => setShowLoginDialog(true)}
               className={`
                 flex items-center gap-2 transition-all
-                ${isLarge
-                  ? 'w-full bg-primary hover:bg-primary-focus text-primary-content rounded-full px-8 py-3 text-xl font-bold shadow-xl'
-                  : 'w-full p-3 hover:bg-base-300 rounded-lg flex items-center justify-center'
+                ${
+                  isLarge
+                    ? "w-full bg-primary hover:bg-primary-focus text-primary-content rounded-full px-8 py-3 text-xl font-bold shadow-xl"
+                    : "w-full p-3 hover:bg-base-300 rounded-lg flex items-center justify-center"
                 }
               `}
             >
@@ -173,7 +191,7 @@ const NavSideBar = () => {
         )}
       </div>
     </ErrorBoundary>
-  );
-};
+  )
+}
 
-export default NavSideBar;
+export default NavSideBar

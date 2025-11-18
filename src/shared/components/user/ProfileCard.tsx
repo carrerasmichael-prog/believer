@@ -1,12 +1,12 @@
 // src/shared/components/user/ProfileCard.tsx
-import { FollowButton } from "@/shared/components/button/FollowButton"
-import { ProfileAbout } from "@/shared/components/user/ProfileAbout"
-import { UserRow } from "@/shared/components/user/UserRow"
+import {FollowButton} from "@/shared/components/button/FollowButton"
+import {ProfileAbout} from "@/shared/components/user/ProfileAbout"
+import {UserRow} from "@/shared/components/user/UserRow"
 import FollowedBy from "./FollowedBy"
 import MutedBy from "./MutedBy"
 import socialGraph from "@/utils/socialGraph"
-import { usePublicKey, useUserStore } from "@/stores/user"
-import { useMemo } from "react"
+import {usePublicKey, useUserStore} from "@/stores/user"
+import {useMemo} from "react"
 
 const ProfileCard = ({
   pubKey,
@@ -20,7 +20,7 @@ const ProfileCard = ({
   showHoverCard?: boolean
 }) => {
   const myPubKey = usePublicKey()
-  const identity = useUserStore((s) => s.identity || { state: "nomad" })
+  const identity = useUserStore((s) => s.identity || {state: "nomad"})
 
   const followsMe = useMemo(() => {
     const follows = Array.from(socialGraph().getFollowedByUser(pubKey))

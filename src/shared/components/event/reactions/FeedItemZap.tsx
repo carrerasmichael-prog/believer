@@ -1,36 +1,36 @@
-import { NDKEvent } from '@nostr-dev-kit/ndk';
-import { createAndPublishZapInvoice } from '@/utils/nostr'; // Import from nostr.ts
-import { useWalletProviderStore } from '@/stores/walletProvider';
-import { useOnlineStatus } from '@/shared/hooks/useOnlineStatus';
-import { RefObject, useEffect, useState } from 'react';
-import useProfile from '@/shared/hooks/useProfile.ts';
-import { parseZapReceipt, calculateTotalZapAmount, type ZapInfo } from '@/utils/nostr.ts';
-import { LRUCache } from 'typescript-lru-cache';
-import { formatAmount } from '@/utils/utils.ts';
-import { usePublicKey, useUserStore } from '@/stores/user';
-import { useScrollAwareLongPress } from '@/shared/hooks/useScrollAwareLongPress';
-import Icon from '../../Icons/Icon.tsx';
-import ZapModal from '../ZapModal.tsx';
-import debounce from 'lodash/debounce';
-import { ndk } from '@/utils/ndk';
-import { KIND_ZAP_RECEIPT } from '@/utils/constants';
+import {NDKEvent} from "@nostr-dev-kit/ndk"
+import {createAndPublishZapInvoice} from "@/utils/nostr" // Import from nostr.ts
+import {useWalletProviderStore} from "@/stores/walletProvider"
+import {useOnlineStatus} from "@/shared/hooks/useOnlineStatus"
+import {RefObject, useEffect, useState} from "react"
+import useProfile from "@/shared/hooks/useProfile.ts"
+import {parseZapReceipt, calculateTotalZapAmount, type ZapInfo} from "@/utils/nostr.ts"
+import {LRUCache} from "typescript-lru-cache"
+import {formatAmount} from "@/utils/utils.ts"
+import {usePublicKey, useUserStore} from "@/stores/user"
+import {useScrollAwareLongPress} from "@/shared/hooks/useScrollAwareLongPress"
+import Icon from "../../Icons/Icon.tsx"
+import ZapModal from "../ZapModal.tsx"
+import debounce from "lodash/debounce"
+import {ndk} from "@/utils/ndk"
+import {KIND_ZAP_RECEIPT} from "@/utils/constants"
 
 const zapsByEventCache = new LRUCache<string, Map<string, ZapInfo[]>>({
   maxSize: 100,
-});
+})
 
 interface FeedItemZapProps {
-  event: NDKEvent;
-  feedItemRef: RefObject<HTMLDivElement | null>;
-  showReactionCounts?: boolean;
+  event: NDKEvent
+  feedItemRef: RefObject<HTMLDivElement | null>
+  showReactionCounts?: boolean
 }
 
-function FeedItemZap({ event, feedItemRef, showReactionCounts = true }: FeedItemZapProps) {
-  const myPubKey = usePublicKey();
-  const { defaultZapAmount, defaultZapComment } = useUserStore();
-  const { activeProviderType, sendPayment: walletProviderSendPayment } =
-    useWalletProviderStore();
-  const [isZapping, setIsZapping] = useState(false);
+function FeedItemZap({event, feedItemRef, showReactionCounts = true}: FeedItemZapProps) {
+  const myPubKey = usePublicKey()
+  const {defaultZapAmount, defaultZapComment} = useUserStore()
+  const {activeProviderType, sendPayment: walletProviderSendPayment} =
+    useWalletProviderStore()
+  const [isZapping, setIsZapping] = useState(false)
   const {
     handleMouseDown: handleLongPressDown,
     handleMouseMove: handleLongPressMove,
@@ -38,161 +38,161 @@ function FeedItemZap({ event, feedItemRef, showReactionCounts = true }: FeedItem
     isLongPress,
   } = useScrollAwareLongPress({
     onLongPress: () => setShowZapModal(true),
-  });
+  })
 
-  const profile = useProfile(event.pubkey);
+  const profile = useProfile(event.pubkey)
 
-  const [showZapModal, setShowZapModal] = useState(false);
-  const [failedInvoice, setFailedInvoice] = useState<string>('');
+  const [showZapModal, setShowZapModal] = useState(false)
+  const [failedInvoice, setFailedInvoice] = useState<string>("")
 
   const [zapsByAuthor, setZapsByAuthor] = useState<Map<string, ZapInfo[]>>(
     zapsByEventCache.get(event.id) || new Map()
-  );
+  )
 
-  const hasWallet = activeProviderType !== 'disabled' && activeProviderType !== undefined;
-  const canQuickZap = !!defaultZapAmount && defaultZapAmount > 0 && hasWallet;
+  const hasWallet = activeProviderType !== "disabled" && activeProviderType !== undefined
+  const canQuickZap = !!defaultZapAmount && defaultZapAmount > 0 && hasWallet
 
   const calculateZappedAmount = async (zaps: Map<string, ZapInfo[]>): Promise<number> => {
-    const total = calculateTotalZapAmount(zaps);
-    return total;
-  };
+    const total = calculateTotalZapAmount(zaps)
+    return total
+  }
 
-  const [zappedAmount, setZappedAmount] = useState<number>(0);
+  const [zappedAmount, setZappedAmount] = useState<number>(0)
 
   const flashElement = () => {
     if (feedItemRef.current) {
-      feedItemRef.current.style.transition = 'background-color 0.05s ease-in';
-      feedItemRef.current.style.backgroundColor = 'rgba(234, 88, 12, 0.3)';
+      feedItemRef.current.style.transition = "background-color 0.05s ease-in"
+      feedItemRef.current.style.backgroundColor = "rgba(234, 88, 12, 0.3)"
       setTimeout(() => {
         if (feedItemRef.current) {
-          feedItemRef.current.style.transition = 'background-color 1.5s ease-out';
-          feedItemRef.current.style.backgroundColor = '';
+          feedItemRef.current.style.transition = "background-color 1.5s ease-out"
+          feedItemRef.current.style.backgroundColor = ""
         }
-      }, 800);
+      }, 800)
     }
-  };
+  }
 
   const handleZapClick = async () => {
     if (canQuickZap) {
-      await handleOneClickZap();
+      await handleOneClickZap()
     } else {
-      setFailedInvoice('');
-      setShowZapModal(true);
+      setFailedInvoice("")
+      setShowZapModal(true)
     }
-  };
+  }
 
   const handleOneClickZap = async () => {
     try {
-      setIsZapping(true);
-      const amount = Number(defaultZapAmount) * 1000;
+      setIsZapping(true)
+      const amount = Number(defaultZapAmount) * 1000
 
       if (!profile?.lud16 && !profile?.lud06) {
-        console.warn('Quick zap: No lightning address found');
-        setShowZapModal(true);
-        return;
+        console.warn("Quick zap: No lightning address found")
+        setShowZapModal(true)
+        return
       }
 
-      const ndkInstance = ndk();
-      const signer = ndkInstance.signer;
+      const ndkInstance = ndk()
+      const signer = ndkInstance.signer
       if (!signer) {
-        console.warn('Quick zap: No signer available');
-        setShowZapModal(true);
-        return;
+        console.warn("Quick zap: No signer available")
+        setShowZapModal(true)
+        return
       }
 
       const invoice = await createAndPublishZapInvoice(
         event,
         amount,
-        defaultZapComment || '',
+        defaultZapComment || "",
         profile.lud16 || profile.lud06!,
         signer
-      );
+      )
 
       try {
-        await walletProviderSendPayment(invoice);
-        flashElement();
+        await walletProviderSendPayment(invoice)
+        flashElement()
       } catch (error) {
-        console.warn('Quick zap payment failed:', error);
-        setFailedInvoice(invoice);
-        setShowZapModal(true);
+        console.warn("Quick zap payment failed:", error)
+        setFailedInvoice(invoice)
+        setShowZapModal(true)
       }
     } catch (error) {
-      console.warn('Unable to one-click zap:', error);
-      setFailedInvoice('');
-      setShowZapModal(true);
+      console.warn("Unable to one-click zap:", error)
+      setFailedInvoice("")
+      setShowZapModal(true)
     } finally {
-      setIsZapping(false);
+      setIsZapping(false)
     }
-  };
+  }
 
   const handleClick = () => {
     if (!isLongPress) {
-      handleZapClick();
+      handleZapClick()
     }
-  };
+  }
 
   useEffect(() => {
-    if (!showReactionCounts) return;
+    if (!showReactionCounts) return
 
     const filter = {
       kinds: [KIND_ZAP_RECEIPT],
-      ['#e']: [event.id],
-    };
+      ["#e"]: [event.id],
+    }
 
     try {
-      const sub = ndk().subscribe(filter);
+      const sub = ndk().subscribe(filter)
       const debouncedUpdateAmount = debounce(async (zapsByAuthor) => {
-        const amount = await calculateZappedAmount(zapsByAuthor);
-        setZappedAmount(amount);
-      }, 300);
+        const amount = await calculateZappedAmount(zapsByAuthor)
+        setZappedAmount(amount)
+      }, 300)
 
-      sub?.on('event', async (zapEvent: NDKEvent) => {
-        const zapInfo = parseZapReceipt(zapEvent);
+      sub?.on("event", async (zapEvent: NDKEvent) => {
+        const zapInfo = parseZapReceipt(zapEvent)
         if (zapInfo) {
           setZapsByAuthor((prev) => {
-            const newMap = new Map(prev);
-            const authorZaps = newMap.get(zapInfo.pubkey) ?? [];
+            const newMap = new Map(prev)
+            const authorZaps = newMap.get(zapInfo.pubkey) ?? []
             if (!authorZaps.some((e) => e.id === zapEvent.id)) {
-              authorZaps.push(zapInfo);
+              authorZaps.push(zapInfo)
             }
-            newMap.set(zapInfo.pubkey, authorZaps);
-            zapsByEventCache.set(event.id, newMap);
-            debouncedUpdateAmount(newMap);
-            return newMap;
-          });
+            newMap.set(zapInfo.pubkey, authorZaps)
+            zapsByEventCache.set(event.id, newMap)
+            debouncedUpdateAmount(newMap)
+            return newMap
+          })
         }
-      });
+      })
 
       return () => {
-        debouncedUpdateAmount.cancel();
-        sub.stop();
-      };
+        debouncedUpdateAmount.cancel()
+        sub.stop()
+      }
     } catch (error) {
-      console.warn(error);
+      console.warn(error)
     }
-  }, [showReactionCounts]);
+  }, [showReactionCounts])
 
   useEffect(() => {
     calculateZappedAmount(zapsByAuthor).then((amount) => {
-      setZappedAmount(amount);
-    });
-  }, [zapsByAuthor]);
+      setZappedAmount(amount)
+    })
+  }, [zapsByAuthor])
 
-  const zapped = zapsByAuthor.has(myPubKey);
+  const zapped = zapsByAuthor.has(myPubKey)
 
-  const isOnline = useOnlineStatus();
+  const isOnline = useOnlineStatus()
 
   if (!(profile?.lud16 || profile?.lud06) || !isOnline) {
-    return null;
+    return null
   }
 
-  let iconName = '';
+  let iconName = ""
   if (canQuickZap) {
-    iconName = 'zapFast';
+    iconName = "zapFast"
   } else if (zapped) {
-    iconName = 'zap-solid';
+    iconName = "zap-solid"
   } else {
-    iconName = 'zap';
+    iconName = "zap"
   }
 
   return (
@@ -200,13 +200,13 @@ function FeedItemZap({ event, feedItemRef, showReactionCounts = true }: FeedItem
       {showZapModal && (
         <ZapModal
           onClose={() => {
-            setShowZapModal(false);
-            setFailedInvoice('');
+            setShowZapModal(false)
+            setFailedInvoice("")
           }}
           event={event}
           profile={profile}
           setZapped={() => {
-            flashElement();
+            flashElement()
           }}
           initialInvoice={failedInvoice}
           initialAmount={failedInvoice ? defaultZapAmount.toString() : undefined}
@@ -216,7 +216,7 @@ function FeedItemZap({ event, feedItemRef, showReactionCounts = true }: FeedItem
       <button
         title="Zap"
         className={`${
-          zapped ? 'cursor-pointer text-accent' : 'cursor-pointer hover:text-accent'
+          zapped ? "cursor-pointer text-accent" : "cursor-pointer hover:text-accent"
         } flex flex-row items-center gap-1 transition duration-200 ease-in-out min-w-[50px] md:min-w-[80px]`}
         onClick={handleClick}
         onMouseDown={handleLongPressDown}
@@ -232,10 +232,10 @@ function FeedItemZap({ event, feedItemRef, showReactionCounts = true }: FeedItem
         ) : (
           <Icon name={iconName} size={16} />
         )}
-        <span>{showReactionCounts ? formatAmount(zappedAmount) : ''}</span>
+        <span>{showReactionCounts ? formatAmount(zappedAmount) : ""}</span>
       </button>
     </>
-  );
+  )
 }
 
-export default FeedItemZap;
+export default FeedItemZap

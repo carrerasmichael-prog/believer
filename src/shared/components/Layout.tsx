@@ -1,28 +1,28 @@
 // src/Layout.tsx
-import { useLocation, useNavigate } from "@/navigation"
-import { getCurrentRouteInfo } from "@/navigation/utils"
+import {useLocation, useNavigate} from "@/navigation"
+import {getCurrentRouteInfo} from "@/navigation/utils"
 import NoteCreator from "@/shared/components/create/NoteCreator.tsx"
 import LoginDialog from "@/shared/components/user/LoginDialog"
 import NavSideBar from "@/shared/components/nav/NavSideBar"
-import { clearNotifications } from "@/utils/notifications"
-import { socialGraphLoaded } from "@/utils/socialGraph"
+import {clearNotifications} from "@/utils/notifications"
+import {socialGraphLoaded} from "@/utils/socialGraph"
 import Modal from "@/shared/components/ui/Modal.tsx"
 import Footer from "@/shared/components/Footer.tsx"
-import { useSettingsStore } from "@/stores/settings"
+import {useSettingsStore} from "@/stores/settings"
 import ErrorBoundary from "./ui/ErrorBoundary"
-import { useWalletProviderStore } from "@/stores/walletProvider"
-import { useUIStore } from "@/stores/ui"
-import { Helmet } from "react-helmet"
-import { useEffect, ReactNode, useRef, useMemo, useState } from "react"
-import { useIsLargeScreen } from "@/shared/hooks/useIsLargeScreen"
-import { useIsTwoColumnLayout } from "@/shared/hooks/useIsTwoColumnLayout"
+import {useWalletProviderStore} from "@/stores/walletProvider"
+import {useUIStore} from "@/stores/ui"
+import {Helmet} from "react-helmet"
+import {useEffect, ReactNode, useRef, useMemo, useState} from "react"
+import {useIsLargeScreen} from "@/shared/hooks/useIsLargeScreen"
+import {useIsTwoColumnLayout} from "@/shared/hooks/useIsTwoColumnLayout"
 import HomeFeed from "@/pages/home/feed/components/HomeFeed"
 import UnifiedSearchContent from "@/shared/components/search/UnifiedSearchContent"
-import { ScrollProvider } from "@/contexts/ScrollContext"
+import {ScrollProvider} from "@/contexts/ScrollContext"
 import Header from "@/shared/components/header/Header"
-import { RiArrowLeftSLine, RiArrowRightSLine } from "@remixicon/react"
+import {RiArrowLeftSLine, RiArrowRightSLine} from "@remixicon/react"
 import useFollows from "@/shared/hooks/useFollows"
-import { usePublicKey } from "@/stores/user"
+import {usePublicKey} from "@/stores/user"
 import {
   useFeedStore,
   useFeedConfigs,
@@ -37,12 +37,12 @@ interface ServiceWorkerMessage {
   url: string
 }
 
-const Layout = ({ children }: { children: ReactNode }) => {
+const Layout = ({children}: {children: ReactNode}) => {
   const middleColumnRef = useRef<HTMLDivElement>(null)
   const newPostOpen = useUIStore((state) => state.newPostOpen)
   const setNewPostOpen = useUIStore((state) => state.setNewPostOpen)
   const navItemClicked = useUIStore((state) => state.navItemClicked)
-  const { appearance, updateAppearance } = useSettingsStore()
+  const {appearance, updateAppearance} = useSettingsStore()
   const goToNotifications = useUIStore((state) => state.goToNotifications)
   const showLoginDialog = useUIStore((state) => state.showLoginDialog)
   const setShowLoginDialog = useUIStore((state) => state.setShowLoginDialog)
@@ -55,16 +55,21 @@ const Layout = ({ children }: { children: ReactNode }) => {
   const isInRoom = location.pathname.startsWith("/room/")
   const isLanding = location.pathname === "/"
 
-  const [middleColumnContent, setMiddleColumnContent] = useState<"home" | "search">("home")
+  const [middleColumnContent, setMiddleColumnContent] = useState<"home" | "search">(
+    "home"
+  )
   const [lastSearchRoute, setLastSearchRoute] = useState("/u")
 
   const myPubKey = usePublicKey()
   const follows = useFollows(myPubKey, true)
-  const { activeFeed, getAllFeedConfigs, loadFeedConfig } = useFeedStore()
+  const {activeFeed, getAllFeedConfigs, loadFeedConfig} = useFeedStore()
   const enabledFeedIds = useEnabledFeedIds()
   const feedConfigs = useFeedConfigs()
 
-  const allFeeds = useMemo(() => getAllFeedConfigs(), [feedConfigs, enabledFeedIds, getAllFeedConfigs])
+  const allFeeds = useMemo(
+    () => getAllFeedConfigs(),
+    [feedConfigs, enabledFeedIds, getAllFeedConfigs]
+  )
   const feeds = useMemo(() => {
     const feedsMap = new Map(allFeeds.map((feed) => [feed.id, feed]))
     return enabledFeedIds
@@ -77,7 +82,10 @@ const Layout = ({ children }: { children: ReactNode }) => {
     [activeFeed, feeds]
   )
 
-  const activeFeedConfig = useMemo(() => loadFeedConfig(activeFeed), [loadFeedConfig, activeFeed, feedConfigs])
+  const activeFeedConfig = useMemo(
+    () => loadFeedConfig(activeFeed),
+    [loadFeedConfig, activeFeed, feedConfigs]
+  )
 
   const feedName =
     follows.length <= 1
@@ -115,11 +123,11 @@ const Layout = ({ children }: { children: ReactNode }) => {
 
     if (navItemClicked.path === "/") {
       setMiddleColumnContent("home")
-      middleColumnRef.current?.scrollTo({ top: 0, behavior: "instant" })
+      middleColumnRef.current?.scrollTo({top: 0, behavior: "instant"})
     } else if (["/u", "/search", "/m", "/map", "/relay"].includes(navItemClicked.path)) {
       setLastSearchRoute(navItemClicked.path)
       setMiddleColumnContent("search")
-      middleColumnRef.current?.scrollTo({ top: 0, behavior: "instant" })
+      middleColumnRef.current?.scrollTo({top: 0, behavior: "instant"})
     }
   }, [navItemClicked, shouldShowMainFeed])
 
@@ -146,7 +154,7 @@ const Layout = ({ children }: { children: ReactNode }) => {
         const url = new URL(event.data.url)
         if (url.pathname.match(/^\/chats\/[^/]+$/)) {
           const chatId = url.pathname.split("/").pop()
-          navigate("/chats/chat", { state: { id: chatId } })
+          navigate("/chats/chat", {state: {id: chatId}})
         } else {
           navigate(url.pathname + url.search + url.hash)
         }
@@ -183,50 +191,67 @@ const Layout = ({ children }: { children: ReactNode }) => {
         appearance.limitedMaxWidth ? "max-w-screen-2xl mx-auto" : ""
       }`}
     >
-      <div className="flex relative flex-1 overflow-hidden min-w-0 w-full" id="main-content">
+      <div
+        className="flex relative flex-1 overflow-hidden min-w-0 w-full"
+        id="main-content"
+      >
         {/* SIDEBAR — Always on left for ≥768px */}
         <NavSideBar />
 
         {/* MIDDLE COLUMN — ONLY ON ≥1200px */}
-        {!appearance.singleColumnLayout && isLargeScreen && !isInRoom && !isLanding && shouldShowMainFeed && (
-          <div className="flex-1 min-w-0 border-r border-base-300 flex flex-col hidden xl:flex">
-            <Header showBack={false} showNotifications={true}>
-              <div className="flex items-center justify-between w-full">
-                <span className="md:px-3 md:py-2">{middleColumnTitle}</span>
-                <button
-                  className="p-2 bg-base-100 hover:bg-base-200 rounded-full transition-colors mt-1"
-                  onClick={() => updateAppearance({ singleColumnLayout: !appearance.singleColumnLayout })}
-                  title={appearance.singleColumnLayout ? "Expand to two columns" : "Collapse to single column"}
-                >
-                  {appearance.singleColumnLayout ? (
-                    <RiArrowLeftSLine className="w-5 h-5" />
-                  ) : (
-                    <RiArrowRightSLine className="w-5 h-5" />
-                  )}
-                </button>
+        {!appearance.singleColumnLayout &&
+          isLargeScreen &&
+          !isInRoom &&
+          !isLanding &&
+          shouldShowMainFeed && (
+            <div className="flex-1 min-w-0 border-r border-base-300 flex flex-col hidden xl:flex">
+              <Header showBack={false} showNotifications={true}>
+                <div className="flex items-center justify-between w-full">
+                  <span className="md:px-3 md:py-2">{middleColumnTitle}</span>
+                  <button
+                    className="p-2 bg-base-100 hover:bg-base-200 rounded-full transition-colors mt-1"
+                    onClick={() =>
+                      updateAppearance({
+                        singleColumnLayout: !appearance.singleColumnLayout,
+                      })
+                    }
+                    title={
+                      appearance.singleColumnLayout
+                        ? "Expand to two columns"
+                        : "Collapse to single column"
+                    }
+                  >
+                    {appearance.singleColumnLayout ? (
+                      <RiArrowLeftSLine className="w-5 h-5" />
+                    ) : (
+                      <RiArrowRightSLine className="w-5 h-5" />
+                    )}
+                  </button>
+                </div>
+              </Header>
+              <div
+                ref={middleColumnRef}
+                className="flex-1 overflow-y-scroll overflow-x-hidden scrollbar-hide"
+                data-main-scroll-container="middle-column"
+                data-header-scroll-target
+              >
+                {middleColumnContent === "home" ? (
+                  <ScrollProvider scrollContainerRef={middleColumnRef}>
+                    <HomeFeed />
+                  </ScrollProvider>
+                ) : (
+                  <UnifiedSearchContent searchRoute={lastSearchRoute} />
+                )}
               </div>
-            </Header>
-            <div
-              ref={middleColumnRef}
-              className="flex-1 overflow-y-scroll overflow-x-hidden scrollbar-hide"
-              data-main-scroll-container="middle-column"
-              data-header-scroll-target
-            >
-              {middleColumnContent === "home" ? (
-                <ScrollProvider scrollContainerRef={middleColumnRef}>
-                  <HomeFeed />
-                </ScrollProvider>
-              ) : (
-                <UnifiedSearchContent searchRoute={lastSearchRoute} />
-              )}
             </div>
-          </div>
-        )}
+          )}
 
         {/* RIGHT COLUMN — FULL WIDTH BELOW 1200px */}
         <div
           className={`flex-1 flex flex-col min-w-0 ${
-            !isLargeScreen && isLanding ? "landing-fullscreen pb-mobile-nav" : "overflow-auto"
+            !isLargeScreen && isLanding
+              ? "landing-fullscreen pb-mobile-nav"
+              : "overflow-auto"
           }`}
         >
           {!isLargeScreen && isLanding ? (
@@ -237,14 +262,15 @@ const Layout = ({ children }: { children: ReactNode }) => {
 
           {/* CASHU WALLET IFRAME */}
           {(() => {
-            const activeProviderType = useWalletProviderStore.getState().activeProviderType
+            const activeProviderType =
+              useWalletProviderStore.getState().activeProviderType
             return activeProviderType !== "disabled" ? (
               <iframe
                 id="cashu-wallet"
                 title="Background Cashu Wallet"
                 src="/cashu/index.html#/"
                 className="fixed top-0 left-0 w-0 h-0 border-none"
-                style={{ zIndex: -1 }}
+                style={{zIndex: -1}}
                 referrerPolicy="no-referrer"
                 sandbox="allow-scripts allow-same-origin allow-forms"
               />
@@ -256,7 +282,10 @@ const Layout = ({ children }: { children: ReactNode }) => {
       <ErrorBoundary>
         {newPostOpen && (
           <Modal onClose={() => setNewPostOpen(false)} hasBackground={false}>
-            <div className="w-[600px] max-w-[90vw] rounded-2xl bg-base-100" onClick={(e) => e.stopPropagation()}>
+            <div
+              className="w-[600px] max-w-[90vw] rounded-2xl bg-base-100"
+              onClick={(e) => e.stopPropagation()}
+            >
               <NoteCreator handleClose={() => setNewPostOpen(false)} />
             </div>
           </Modal>

@@ -1,5 +1,5 @@
 // src/shared/hooks/useIsLargeScreen.ts
-import { useState, useEffect } from "react"
+import {useState, useEffect} from "react"
 
 export function useIsLargeScreen() {
   const [isLargeScreen, setIsLargeScreen] = useState(window.innerWidth >= 1200)

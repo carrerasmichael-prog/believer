@@ -135,7 +135,7 @@ export const townSquareSlices: TownSquareSlice[] = [
     width: 192,
     height: 185,
     isRoom: true,
-    src: "/room/square",
+    src: "/room/square?map=1",
   },
   {
     id: "market",

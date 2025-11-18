@@ -1,3 +1,4 @@
+// src/utils/webln.ts
 import type {WebLNProvider} from "@/types/global"
 
 export interface WebLNWalletBalance {
@@ -7,6 +8,7 @@ export interface WebLNWalletBalance {
 export class SimpleWebLNWallet {
   private provider: WebLNProvider | null = null
   private _balance?: WebLNWalletBalance
+  private static isEnabled: boolean = false
 
   async connect(): Promise<boolean> {
     try {
@@ -17,21 +19,33 @@ export class SimpleWebLNWallet {
 
       const webln = window.webln
 
-      // Check if already enabled
-      const isEnabled = await webln.isEnabled()
-      if (isEnabled) {
+      // Check cached enabled state
+      if (SimpleWebLNWallet.isEnabled) {
+        console.log("🔍 WebLN already enabled, reusing provider")
         this.provider = webln
         return true
       }
 
-      // Try to enable if method exists
+      // Check if already enabled
+      const isEnabled = await webln.isEnabled()
+      if (isEnabled) {
+        SimpleWebLNWallet.isEnabled = true
+        this.provider = webln
+        console.log("🔍 WebLN already enabled via isEnabled")
+        return true
+      }
+
+      // Try to enable
       if (webln.enable) {
         await webln.enable()
+        SimpleWebLNWallet.isEnabled = true
+        this.provider = webln
+        console.log("🔍 WebLN enabled successfully")
       }
-      this.provider = webln
       return true
     } catch (error) {
       console.error("Failed to connect WebLN:", error)
+      SimpleWebLNWallet.isEnabled = false
       return false
     }
   }
@@ -84,6 +98,6 @@ export class SimpleWebLNWallet {
   }
 
   get isConnected(): boolean {
-    return !!this.provider
+    return !!this.provider && SimpleWebLNWallet.isEnabled
   }
 }

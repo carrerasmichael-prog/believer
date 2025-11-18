@@ -1,8 +1,8 @@
 // src/components/DestinyMenu.tsx
-import { useState } from "react"
-import { useUserStore, useSetIdentity, useSyncKind0 } from "@/stores/user"
-import { ndk } from "@/utils/ndk"
-import { NDKEvent } from "@nostr-dev-kit/ndk"
+import {useState} from "react"
+import {useUserStore, useSetIdentity, useSyncKind0} from "@/stores/user"
+import {ndk} from "@/utils/ndk"
+import {NDKEvent} from "@nostr-dev-kit/ndk"
 import Icon from "@/shared/components/Icons/Icon.tsx" // make sure this path is correct
 
 interface Room {
@@ -13,23 +13,28 @@ interface Room {
 }
 
 const ROOMS: Room[] = [
-  { id: "square", name: "Town Square", belief: "Nomad", state: "nomad" },
-  { id: "temple", name: "Temple", belief: "Believer in Temple", state: "believer" },
-  { id: "mosque", name: "Mosque", belief: "Believer in Mosque", state: "believer" },
-  { id: "church", name: "Church", belief: "Believer in Church", state: "believer" },
-  { id: "synagogue", name: "Synagogue", belief: "Believer in Synagogue", state: "believer" },
-  { id: "market", name: "Market", belief: "Believer in Market", state: "believer" },
-  { id: "news", name: "News", belief: "Believer in News", state: "believer" },
-  { id: "atheism", name: "Atheism", belief: "Atheist", state: "atheist" },
-  { id: "mathris", name: "Mathris", belief: "Believer in Mathris", state: "believer" },
+  {id: "square", name: "Town Square", belief: "Nomad", state: "nomad"},
+  {id: "temple", name: "Temple", belief: "Believer in Temple", state: "believer"},
+  {id: "mosque", name: "Mosque", belief: "Believer in Mosque", state: "believer"},
+  {id: "church", name: "Church", belief: "Believer in Church", state: "believer"},
+  {
+    id: "synagogue",
+    name: "Synagogue",
+    belief: "Believer in Synagogue",
+    state: "believer",
+  },
+  {id: "market", name: "Market", belief: "Believer in Market", state: "believer"},
+  {id: "news", name: "News", belief: "Believer in News", state: "believer"},
+  {id: "atheism", name: "Atheism", belief: "Atheist", state: "atheist"},
+  {id: "mathris", name: "Mathris", belief: "Believer in Mathris", state: "believer"},
 ]
 
 interface DestinyMenuProps {
   onClose: () => void
 }
 
-export default function DestinyMenu({ onClose }: DestinyMenuProps) {
-  const { publicKey, identity } = useUserStore()
+export default function DestinyMenu({onClose}: DestinyMenuProps) {
+  const {publicKey, identity} = useUserStore()
   const setIdentity = useSetIdentity()
   const syncKind0 = useSyncKind0()
   const [loading, setLoading] = useState(false)
@@ -50,7 +55,8 @@ export default function DestinyMenu({ onClose }: DestinyMenuProps) {
       const event = new NDKEvent(ndk())
       event.kind = 0
       event.content = JSON.stringify({
-        name: room.id === "square" ? "Nomad" : room.id === "atheism" ? "Atheist" : "Believer",
+        name:
+          room.id === "square" ? "Nomad" : room.id === "atheism" ? "Atheist" : "Believer",
         belief: room.belief,
         default_room: room.id,
       })
@@ -72,10 +78,7 @@ export default function DestinyMenu({ onClose }: DestinyMenuProps) {
         <div className="flex items-center justify-center mb-2">
           <h2 className="text-2xl font-bold text-center mr-2">Choose Your Destiny</h2>
           <div className="hidden lg:block">
-            <Icon
-              name="mail-outline"
-              className="w-6 h-6 text-base-content/80"
-            />
+            <Icon name="mail-outline" className="w-6 h-6 text-base-content/80" />
           </div>
         </div>
 
@@ -93,9 +96,10 @@ export default function DestinyMenu({ onClose }: DestinyMenuProps) {
                 disabled={loading || isActive}
                 className={`
                   p-4 rounded-lg border-2 transition-all text-left text-sm
-                  ${isActive 
-                    ? "border-yellow-500 bg-yellow-500/10 text-yellow-300 font-bold" 
-                    : "border-base-300 hover:border-yellow-500 hover:bg-base-200"
+                  ${
+                    isActive
+                      ? "border-yellow-500 bg-yellow-500/10 text-yellow-300 font-bold"
+                      : "border-base-300 hover:border-yellow-500 hover:bg-base-200"
                   }
                   ${loading ? "opacity-50 cursor-not-allowed" : "cursor-pointer"}
                 `}

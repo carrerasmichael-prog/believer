@@ -64,7 +64,7 @@ export const AboutPage = () => {
       <div className="flex-1">
         <section className="flex flex-col">
           <div className="p-4 border-b border-base-300 text-center bg-base-100">
-          <h1 className="text-2xl font-bold">About</h1>
+            <h1 className="text-2xl font-bold">About</h1>
           </div>
           <div className="flex flex-1 mx-4 my-4 lg:mx-8 pt-[calc(4rem+env(safe-area-inset-top))] pb-[calc(4rem+env(safe-area-inset-bottom))] md:pt-0 md:pb-0">
             <div className="prose max-w-prose">
