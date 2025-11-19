@@ -56,15 +56,15 @@ export const useWalletProviderStore = create<WalletProviderState>()(
       nwcConnections: [],
 
       setActiveProviderType: (type: WalletProviderType) => {
-        console.log("🔄 Setting active provider type to:", type)
+        console.log("Setting active provider type to:", type)
         const prevType = get().activeProviderType
-        console.log("🔄 Previous provider type was:", prevType)
+        console.log("Previous provider type was:", prevType)
         set({activeProviderType: type})
         get().refreshActiveProvider()
       },
 
       setActiveNWCId: (id: string) => {
-        console.log("🔄 Setting active NWC ID to:", id)
+        console.log("Setting active NWC ID to:", id)
         set({activeNWCId: id})
         get().refreshActiveProvider()
       },
@@ -120,17 +120,17 @@ export const useWalletProviderStore = create<WalletProviderState>()(
       },
 
       connectToNWC: async (id: string): Promise<boolean> => {
-        console.log("🔌 Starting NWC connection for ID:", id)
+        console.log("Starting NWC connection for ID:", id)
         const state = get()
         const connection = state.nwcConnections.find((conn) => conn.id === id)
 
         if (!connection) {
-          console.warn(`❌ NWC connection ${id} not found`)
+          console.warn(`NWC connection ${id} not found`)
           return false
         }
 
         if (isNWCInitialized[id]) {
-          console.log("🔍 NWC connection already initialized:", id)
+          console.log("NWC connection already initialized:", id)
           set({
             activeProviderType: "nwc",
             activeNWCId: id,
@@ -139,7 +139,7 @@ export const useWalletProviderStore = create<WalletProviderState>()(
           return true
         }
 
-        console.log("🔌 Found connection:", {
+        console.log("Found connection:", {
           name: connection.name,
           isLocalCashu: connection.isLocalCashuWallet,
           hasWallet: !!connection.wallet,
@@ -163,19 +163,19 @@ export const useWalletProviderStore = create<WalletProviderState>()(
             }
             secret = url.searchParams.get("secret") || undefined
 
-            console.log("🔌 Parsed NWC parameters:", {pubkey, relayUrls, secret})
+            console.log("Parsed NWC parameters:", {pubkey, relayUrls, secret})
 
             if (!pubkey || !relayUrls || relayUrls.length === 0 || !secret) {
               throw new Error("Missing required NWC parameters: pubkey, relay, or secret")
             }
           } catch (parseError) {
-            console.error("❌ Failed to parse NWC connection string:", parseError)
+            console.error("Failed to parse NWC connection string:", parseError)
             throw new Error(
               `Invalid NWC connection string format. Expected: nostr+walletconnect://<pubkey>?relay=<relay>&secret=<secret>`
             )
           }
 
-          console.log("🔌 Initializing NWC with:", {
+          console.log("Initializing NWC with:", {
             pubkey,
             relayUrls,
             hasSecret: !!secret,
@@ -192,7 +192,7 @@ export const useWalletProviderStore = create<WalletProviderState>()(
           })
 
           await wallet.connect()
-          console.log("🔌 SimpleNWCWallet created and connected:", {
+          console.log("SimpleNWCWallet created and connected:", {
             walletExists: !!wallet,
             walletType: wallet?.constructor?.name,
           })
@@ -206,17 +206,17 @@ export const useWalletProviderStore = create<WalletProviderState>()(
 
           isNWCInitialized[id] = true
 
-          console.log("🔌 State after setting wallet:", {
+          console.log("State after setting wallet:", {
             hasActiveWallet: !!get().activeWallet,
             activeWalletType: get().activeWallet?.constructor?.name,
             activeNWCId: get().activeNWCId,
             activeProviderType: get().activeProviderType,
           })
 
-          console.log("✅ NWC connection successful!")
+          console.log("NWC connection successful!")
           return true
         } catch (error) {
-          console.error("❌ Failed to connect to NWC:", error)
+          console.error("Failed to connect to NWC:", error)
           return false
         }
       },
@@ -235,9 +235,10 @@ export const useWalletProviderStore = create<WalletProviderState>()(
         isNWCInitialized = {}
       },
 
+      // FINAL FIX — NO MORE AUTO-CONNECT → NO MORE DOUBLE POPUP
       initializeProviders: async () => {
         const state = get()
-        console.log("🔍 Initializing providers. Current state:", {
+        console.log("Initializing providers. Current state:", {
           activeProviderType: state.activeProviderType,
           nwcConnectionsCount: state.nwcConnections.length,
           activeNWCId: state.activeNWCId,
@@ -245,62 +246,28 @@ export const useWalletProviderStore = create<WalletProviderState>()(
           hasNativeWallet: !!state.nativeWallet,
         })
 
-        if (state.activeProviderType === undefined) {
-          console.log("🔍 Starting wallet discovery...")
-          if (window.webln) {
-            try {
-              const nativeWallet = new SimpleWebLNWallet()
-              const connected = await nativeWallet.connect()
-              if (connected) {
-                console.log("🔍 Found native WebLN, setting as active")
-                set({
-                  nativeWallet,
-                  activeProviderType: "native",
-                  activeWallet: nativeWallet,
-                })
-              }
-            } catch (error) {
-              console.warn("Failed to enable native WebLN provider:", error)
-            }
-          }
+        // ONLY DETECT WebLN — DO NOT CALL .connect() ON STARTUP
+        if (window.webln && !state.nativeWallet) {
+          console.log("WebLN detected — ready for user to connect")
+          const nativeWallet = new SimpleWebLNWallet()
+          set({ nativeWallet })
+          // ←←←←←←←←←←←←←←←←←←←←←←←←←←←←←←←←←←←←←←←←
+          // NO await nativeWallet.connect() HERE → NO POPUP
+          // ←←←←←←←←←←←←←←←←←←←←←←←←←←←←←←←←←←←←←←←←
         }
 
-        if (
-          state.activeProviderType !== undefined &&
-          state.activeProviderType !== "disabled"
-        ) {
-          console.log("🔍 Provider already selected, updating providers...")
-          if (window.webln && !state.nativeWallet) {
-            try {
-              const nativeWallet = new SimpleWebLNWallet()
-              const connected = await nativeWallet.connect()
-              if (connected) {
-                set({nativeWallet})
-                if (state.activeProviderType === "native") {
-                  set({activeWallet: nativeWallet})
-                }
-              }
-            } catch (error) {
-              console.warn("Failed to enable native WebLN provider:", error)
-            }
-          }
-
-          if (state.activeProviderType === "nwc" && state.activeNWCId) {
-            console.log("🔍 Initializing active NWC connection:", state.activeNWCId)
-            const success = await get().connectToNWC(state.activeNWCId)
-            console.log("🔍 NWC connection result:", success)
-            console.log("🔍 Active wallet after connection:", !!get().activeWallet)
-          }
+        // Restore previously selected NWC if any
+        if (state.activeProviderType === "nwc" && state.activeNWCId) {
+          console.log("Restoring saved NWC connection:", state.activeNWCId)
+          await get().connectToNWC(state.activeNWCId)
         }
 
-        console.log("🔍 About to call startCashuNWCChecking...")
         get().startCashuNWCChecking()
-        console.log("🔍 Returned from startCashuNWCChecking, continuing...")
       },
 
       refreshActiveProvider: async () => {
         const state = get()
-        console.log("🔄 Refreshing active provider. Current state:", {
+        console.log("Refreshing active provider. Current state:", {
           activeProviderType: state.activeProviderType,
           activeNWCId: state.activeNWCId,
           nwcConnectionsCount: state.nwcConnections.length,
@@ -308,7 +275,7 @@ export const useWalletProviderStore = create<WalletProviderState>()(
 
         switch (state.activeProviderType) {
           case "native":
-            console.log("🔄 Setting native wallet")
+            console.log("Setting native wallet as active")
             set({activeWallet: state.nativeWallet})
             break
 
@@ -318,7 +285,7 @@ export const useWalletProviderStore = create<WalletProviderState>()(
                 (c) => c.id === state.activeNWCId
               )
               console.log(
-                "🔄 Looking for NWC connection:",
+                "Looking for NWC connection:",
                 state.activeNWCId,
                 "found:",
                 !!connection,
@@ -328,21 +295,21 @@ export const useWalletProviderStore = create<WalletProviderState>()(
                 !!connection?.isLocalCashuWallet
               )
               if (connection?.wallet) {
-                console.log("🔄 Using existing NWC wallet")
+                console.log("Using existing NWC wallet")
                 set({activeWallet: connection.wallet})
               } else if (state.activeNWCId) {
-                console.log("🔄 Reconnecting to NWC:", state.activeNWCId)
+                console.log("Reconnecting to NWC:", state.activeNWCId)
                 await get().connectToNWC(state.activeNWCId)
               }
             } else {
-              console.log("🔄 No NWC ID set, clearing wallet")
+              console.log("No NWC ID set, clearing wallet")
               set({activeWallet: null})
             }
             break
 
           case "disabled":
           default:
-            console.log("🔄 Disabling wallet")
+            console.log("Disabling wallet")
             set({activeWallet: null})
             break
         }
@@ -355,19 +322,19 @@ export const useWalletProviderStore = create<WalletProviderState>()(
         )
 
         if (existingCashuConnection) {
-          console.log("🔍 Already have Cashu NWC connection, skipping check")
+          console.log("Already have Cashu NWC connection, skipping check")
           return
         }
 
-        console.log("🔍 Starting delayed Cashu NWC checking...")
+        console.log("Starting delayed Cashu NWC checking...")
         const timeoutIds: NodeJS.Timeout[] = []
 
         const scheduleCheck = (delay: number, attempt: number) => {
           const timeoutId = setTimeout(() => {
-            console.log(`🔍 Cashu check attempt ${attempt} (${delay / 1000}s)`)
+            console.log(`Cashu check attempt ${attempt} (${delay / 1000}s)`)
             const found = get().checkCashuNWCConnection()
             if (found) {
-              console.log("🔍 Cashu NWC connection found, stopping further checks")
+              console.log("Cashu NWC connection found, stopping further checks")
               timeoutIds.forEach((id) => clearTimeout(id))
             }
           }, delay)
@@ -382,18 +349,18 @@ export const useWalletProviderStore = create<WalletProviderState>()(
 
       checkCashuNWCConnection: (): boolean => {
         const state = get()
-        console.log("🔍 Checking for Cashu NWC connection in localStorage...")
+        console.log("Checking for Cashu NWC connection in localStorage...")
 
         try {
           const bcConfigString = localStorage.getItem("bc:config")
           if (bcConfigString) {
-            console.log("🔍 Found bc:config in localStorage")
+            console.log("Found bc:config in localStorage")
             const bcConfig = JSON.parse(bcConfigString)
             const cashuNWCString = bcConfig.nwcUrl
 
             if (cashuNWCString) {
               console.log(
-                "🔍 Found Cashu NWC string:",
+                "Found Cashu NWC string:",
                 cashuNWCString.substring(0, 50) + "..."
               )
 
@@ -402,9 +369,9 @@ export const useWalletProviderStore = create<WalletProviderState>()(
               )
 
               if (existingConnection) {
-                console.log("🔍 Cashu NWC connection already exists, setting as active")
+                console.log("Cashu NWC connection already exists, setting as active")
                 if (!existingConnection.isLocalCashuWallet) {
-                  console.log("🔍 Adding isLocalCashuWallet flag to existing connection")
+                  console.log("Adding isLocalCashuWallet flag to existing connection")
                   get().updateNWCConnection(existingConnection.id, {
                     isLocalCashuWallet: true,
                   })
@@ -419,7 +386,7 @@ export const useWalletProviderStore = create<WalletProviderState>()(
                 }
                 return true
               } else {
-                console.log("🔍 Adding new Cashu NWC connection")
+                console.log("Adding new Cashu NWC connection")
                 const connectionId = get().addNWCConnection({
                   name: "Cashu Wallet",
                   connectionString: cashuNWCString,
@@ -427,7 +394,7 @@ export const useWalletProviderStore = create<WalletProviderState>()(
                 })
 
                 if (state.activeProviderType === undefined) {
-                  console.log("🔍 Setting Cashu NWC as active")
+                  console.log("Setting Cashu NWC as active")
                   set({
                     activeProviderType: "nwc",
                     activeNWCId: connectionId,
@@ -435,21 +402,21 @@ export const useWalletProviderStore = create<WalletProviderState>()(
                   get().refreshActiveProvider()
                 } else {
                   console.log(
-                    "🔍 Other wallet already active, Cashu NWC added but not set as active"
+                    "Other wallet already active, Cashu NWC added but not set as active"
                   )
                 }
                 return true
               }
             } else {
-              console.log("🔍 No nwcUrl found in bc:config")
+              console.log("No nwcUrl found in bc:config")
               return false
             }
           } else {
-            console.log("🔍 No bc:config found in localStorage")
+            console.log("No bc:config found in localStorage")
             return false
           }
         } catch (error) {
-          console.warn("🔍 Error checking for Cashu NWC connection:", error)
+          console.warn("Error checking for Cashu NWC connection:", error)
           return false
         }
       },
@@ -509,19 +476,19 @@ export const useWalletProviderStore = create<WalletProviderState>()(
           try {
             const {activeWallet, activeProviderType} = get()
             console.log(
-              "🔍 getBalance called (throttled), activeProviderType:",
+              "getBalance called (throttled), activeProviderType:",
               activeProviderType,
               "hasActiveWallet:",
               !!activeWallet
             )
 
             if (!activeWallet) {
-              console.log("🔍 No active wallet, returning null")
+              console.log("No active wallet, returning null")
               return null
             }
 
             if (activeProviderType === "nwc" && activeWallet instanceof SimpleNWCWallet) {
-              console.log("🔍 Using SimpleNWCWallet for balance request")
+              console.log("Using SimpleNWCWallet for balance request")
               const balance = await activeWallet.getBalance()
               return balance
             }
@@ -530,7 +497,7 @@ export const useWalletProviderStore = create<WalletProviderState>()(
               activeProviderType === "native" &&
               activeWallet instanceof SimpleWebLNWallet
             ) {
-              console.log("🔍 Using SimpleWebLNWallet for balance request")
+              console.log("Using SimpleWebLNWallet for balance request")
               const balance = await activeWallet.getBalance()
               return balance
             }
@@ -541,7 +508,7 @@ export const useWalletProviderStore = create<WalletProviderState>()(
             return null
           }
         },
-        30000, // Changed to 30 seconds
+        30000,
         {leading: true, trailing: false}
       ),
 
