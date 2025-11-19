@@ -1,8 +1,9 @@
 // src/stores/user.ts
-import {getDefaultServers} from "@/pages/settings/mediaservers-utils"
-import {create} from "zustand"
-import {DEFAULT_RELAYS, PRODUCTION_RELAYS} from "@/shared/constants/relays" // ← Added PRODUCTION_RELAYS
-import {NDKUser, NDKEvent} from "@nostr-dev-kit/ndk"
+import { getDefaultServers } from "@/pages/settings/mediaservers-utils"
+import { create } from "zustand"
+import { PRODUCTION_RELAYS } from "@/shared/constants/relays"
+import NDK from "@nostr-dev-kit/ndk"
+import { NDKUser, NDKEvent } from "@nostr-dev-kit/ndk"
 
 type MediaServerProtocol = "blossom" | "nip96"
 
@@ -40,13 +41,11 @@ interface UserState {
   ndkOutboxModel: boolean
   hasHydrated: boolean
 
-  // Identity
   identity: UserIdentity
-
-  // Computed
   isLoggedIn: boolean
   hasSeenThreshold: boolean
 
+  // Actions
   setPublicKey: (publicKey: string) => void
   setPrivateKey: (privateKey: string) => void
   setNip07Login: (nip07Login: boolean) => void
@@ -69,17 +68,25 @@ interface UserState {
   ensureDefaultMediaserver: (isSubscriber: boolean) => void
   awaitHydration: () => Promise<void>
   completeHydration: () => void
-
-  // Identity + kind:0
   setIdentity: (identity: Partial<UserIdentity>) => void
-  syncKind0: (ndk: any) => Promise<void>
   markThresholdSeen: () => void
+  syncKind0: (ndk: NDK) => Promise<void>
 }
 
 let hydrationPromise: Promise<void> | null = null
 let resolveHydration: (() => void) | null = null
 
-// Helper: Seed production relays on first load if nothing is saved
+// Permanently banish known-dead relays forever
+const DEAD_RELAYS = [
+  "wss://brb.io",
+  "wss://nostr.rocks",
+  "wss://relay.8333.space",
+] as const
+
+const filterDeadRelays = (relays: string[]): string[] =>
+  relays.filter((r) => !DEAD_RELAYS.some((dead) => r.includes(dead)))
+
+// Seed clean relays on first visit AND clean any old saved ones
 const getInitialRelays = (): string[] => {
   const raw = localStorage.getItem("user-storage")
   if (raw) {
@@ -87,29 +94,17 @@ const getInitialRelays = (): string[] => {
       const parsed = JSON.parse(raw)
       const state = parsed.state || parsed
       if (state.relays && Array.isArray(state.relays) && state.relays.length > 0) {
-        return state.relays
+        // Clean any legacy dead relays from old users
+        return filterDeadRelays(state.relays)
       }
     } catch (e) {
       console.warn("Failed to parse saved relays, using defaults")
     }
   }
 
-  // First time ever → seed solid production relays
-  console.log("No saved relays found → seeding production defaults")
-  return [
-    "wss://relay.damus.io",
-    "wss://relay.nostr.band",
-    "wss://relay.snort.social",
-    "wss://nostr.wine",
-    "wss://brb.io",
-    "wss://nos.lol",
-    "wss://nostr.rocks",
-    "wss://relayable.org",
-  ]
+  console.log("First-time user → seeding clean production relays")
+  return filterDeadRelays(PRODUCTION_RELAYS)
 }
-
-const isProduction = import.meta.env.PROD
-export const initialRelays = isProduction ? PRODUCTION_RELAYS : DEFAULT_RELAYS
 
 export const useUserStore = create<UserState>()((set, get) => {
   const initialState = {
@@ -118,8 +113,8 @@ export const useUserStore = create<UserState>()((set, get) => {
     nip07Login: false,
     DHTPublicKey: "",
     DHTPrivateKey: "",
-    relays: getInitialRelays(), // ← Now uses our smart seeder
-    relayConfigs: getInitialRelays().map((url) => ({url})), // Sync configs too
+    relays: getInitialRelays(),
+    relayConfigs: getInitialRelays().map((url) => ({ url })),
     mediaservers: [],
     defaultMediaserver: null,
     walletConnect: false,
@@ -137,54 +132,62 @@ export const useUserStore = create<UserState>()((set, get) => {
   }
 
   const actions = {
-    // ... (all your existing actions — unchanged below)
     setPublicKey: (publicKey: string) =>
-      set({
-        publicKey,
-        isLoggedIn: publicKey !== "",
-      }),
-    setPrivateKey: (privateKey: string) => set({privateKey}),
-    setNip07Login: (nip07Login: boolean) => set({nip07Login}),
-    setDHTPublicKey: (DHTPublicKey: string) => set({DHTPublicKey}),
-    setDHTPrivateKey: (DHTPrivateKey: string) => set({DHTPrivateKey}),
+      set({ publicKey, isLoggedIn: publicKey !== "" }),
+
+    setPrivateKey: (privateKey: string) => set({ privateKey }),
+    setNip07Login: (nip07Login: boolean) => set({ nip07Login }),
+    setDHTPublicKey: (DHTPublicKey: string) => set({ DHTPublicKey }),
+    setDHTPrivateKey: (DHTPrivateKey: string) => set({ DHTPrivateKey }),
+
     setRelays: (relays: string[]) => {
+      const clean = filterDeadRelays(relays)
       set((state) => {
-        const existingConfigs = new Map(state.relayConfigs.map((c) => [c.url, c]))
-        const newConfigs = relays.map((url) => existingConfigs.get(url) || {url})
-        return {relays, relayConfigs: newConfigs}
+        const existing = new Map(state.relayConfigs.map((c) => [c.url, c]))
+        const newConfigs = clean.map((url) => existing.get(url) || { url })
+        return { relays: clean, relayConfigs: newConfigs }
       })
     },
+
     setRelayConfigs: (configs: RelayConfig[]) => {
-      const enabledRelays = configs.filter((c) => !c.disabled).map((c) => c.url)
-      set({relayConfigs: configs, relays: enabledRelays})
+      const cleanConfigs = configs.filter((c) => !DEAD_RELAYS.some((d) => c.url.includes(d)))
+      const enabled = cleanConfigs.filter((c) => !c.disabled).map((c) => c.url)
+      set({ relayConfigs: cleanConfigs, relays: enabled })
     },
+
     toggleRelayConnection: (url: string) => {
+      if (DEAD_RELAYS.some((d) => url.includes(d))) return // silently ignore dead ones
       set((state) => {
         const configs = state.relayConfigs.map((c) =>
-          c.url === url ? {...c, disabled: !c.disabled} : c
+          c.url === url ? { ...c, disabled: !c.disabled } : c
         )
-        const enabledRelays = configs.filter((c) => !c.disabled).map((c) => c.url)
-        return {relayConfigs: configs, relays: enabledRelays}
+        const enabled = configs.filter((c) => !c.disabled).map((c) => c.url)
+        return { relayConfigs: configs, relays: enabled }
       })
     },
-    addRelay: (url: string, disabled: boolean = false) => {
+
+    addRelay: (url: string, disabled = false) => {
+      if (DEAD_RELAYS.some((d) => url.includes(d))) return // block adding dead relays
       set((state) => {
         if (state.relayConfigs.some((c) => c.url === url)) return state
-        const newConfig = disabled ? {url, disabled} : {url}
+        const newConfig = disabled ? { url, disabled } : { url }
         const configs = [...state.relayConfigs, newConfig]
-        const enabledRelays = configs.filter((c) => !c.disabled).map((c) => c.url)
-        return {relayConfigs: configs, relays: enabledRelays}
+        const enabled = configs.filter((c) => !c.disabled).map((c) => c.url)
+        return { relayConfigs: configs, relays: enabled }
       })
     },
+
     removeRelay: (url: string) => {
       set((state) => {
         const configs = state.relayConfigs.filter((c) => c.url !== url)
-        const enabledRelays = configs.filter((c) => !c.disabled).map((c) => c.url)
-        return {relayConfigs: configs, relays: enabledRelays}
+        const enabled = configs.filter((c) => !c.disabled).map((c) => c.url)
+        return { relayConfigs: configs, relays: enabled }
       })
     },
-    setMediaservers: (mediaservers: MediaServer[]) => set({mediaservers}),
-    setDefaultMediaserver: (server: MediaServer) => set({defaultMediaserver: server}),
+
+    // ... (all other actions unchanged – they’re already perfect)
+    setMediaservers: (mediaservers: MediaServer[]) => set({ mediaservers }),
+    setDefaultMediaserver: (server: MediaServer) => set({ defaultMediaserver: server }),
     addMediaserver: (server: MediaServer) =>
       set((state) => ({
         mediaservers: [...new Set([...state.mediaservers, server])],
@@ -193,21 +196,16 @@ export const useUserStore = create<UserState>()((set, get) => {
       set((state) => ({
         mediaservers: state.mediaservers.filter((s) => s.url !== url),
       })),
-    setWalletConnect: (walletConnect: boolean) => set({walletConnect}),
-    setDefaultZapAmount: (defaultZapAmount: number) => set({defaultZapAmount}),
-    setDefaultZapComment: (defaultZapComment: string) => set({defaultZapComment}),
-    setNdkOutboxModel: (ndkOutboxModel: boolean) => set({ndkOutboxModel}),
+    setWalletConnect: (walletConnect: boolean) => set({ walletConnect }),
+    setDefaultZapAmount: (defaultZapAmount: number) => set({ defaultZapAmount }),
+    setDefaultZapComment: (defaultZapComment: string) => set({ defaultZapComment }),
+    setNdkOutboxModel: (ndkOutboxModel: boolean) => set({ ndkOutboxModel }),
     reset: () => set(initialState),
     ensureDefaultMediaserver: (isSubscriber: boolean) =>
       set((state) => {
-        if (!state.defaultMediaserver) {
-          const defaults = getDefaultServers(isSubscriber)
-          return {
-            mediaservers: defaults,
-            defaultMediaserver: defaults[0],
-          }
-        }
-        return {}
+        if (state.defaultMediaserver) return {}
+        const defaults = getDefaultServers(isSubscriber)
+        return { mediaservers: defaults, defaultMediaserver: defaults[0] }
       }),
     awaitHydration: () => {
       if (get().hasHydrated) return Promise.resolve()
@@ -219,51 +217,52 @@ export const useUserStore = create<UserState>()((set, get) => {
       return hydrationPromise
     },
     completeHydration: () => {
-      if (resolveHydration) {
-        resolveHydration()
-        resolveHydration = null
-        hydrationPromise = null
-      }
-      set({hasHydrated: true})
+      resolveHydration?.()
+      resolveHydration = null
+      hydrationPromise = null
+      set({ hasHydrated: true })
     },
     setIdentity: (updates: Partial<UserIdentity>) =>
       set((state) => ({
-        identity: {...state.identity, ...updates},
+        identity: { ...state.identity, ...updates },
       })),
     markThresholdSeen: () =>
       set((state) => ({
-        identity: {...state.identity, hasSeenThreshold: true},
+        identity: { ...state.identity, hasSeenThreshold: true },
         hasSeenThreshold: true,
       })),
-    syncKind0: async (ndk: any) => {
-      const {publicKey} = get()
+    syncKind0: async (ndk: NDK) => {
+      const { publicKey } = get()
       if (!publicKey || !ndk) return
 
       try {
-        const user = new NDKUser({pubkey: publicKey})
+        const user = new NDKUser({ pubkey: publicKey })
         user.ndk = ndk
         const profileEvent = await user.fetchProfile()
 
         if (profileEvent?.content) {
-          let content: any = {}
+          let parsedContent: Record<string, string> = {}
           try {
-            content = JSON.parse(profileEvent.content as string)
+            parsedContent = JSON.parse(profileEvent.content as string)
           } catch (e) {
             console.warn("Failed to parse kind:0 content", e)
           }
 
-          const belief = content.belief ?? "nomad"
-          const default_room = content.default_room ?? "square"
+          const belief = parsedContent.belief ?? "nomad"
+          const default_room = parsedContent.default_room ?? "square"
+
+          const newState: "nomad" | "believer" | "atheist" =
+            belief.toLowerCase().includes("believer")
+              ? "believer"
+              : belief.toLowerCase().includes("atheist")
+              ? "atheist"
+              : "nomad"
 
           set((state) => ({
             identity: {
               ...state.identity,
-              state: belief.includes("Believer")
-                ? "believer"
-                : (belief.toLowerCase() as any),
-              room: belief.includes("Believer")
-                ? belief.split(" in ")[1]?.toLowerCase()
-                : undefined,
+              state: newState,
+              room: newState === "believer" ? belief.split(" in ")[1]?.toLowerCase() : undefined,
               default_room,
             },
           }))
@@ -290,14 +289,12 @@ export const useUserStore = create<UserState>()((set, get) => {
   }
 })
 
-// Export hooks (unchanged)
-export const usePublicKey = () => useUserStore((state) => state.publicKey)
-export const useIsLoggedIn = () => useUserStore((state) => state.isLoggedIn)
-export const useHasSeenThreshold = () =>
-  useUserStore((state) => state.identity.hasSeenThreshold)
-export const useDefaultRoom = () =>
-  useUserStore((state) => state.identity.default_room || "square")
-export const useSetIdentity = () => useUserStore((state) => state.setIdentity)
-export const useSyncKind0 = () => useUserStore((state) => state.syncKind0)
-export const useMarkThresholdSeen = () => useUserStore((state) => state.markThresholdSeen)
-export const useCompleteHydration = () => useUserStore((state) => state.completeHydration)
+// Export hooks
+export const usePublicKey = () => useUserStore((s) => s.publicKey)
+export const useIsLoggedIn = () => useUserStore((s) => s.isLoggedIn)
+export const useHasSeenThreshold = () => useUserStore((s) => s.identity.hasSeenThreshold)
+export const useDefaultRoom = () => useUserStore((s) => s.identity.default_room || "square")
+export const useSetIdentity = () => useUserStore((s) => s.setIdentity)
+export const useSyncKind0 = () => useUserStore((s) => s.syncKind0)
+export const useMarkThresholdSeen = () => useUserStore((s) => s.markThresholdSeen)
+export const useCompleteHydration = () => useUserStore((s) => s.completeHydration)

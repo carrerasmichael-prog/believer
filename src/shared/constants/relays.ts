@@ -9,9 +9,9 @@ const PRODUCTION_RELAYS = [
   "wss://relay.nostr.band",
   "wss://relay.snort.social",
   "wss://nostr.wine",
-  "wss://brb.io", // ultra-fast paid relay (free tier is great)
+  "wss://purplepag.es",
   "wss://nos.lol", // official replacement for relay.nos.lol
-  "wss://nostr.rocks", // super fast public relay
+  "wss://relay.nos.social",
   "wss://relayable.org", // high-uptime community relay
 ] satisfies string[]
 

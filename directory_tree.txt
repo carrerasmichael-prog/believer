@@ -1,10 +1,9 @@
 Folder PATH listing for volume System
-Volume serial number is 000000FF 7A24:C3EB
+Volume serial number is 00000077 7A24:C3EB
 C:\USERS\MICHAEL\BELIEVER
 |   .dockerignore
 |   .env
 |   .env.test
-|   .eslintrc
 |   .gitignore
 |   .htaccess
 |   .lighthouserc.js
@@ -20,6 +19,7 @@ C:\USERS\MICHAEL\BELIEVER
 |   directory_tree.txt
 |   docker-compose.yml
 |   Dockerfile
+|   eslint.config.mjs
 |   index.html
 |   ios-push-setup.md
 |   knip.json
@@ -86,20 +86,20 @@ C:\USERS\MICHAEL\BELIEVER
 |   +---assets
 |   |       animalname-BfpzENI-.js
 |   |       browser-D75Hhwqo.js
-|   |       GeohashMapContent-C8biebs3.js
+|   |       GeohashMapContent-DTfGv3fq.js
 |   |       hls-DdkpVA0Y.js
 |   |       icons-DT3cSZe7.svg
-|   |       index-B3LCs2il.js
-|   |       index-BQI4fvNB.js
-|   |       index-BTHQScqs.js
-|   |       index-C-37hnv2.js
-|   |       index-Ce-3KQuR.js
-|   |       index-CqlZn1zD.js
-|   |       index-CRfZAi7r.js
-|   |       index-CrGZaxYV.css
-|   |       index-Dgu_NgJb.js
-|   |       index-DIO-aNu4.js
-|   |       index-DtoOht_i.js
+|   |       index-6Fk9KDXd.js
+|   |       index-Bqs0KmJD.js
+|   |       index-Bu1otBmq.css
+|   |       index-CM7Ke7Z-.js
+|   |       index-CNMms50K.js
+|   |       index-DIgI8-_7.js
+|   |       index-dlSvJWTv.js
+|   |       index-DVwEPZaL.js
+|   |       index-DzZYYzXk.js
+|   |       index-FWrMBfV7.js
+|   |       index-xtx3T2EW.js
 |   |       module-DI9p0J2E.js
 |   |       native-48B9X9Wg.js
 |   |       ostrich-black-C7nn6yEE.png
@@ -231,56 +231,19 @@ C:\USERS\MICHAEL\BELIEVER
 |   |       town-square.png
 |   |       
 |   +---images
-|   |   |   town-square-base.png
-|   |   |   
-|   |   \---slices
-|   |       +---rooms
-|   |       |       atheism-slice.png
-|   |       |       church-slice.png
-|   |       |       lobby-slice.png
-|   |       |       market-slice.png
-|   |       |       mathris-slice.png
-|   |       |       mosque-slice.png
-|   |       |       news-slice.png
-|   |       |       synagogue-slice.png
-|   |       |       temple-slice.png
-|   |       |       
-|   |       \---sounds
-|   |               atheist-flag-slice.png
-|   |               brahma-slice.png
-|   |               buddha-slice.png
-|   |               church-bell-slice.png
-|   |               muhammad-slice.png
-|   |               star-of-david-slice.png
-|   |               
-|   +---img
-|   |       32x32.png
-|   |       android-chrome-192x192.png
-|   |       android-chrome-512x512.png
-|   |       apple-touch-icon.png
-|   |       eyespace.gif
-|   |       eyespace.png
-|   |       icon128.png
-|   |       irisconnects.png
-|   |       maskable_icon.png
-|   |       maskable_icon_x192.png
-|   |       zap.png
-|   |       
-|   \---sounds
-|       |   atheist-flag.mp3
-|       |   brahma.mp3
-|       |   buddha.mp3
-|       |   church-bell.mp3
-|       |   door-sound.mp3
-|       |   market.mp3
-|       |   muhammad.mp3
-|       |   news.mp3
-|       |   star-of-david.mp3
-|       |   town-ambience.mp3
-|       |   
-|       \---peaks
-|               town-ambience.mp3.reapeaks
-|               
+|   \---img
+|           32x32.png
+|           android-chrome-192x192.png
+|           android-chrome-512x512.png
+|           apple-touch-icon.png
+|           eyespace.gif
+|           eyespace.png
+|           icon128.png
+|           irisconnects.png
+|           maskable_icon.png
+|           maskable_icon_x192.png
+|           zap.png
+|           
 +---node_modules
 |   |   .package-lock.json
 |   |   .yarn-integrity
@@ -40302,11 +40265,11 @@ C:\USERS\MICHAEL\BELIEVER
 |   |       +---rooms
 |   |       |       atheism-slice.png
 |   |       |       church-slice.png
-|   |       |       lobby-slice.png
 |   |       |       market-slice.png
 |   |       |       mathris-slice.png
 |   |       |       mosque-slice.png
 |   |       |       news-slice.png
+|   |       |       square-slice.png
 |   |       |       synagogue-slice.png
 |   |       |       temple-slice.png
 |   |       |       
@@ -40387,6 +40350,9 @@ C:\USERS\MICHAEL\BELIEVER
 |   +---components
 |   |       DestinyMenu.tsx
 |   |       feed.tsx
+|   |       
+|   +---config
+|   |       searchRelays.ts
 |   |       
 |   +---constants
 |   |       townSquareSlices.ts
@@ -41005,6 +40971,7 @@ C:\USERS\MICHAEL\BELIEVER
 |       |   nwc.ts
 |       |   playSound.ts
 |       |   playSoundWithFallback.ts
+|       |   preventDoubleWalletInit.ts
 |       |   profileCache.ts
 |       |   profileSearch.ts
 |       |   pushNotifications.ts
