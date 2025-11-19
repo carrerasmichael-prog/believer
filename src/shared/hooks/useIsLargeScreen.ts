@@ -1,20 +1,20 @@
 // src/shared/hooks/useIsLargeScreen.ts
-import {useState, useEffect} from "react"
+import { useSyncExternalStore } from "react"
+
+function subscribe(callback: () => void) {
+  window.addEventListener("resize", callback)
+  // Also listen to orientation change on mobile
+  window.addEventListener("orientationchange", callback)
+  return () => {
+    window.removeEventListener("resize", callback)
+    window.removeEventListener("orientationchange", callback)
+  }
+}
 
 export function useIsLargeScreen() {
-  const [isLargeScreen, setIsLargeScreen] = useState(window.innerWidth >= 1200)
-
-  useEffect(() => {
-    const mediaQuery = window.matchMedia("(min-width: 1200px)")
-
-    const handleChange = (e: MediaQueryListEvent) => {
-      setIsLargeScreen(e.matches)
-    }
-
-    setIsLargeScreen(mediaQuery.matches)
-    mediaQuery.addEventListener("change", handleChange)
-    return () => mediaQuery.removeEventListener("change", handleChange)
-  }, [])
-
-  return isLargeScreen
+  return useSyncExternalStore(
+    subscribe,
+    () => window.innerWidth >= 1200,  // server / initial
+    () => true                                // SSR fallback
+  )
 }

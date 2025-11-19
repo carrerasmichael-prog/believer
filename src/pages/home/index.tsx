@@ -10,7 +10,6 @@ import {HomeRightColumn} from "@/pages/home/components/HomeRightColumn"
 import PullToRefresh from "@/shared/components/ui/PullToRefresh"
 import {
   useFeedStore,
-  useFeedConfigs,
   useEnabledFeedIds,
   type FeedConfig,
 } from "@/stores/feed"
@@ -28,29 +27,26 @@ function Index() {
   const follows = useFollows(myPubKey, true)
   const {activeFeed, getAllFeedConfigs, loadFeedConfig} = useFeedStore()
   const enabledFeedIds = useEnabledFeedIds()
-  const feedConfigs = useFeedConfigs()
 
   const allFeeds = useMemo(() => {
-    return getAllFeedConfigs()
-  }, [feedConfigs, enabledFeedIds, getAllFeedConfigs])
+  return getAllFeedConfigs()
+}, [getAllFeedConfigs]) // only this one — it's a stable function
 
-  const feeds = useMemo(() => {
-    const feedsMap = new Map(allFeeds.map((feed) => [feed.id, feed]))
-    return enabledFeedIds
-      .map((id) => feedsMap.get(id))
-      .filter((feed): feed is FeedConfig => feed !== undefined)
-  }, [allFeeds, enabledFeedIds])
+const feeds = useMemo(() => {
+  const feedsMap = new Map(allFeeds.map((feed) => [feed.id, feed]))
+  return enabledFeedIds
+    .map((id) => feedsMap.get(id))
+    .filter((feed): feed is FeedConfig => feed !== undefined)
+}, [allFeeds, enabledFeedIds]) // these two actually change → keep them
 
-  const activeFeedItem = useMemo(
-    () => feeds.find((f) => f.id === activeFeed) || feeds[0] || null,
-    [activeFeed, feeds]
-  )
+const activeFeedItem = useMemo(
+  () => feeds.find((f) => f.id === activeFeed) || feeds[0] || null,
+  [feeds, activeFeed]
+)
 
-  const activeFeedConfig = useMemo(
-    () => loadFeedConfig(activeFeed),
-    [loadFeedConfig, activeFeed, feedConfigs]
-  )
-
+const activeFeedConfig = useMemo(() => {
+  return loadFeedConfig(activeFeed)
+}, [loadFeedConfig, activeFeed]) // loadFeedConfig is stable, feedConfigs not needed here
   const feedName =
     follows.length <= 1
       ? "Home"

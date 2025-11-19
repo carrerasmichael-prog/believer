@@ -3,10 +3,15 @@ import { useParams } from "@/navigation"
 import { ROOM_CONFIGS } from "@/rooms/roomConfig"
 import { useEffect, useRef, useState } from "react"
 import { useSettingsStore } from "@/stores/settings"
+import { ndk } from "@/utils/ndk"                          // ← your factory
 import TownSquareInteractive from "@/pages/landing/TownSquareInteractive"
 import FeedItem from "@/shared/components/event/FeedItem/FeedItem"
 import useFeedEvents from "@/shared/hooks/useFeedEvents"
 import { type FeedConfig } from "@/stores/feed"
+import type { NDKEvent } from "@nostr-dev-kit/ndk"
+
+// Create the actual NDK instance once
+const ndkInstance = ndk()
 
 const DEFAULT_FEED_CONFIG: FeedConfig = {
   id: "room",
@@ -15,6 +20,82 @@ const DEFAULT_FEED_CONFIG: FeedConfig = {
   requiresMedia: false,
   requiresReplies: false,
   excludeSeen: true,
+}
+
+// Live "People in room" sidebar
+const RoomPeopleColumn = ({ roomId }: { roomId: string }) => {
+  const [onlinePubkeys, setOnlinePubkeys] = useState<Set<string>>(new Set())
+
+  useEffect(() => {
+    const recent = new Set<string>()
+
+    const sub = ndkInstance.subscribe(
+      {
+        kinds: [1],
+        "#t": ROOM_CONFIGS[roomId]?.tags || [],
+        since: Math.floor(Date.now() / 1000) - 300, // last 5 min
+      },
+      { closeOnEose: false }
+    )
+
+    sub.on("event", (event: NDKEvent) => {
+      if (event.pubkey) recent.add(event.pubkey)
+    })
+
+    const interval = setInterval(() => {
+      setOnlinePubkeys(new Set(recent))
+    }, 8000)
+
+    return () => {
+      sub.stop()
+      clearInterval(interval)
+    }
+  }, [roomId])
+
+  if (onlinePubkeys.size === 0) {
+    return (
+      <div className="p-8 text-center text-base-content/40">
+        <p className="text-sm">No one here right now…</p>
+      </div>
+    )
+  }
+
+  return (
+    <div className="sticky top-20 p-6 bg-base-100 rounded-xl border border-base-300">
+      <h3 className="font-bold text-lg mb-4 flex items-center gap-2">
+        People Here
+        <span className="text-success animate-pulse">●</span>
+        <span className="text-sm font-normal text-base-content/70">({onlinePubkeys.size})</span>
+      </h3>
+      <div className="space-y-3">
+        {Array.from(onlinePubkeys)
+          .slice(0, 15)
+          .map((pubkey) => (
+            <div key={pubkey} className="flex items-center gap-3">
+              <div className="avatar">
+                <div className="w-10 rounded-full ring ring-primary ring-offset-2 ring-offset-base-100">
+                  <img
+                    src={`https://api.dicebear.com/8.x/identicon/svg?seed=${pubkey}`}
+                    alt="avatar"
+                  />
+                </div>
+              </div>
+              <div className="text-sm">
+                <div className="font-medium truncate max-w-32">
+                  {pubkey.slice(0, 12)}…
+                </div>
+                <div className="text-success text-xs">active now</div>
+              </div>
+            </div>
+          ))}
+      </div>
+      {onlinePubkeys.size > 15 && (
+        <p className="text-center text-xs text-base-content/50 mt-4">
+          + {onlinePubkeys.size - 15} more
+        </p>
+      )}
+    </div>
+  )
 }
 
 const Room = () => {
@@ -28,7 +109,7 @@ const Room = () => {
   const [showPortal, setShowPortal] = useState(false)
   const [savedScroll, setSavedScroll] = useState(0)
 
-  // 1. Create / destroy room audio + initial volume
+  // Audio handling
   useEffect(() => {
     if (roomId && config?.sound) {
       const audio = new Audio(`/${config.sound}`)
@@ -46,28 +127,23 @@ const Room = () => {
       currentAudio.src = ""
       setCurrentAudio(null)
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [roomId, config?.sound, mute])
+  }, [roomId, config?.sound, mute, currentAudio])
 
-  // 2. React to mute changes – intentionally omit currentAudio from deps
   useEffect(() => {
-    if (currentAudio) {
-      currentAudio.volume = mute ? 0 : 0.6
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [mute])
+    if (currentAudio) currentAudio.volume = mute ? 0 : 0.6
+  }, [mute, currentAudio])
 
   const openPortal = () => {
-    setSavedScroll(window.scrollY)
-    setShowPortal(true)
-    document.body.style.overflow = "hidden"
-  }
+  setSavedScroll(window.pageYOffset)
+  setShowPortal(true)
+  document.body.classList.add("overflow-hidden")
+}
 
-  const closePortal = () => {
-    setShowPortal(false)
-    document.body.style.overflow = ""
-    window.scrollTo({ top: savedScroll, behavior: "instant" })
-  }
+const closePortal = () => {
+  setShowPortal(false)
+  document.body.classList.remove("overflow-hidden")
+  window.scrollTo({ top: savedScroll, behavior: "instant" })
+}
 
   if (!config) {
     return (
@@ -96,7 +172,6 @@ const Room = () => {
     )
   }
 
-  // ——— INSTANT ROOM FEED ———
   const feedConfig: FeedConfig = {
     ...DEFAULT_FEED_CONFIG,
     name: config.name,
@@ -112,8 +187,8 @@ const Room = () => {
   })
 
   const events = Array.from(filteredEvents)
-
   const sentinelRef = useRef<HTMLDivElement>(null)
+
   useEffect(() => {
     if (!sentinelRef.current || !initialLoadDone) return
     const observer = new IntersectionObserver(
@@ -138,37 +213,49 @@ const Room = () => {
         <p className="text-sm text-base-content/70 mt-1">{config.subtitle}</p>
       </div>
 
-      <div className="flex-1 overflow-y-auto">
-        <div className="mx-auto max-w-screen-2xl px-4 py-6 lg:grid lg:grid-cols-2 lg:gap-8">
-          {events.length === 0 && initialLoadDone ? (
-            <p className="col-span-2 text-center text-base-content/50 py-20">
-              No posts yet in {config.name}…
-            </p>
-          ) : (
-            <>
-              {events.map((event) => (
-                <FeedItem key={event.id} event={event} showActions={true} showReplies={3} />
-              ))}
-
-              <div ref={sentinelRef} className="col-span-2 h-10" />
-              {!initialLoadDone && (
-                <div className="col-span-2 text-center py-10">
-                  <span className="loading loading-spinner loading-lg" />
-                </div>
+            <div className="flex-1 overflow-y-auto">
+        <div className="mx-auto max-w-screen-2xl px-4 py-6">
+          {/* This is the magic line that restores full responsiveness */}
+          <div className={roomId === "news" ? "space-y-6" : "grid gap-8 lg:grid-cols-2 lg:gap-12"}>
+            
+            {/* LEFT COLUMN — Feed */}
+            <div className="space-y-6">
+              {events.length === 0 && initialLoadDone ? (
+                <p className="text-center text-base-content/50 py-20">
+                  No posts yet in {config.name}…
+                </p>
+              ) : (
+                <>
+                  {events.map((event) => (
+                    <FeedItem key={event.id} event={event} showActions={true} showReplies={3} />
+                  ))}
+                  <div ref={sentinelRef} className="h-10" />
+                  {!initialLoadDone && (
+                    <div className="text-center py-10">
+                      <span className="loading loading-spinner loading-lg" />
+                    </div>
+                  )}
+                </>
               )}
-            </>
-          )}
+            </div>
+
+            {/* RIGHT COLUMN — People sidebar (only on lg+ and not news) */}
+            {roomId !== "news" && (
+              <div className="hidden lg:block">
+                <RoomPeopleColumn roomId={roomId} />
+              </div>
+            )}
+          </div>
         </div>
       </div>
 
       {/* Town Square Portal */}
       {showPortal && roomId === "square" && !cameFromMap && (
-        <div className="fixed inset-0 z-[999999] bg-black/95 flex items-center justify-center p-4 animate-in fade-in duration-700">
-          <div className="relative w-full h-full max-w-7xl max-h-[90vh] rounded-3xl overflow-hidden shadow-2xl">
+        <div className="fixed inset-0 z-[999999] bg-black/95 flex items-center justify-center p-4 pointer-events-none">
+        <div className="relative w-full h-full max-w-7xl max-h-[90vh] rounded-3xl overflow-hidden shadow-2xl pointer-events-auto">
             <button
               onClick={closePortal}
               className="absolute top-4 right-4 z-50 btn btn-circle btn-ghost text-white hover:bg-white/20"
-              aria-label="Close portal"
             >
               X
             </button>
